@@ -1,12 +1,15 @@
 #pragma once
-#include <set>
+#include <list>
+#include "Date.h"
 using namespace std;
+typedef long long unsigned ID;
 class User
 {
 public:
 	User();
 	~User();
+	bool Borrow(ID id);
 private:
-	set<long long unsigned> lendIdSet;
+	list<pair<ID,Date>> borrowList;
+	const uint borrowdays{ 30 };
 };
-
