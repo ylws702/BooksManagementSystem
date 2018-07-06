@@ -3,7 +3,7 @@
 typedef long long unsigned ID;
 class Book
 {
-	friend class BookList;
+	friend class BookMap;
 public:
 	Book()=delete;
 	Book(ID id);

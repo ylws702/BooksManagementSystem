@@ -14,7 +14,13 @@ Date Date::operator+(uint d)const
 {
 	return Date(year, month, day + d);
 }
-char* Date::ToString()
+bool Date::operator>(Date date) const
+{
+	return year > date.year
+		|| (year == date.year&&month > date.month)
+		|| (year == date.year&&month == date.month&&day > date.day);
+}
+const char* Date::ToString()const
 {
 	return str;
 }

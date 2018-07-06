@@ -6,7 +6,8 @@ class Date
 public:
 	Date(uint year,uint month,uint day);
 	Date operator+(uint day)const;
-	char* ToString();
+	bool operator>(Date date)const;
+	const char* ToString()const;
 	static Date Now();
 	static uint DaysOfMonth(uint year, uint month);
 	static bool IsLeapYear(uint year)

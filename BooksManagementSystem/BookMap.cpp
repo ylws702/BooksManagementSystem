@@ -1,17 +1,17 @@
 #include "stdafx.h"
-#include "BookList.h"
+#include "BookMap.h"
 
 
-BookList::BookList()
+BookMap::BookMap()
 {
 }
 
 
-BookList::~BookList()
+BookMap::~BookMap()
 {
 }
 
-bool BookList::Add(const Book & book)
+bool BookMap::Add(const Book & book)
 {
 	//图书已在列表中
 	if (bookMap.find(book.id) != bookMap.end())
@@ -23,7 +23,7 @@ bool BookList::Add(const Book & book)
 	return true;
 }
 
-bool BookList::Delete(long long unsigned id)
+bool BookMap::Delete(ID id)
 {
 	if (bookMap.find(id)==bookMap.end())
 	{
@@ -34,24 +34,25 @@ bool BookList::Delete(long long unsigned id)
 }
 
 
-BookList BookList::ReadList(const char* path)
+BookMap BookMap::ReadMap(const char* path)
 {
-	BookList list;
+	BookMap map;
 	Book current(0);
 	ifstream ifs(path, ios::in | ios::binary);
 	if (ifs.fail())
 	{
-		return list;
+		return map;
 	}
 	while (!ifs.read((char*)&current, sizeof(Book)).eof())
 	{
-		list.Add(current);
+		map.Add(current);
 	}
-	return list;
+	ifs.close();
+	return map;
 }
 
 
-bool BookList::WriteList(const char* path)const
+bool BookMap::WriteMap(const char* path)const
 {
 	ofstream ofs(path, ios::out | ios::binary);
 	if (ofs.fail())
@@ -68,7 +69,7 @@ bool BookList::WriteList(const char* path)const
 #include<iostream>
 #include<iomanip>
 using namespace std;
-void BookList::Print()
+void BookMap::Print()
 {
 	for (auto pair : bookMap)
 	{

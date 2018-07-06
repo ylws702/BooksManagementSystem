@@ -5,19 +5,41 @@ using namespace std;
 typedef long long unsigned ID;
 class User
 {
+	friend class UserMap;
 public:
-	User()=delete;
+	enum UserType
+	{
+		unknownType,
+		undergraduate,
+		postgraduate,
+		professoriat
+	};
+	enum Gender
+	{
+		unknownGender,
+		male,
+		female
+	};
+	User() = delete;
 	User(ID id);
 	User(ID id, const char *name, const char *password);
-	bool SetName(const char *name);
-	bool SetPassword(const char *password);
 	~User();
-	void Borrow(ID bookID);
+	bool SetName(const char *name);
+	void SetGender(Gender gender);
+	bool SetPassword(const char *password);
+	void SetType(UserType type);
+	bool Borrow(ID bookID);
+	bool Return(ID bookID);
 private:
-	ID userID;
+	ID id;
 	//更改name长度需要同时修改SetName函数
 	char name[16];
+	Gender gender{ unknownGender };
 	char password[32];
-	list<pair<ID,Date>> borrowList;
+	UserType type{ unknownType };
+	list<pair<ID, Date>> borrowList;
+	//挂失用
+	bool isEnabled{ true };
 	const uint borrowdays{ 30 };
+	const uint maxBooks{ 30 };
 };
