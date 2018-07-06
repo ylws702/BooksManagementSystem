@@ -1,11 +1,12 @@
 #pragma once
 #include <cstdlib>
+typedef long long unsigned ID;
 class Book
 {
 	friend class BookList;
 public:
 	Book()=delete;
-	Book(size_t id);
+	Book(ID id);
 	bool SetTitle(const char* title);
 	bool SetAuthor(const char* author);
 	bool SetPress(const char* press);
@@ -14,7 +15,7 @@ public:
 	bool SetExist(bool exist);
 	~Book();
 private:
-	size_t id;
+	ID id;
 	char title[32];
 	char author[32];
 	char press[32];

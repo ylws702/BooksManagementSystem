@@ -2,14 +2,14 @@
 #include "Book.h"
 
 
-Book::Book(size_t id):
+Book::Book(ID id):
 	id(id),exist(true)
 {
-	this->SetAuthor("无信息");
-	this->SetDate("无信息");
-	this->SetPress("无信息");
-	this->SetTitle("无信息");
-	this->SetType("无信息");
+	SetAuthor("无信息");
+	SetDate("无信息");
+	SetPress("无信息");
+	SetTitle("无信息");
+	SetType("无信息");
 }
 
 

@@ -16,6 +16,7 @@ public:
 	//返回值:
 	//文件保存成功返回true,失败返回false
 	bool WriteList(const char* path)const;
+	//DEBUG用函数,发布时删除
 	void Print();
 private:
 	map<long long unsigned,Book> bookMap;
