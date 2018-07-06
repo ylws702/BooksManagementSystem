@@ -1,5 +1,5 @@
 #pragma once
-#include "BookInfo.h"
+#include "Book.h"
 #include <map>
 #include <fstream>
 using namespace std;
@@ -8,7 +8,8 @@ class BookList
 public:
 	BookList();
 	~BookList();
-	bool Add(const BookInfo& book);
+	bool Add(const Book& book);
+	bool Delete(long long unsigned id);
 	static BookList ReadList(const char* path);
 	//参数表:
 	//path:列表要保存的地址
@@ -17,6 +18,6 @@ public:
 	bool WriteList(const char* path)const;
 	void Print();
 private:
-	map<size_t,BookInfo> bookMap;
+	map<long long unsigned,Book> bookMap;
 };
 
