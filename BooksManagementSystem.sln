@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BooksManagementSystem", "BooksManagementSystem\BooksManagementSystem.vcxproj", "{53CF9766-F7E5-458A-B9E0-913BD09975A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53CF9766-F7E5-458A-B9E0-913BD09975A1}.Debug|x64.ActiveCfg = Debug|x64
+		{53CF9766-F7E5-458A-B9E0-913BD09975A1}.Debug|x64.Build.0 = Debug|x64
+		{53CF9766-F7E5-458A-B9E0-913BD09975A1}.Debug|x86.ActiveCfg = Debug|Win32
+		{53CF9766-F7E5-458A-B9E0-913BD09975A1}.Debug|x86.Build.0 = Debug|Win32
+		{53CF9766-F7E5-458A-B9E0-913BD09975A1}.Release|x64.ActiveCfg = Release|x64
+		{53CF9766-F7E5-458A-B9E0-913BD09975A1}.Release|x64.Build.0 = Release|x64
+		{53CF9766-F7E5-458A-B9E0-913BD09975A1}.Release|x86.ActiveCfg = Release|Win32
+		{53CF9766-F7E5-458A-B9E0-913BD09975A1}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5E8A13FC-D415-46F7-AE9C-397F02713EAC}
+	EndGlobalSection
+EndGlobal
