@@ -73,6 +73,22 @@ User::~User()
 {
 }
 
+User User::operator=(const User & user)
+{
+	if (this== &user)
+	{
+		return *this;
+	}
+	id = user.id;
+	gender = user.gender;
+	type = user.type;
+	isEnabled = user.isEnabled;
+	borrowList = user.borrowList;
+	SetName(user.name);
+	SetPassword(user.password);
+	return *this;
+}
+
 bool User::Borrow(ID bookId)
 {
 	if (!isEnabled)

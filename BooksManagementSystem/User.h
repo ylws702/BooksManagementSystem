@@ -25,6 +25,7 @@ public:
 	User(ID id, const char *name, const char *password);
 	User(const User& user);
 	~User();
+	User operator=(const User& user);
 	bool SetName(const char *name);
 	void SetGender(Gender gender);
 	bool SetPassword(const char *password);
