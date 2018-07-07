@@ -37,9 +37,9 @@ private:
 	Gender gender{ unknownGender };
 	char password[32];
 	UserType type{ unknownType };
-	list<pair<ID, Date>> borrowList;
 	//π“ ß”√
 	bool isEnabled{ true };
+	list<pair<ID, Date>> borrowList;
 	const uint borrowdays{ 30 };
 	const uint maxBooks{ 30 };
 };

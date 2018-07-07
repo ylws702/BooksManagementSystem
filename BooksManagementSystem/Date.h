@@ -4,7 +4,8 @@ typedef unsigned int uint;
 class Date
 {
 public:
-	Date(uint year,uint month,uint day);
+	Date() {}
+	Date(uint year, uint month, uint day);
 	Date operator+(uint day)const;
 	bool operator>(Date date)const;
 	const char* ToString()const;

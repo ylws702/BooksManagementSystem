@@ -18,7 +18,7 @@ bool UserMap::Add(const User & user)
 	{
 		return false;
 	}
-	pair<size_t, User>p(user.id, user);
+	pair<ID, User>p(user.id, user);
 	userMap.insert(p);
 	return true;
 }
@@ -42,8 +42,21 @@ UserMap UserMap::ReadMap(const char * path)
 	{
 		return map;
 	}
-	while (!ifs.read((char*)&current, sizeof(User)).eof())
+	size_t n;
+	pair<ID, Date>p;
+	while (!ifs.read((char*)&current.id, sizeof(ID)).eof())
 	{
+		ifs.read(current.name, 16);
+		ifs.read((char*)&current.gender, sizeof(User::Gender));
+		ifs.read(current.password, 32);
+		ifs.read((char*)&current.type, sizeof(User::type));
+		ifs.read((char*)&current.isEnabled, sizeof(bool));
+		ifs.read((char*)&n, sizeof(size_t));
+		for (size_t i = 0; i < n; i++)
+		{
+			ifs.read((char*)&p, sizeof(pair<ID, Date>));
+			current.borrowList.push_back(p);
+		}
 		map.Add(current);
 	}
 	ifs.close();
@@ -57,9 +70,23 @@ bool UserMap::WriteMap(const char * path) const
 	{
 		return false;
 	}
-	for (auto pair : userMap)
+	size_t n;
+	for (auto usrp : userMap)
 	{
-		ofs.write((char*)&pair.second, sizeof(User));
+		ofs.write((char*)&usrp.second.id, sizeof(ID));
+		ofs.write(usrp.second.name, 16);
+		ofs.write((char*)&usrp.second.gender, sizeof(User::Gender));
+		ofs.write(usrp.second.password, 32);
+		ofs.write((char*)&usrp.second.type, sizeof(User::type));
+		ofs.write((char*)&usrp.second.isEnabled, sizeof(bool));
+		n = usrp.second.borrowList.size();
+		ofs.write((char*)&n, sizeof(size_t));
+		for (auto p : usrp.second.borrowList)
+		{
+			//ofs.write((char*)&p.first, sizeof(ID));
+			//ofs.write((char*)&p.second, sizeof(Date));
+			ofs.write((char*)&p, sizeof(pair<ID, Date>));
+		}
 	}
 	ofs.close();
 	return true;
