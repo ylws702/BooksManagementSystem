@@ -7,6 +7,7 @@ class User
 {
 	friend class UserMap;
 	friend class UserHelper;
+	friend class AdminHelper;
 public:
 	enum UserType
 	{
@@ -22,18 +23,20 @@ public:
 		female
 	};
 	User() = delete;
-	User(ID id);
-	User(ID id, const char *name, const char *password);
+	User(const ID id);
+	User(const ID id,
+		const char * name,
+		const char * password,
+		const Gender gender,
+		const UserType type);
 	User(const User& user);
 	User operator=(const User& user);
+private:
 	bool SetName(const char *name);
-	void SetGender(const Gender gender);
 	bool SetPassword(const char *password);
-	void SetType(const UserType type);
 	void SetBalance(const double balance);
 	bool Borrow(const ID bookID);
 	bool Return(const ID bookID);
-private:
 	ID id{ 0 };
 	//更改name长度需要同时修改SetName函数
 	//更改成员还需同时修改UserMap::ReadMap和UserMap::WriteMap以及构造函数和赋值重载

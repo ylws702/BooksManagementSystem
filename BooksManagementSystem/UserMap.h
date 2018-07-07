@@ -6,7 +6,7 @@
 class UserMap
 {
 	friend class UserHelper;
-private:
+	friend class AdminHelper;
 	UserMap() {}
 	bool Add(const User& user);
 	bool Delete(ID id);

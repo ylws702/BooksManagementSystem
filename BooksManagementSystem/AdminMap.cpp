@@ -13,6 +13,31 @@ bool AdminMap::Add(const Admin & admin)
 	return true;
 }
 
+bool AdminMap::Find(ID id, Admin & result) const
+{
+	auto it = adminMap.find(id);
+	if (it == adminMap.end())
+	{
+		return false;
+	}
+	result = it->second;
+	return true;
+}
+
+bool AdminMap::Find(const char * name, Admin & result) const
+{
+	for (auto i = adminMap.begin(); i != adminMap.end(); i++)
+	{
+		if (0 == strcmp(i->second.name, name))
+		{
+			result = i->second;
+			return true;
+		}
+	}
+	return false;
+}
+
+
 AdminMap AdminMap::ReadMap(const char * path)
 {
 	AdminMap map;

@@ -5,7 +5,7 @@
 using namespace std;
 class BookMap
 {
-public:
+	friend class AdminHelper;
 	BookMap() {}
 	bool Add(const Book& book);
 	bool Delete(ID id);
@@ -15,9 +15,9 @@ public:
 	//返回值:
 	//文件保存成功返回true,失败返回false
 	bool WriteMap(const char* path)const;
+	map<ID, Book> bookMap;
+public:
 	//DEBUG用函数,发布时删除
 	void Print();
-private:
-	map<ID, Book> bookMap;
 };
 

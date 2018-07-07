@@ -7,14 +7,13 @@ class Book
 public:
 	Book() = delete;
 	Book(ID id);
+private:
 	bool SetTitle(const char* title);
 	bool SetAuthor(const char* author);
 	bool SetPress(const char* press);
 	bool SetDate(const char* date);
 	bool SetType(const char* type);
 	bool SetExist(bool exist);
-	~Book();
-private:
 	ID id{ 0 };
 	char title[32];
 	char author[32];

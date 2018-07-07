@@ -1,14 +1,18 @@
 #include "stdafx.h"
 #include "User.h"
 
-User::User(ID id) :
+User::User(const ID id) :
 	id(id)
 {
 	SetName("Œﬁ–≈œ¢");
 	SetPassword("123456");
 }
 
-User::User(ID id, const char * name, const char * password) :
+User::User(const ID id,
+	const char * name,
+	const char * password,
+	const Gender gender,
+	const UserType type) :
 	id(id)
 {
 	SetName(name);
@@ -42,11 +46,6 @@ bool User::SetName(const char * str)
 	return false;
 }
 
-void User::SetGender(const Gender g)
-{
-	gender = g;
-}
-
 bool User::SetPassword(const char * str)
 {
 	int i = 0;
@@ -60,11 +59,6 @@ bool User::SetPassword(const char * str)
 		i++;
 	}
 	return false;
-}
-
-void User::SetType(const UserType t)
-{
-	type = t;
 }
 
 void User::SetBalance(const double b)

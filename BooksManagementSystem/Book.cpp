@@ -93,7 +93,3 @@ bool Book::SetExist(bool exist)
 	Book::exist = exist;
 	return true;
 }
-
-Book::~Book()
-{
-}
