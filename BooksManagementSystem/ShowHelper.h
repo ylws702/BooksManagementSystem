@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdio>
 #include "User.h"
 #include "Book.h"
 class ShowHelper

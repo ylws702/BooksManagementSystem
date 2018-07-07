@@ -1,7 +1,7 @@
 #pragma once
 #include <map>
 #include <fstream>
-#include <cstdlib>
+#include <cstring>
 #include "User.h"
 class UserMap
 {
