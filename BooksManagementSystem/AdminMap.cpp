@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "AdminMap.h"
+#include <cstring>
 
 bool AdminMap::Add(const Admin & admin)
 {
