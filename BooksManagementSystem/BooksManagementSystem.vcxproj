@@ -147,6 +147,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Admin.h" />
+    <ClInclude Include="AdminMap.h" />
     <ClInclude Include="Book.h" />
     <ClInclude Include="BookMap.h" />
     <ClInclude Include="Date.h" />
@@ -156,6 +158,8 @@
     <ClInclude Include="UserMap.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Admin.cpp" />
+    <ClCompile Include="AdminMap.cpp" />
     <ClCompile Include="Book.cpp" />
     <ClCompile Include="BookMap.cpp" />
     <ClCompile Include="BooksManagementSystem.cpp" />

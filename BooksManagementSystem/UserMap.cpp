@@ -53,6 +53,7 @@ UserMap UserMap::ReadMap(const char * path)
 		ifs.read(current.password, 32);
 		ifs.read((char*)&current.type, sizeof(User::type));
 		ifs.read((char*)&current.isEnabled, sizeof(bool));
+		ifs.read((char*)&current.balance, sizeof(double));
 		ifs.read((char*)&n, sizeof(size_t));
 		for (size_t i = 0; i < n; i++)
 		{
@@ -81,6 +82,7 @@ bool UserMap::WriteMap(const char * path) const
 		ofs.write(usrp.second.password, 32);
 		ofs.write((char*)&usrp.second.type, sizeof(User::type));
 		ofs.write((char*)&usrp.second.isEnabled, sizeof(bool));
+		ofs.write((char*)&usrp.second.balance, sizeof(double));
 		n = usrp.second.borrowList.size();
 		ofs.write((char*)&n, sizeof(size_t));
 		for (auto p : usrp.second.borrowList)

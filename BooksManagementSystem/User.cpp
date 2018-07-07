@@ -1,15 +1,12 @@
 #include "stdafx.h"
 #include "User.h"
 
-
-
 User::User(ID id) :
 	id(id)
 {
 	SetName("无信息");
-	SetPassword("无信息");
+	SetPassword("123456");
 }
-
 
 User::User(ID id, const char * name, const char * password) :
 	id(id)
@@ -23,7 +20,8 @@ User::User(const User & user) :
 	gender(user.gender),
 	type(user.type),
 	isEnabled(user.isEnabled),
-	borrowList(user.borrowList)
+	borrowList(user.borrowList),
+	balance(user.balance)
 {
 	SetName(user.name);
 	SetPassword(user.password);
@@ -44,7 +42,7 @@ bool User::SetName(const char * str)
 	return false;
 }
 
-void User::SetGender(Gender g)
+void User::SetGender(const Gender g)
 {
 	gender = g;
 }
@@ -64,13 +62,14 @@ bool User::SetPassword(const char * str)
 	return false;
 }
 
-void User::SetType(UserType t)
+void User::SetType(const UserType t)
 {
 	type = t;
 }
 
-User::~User()
+void User::SetBalance(const double b)
 {
+	balance = b;
 }
 
 User User::operator=(const User & user)
@@ -84,12 +83,13 @@ User User::operator=(const User & user)
 	type = user.type;
 	isEnabled = user.isEnabled;
 	borrowList = user.borrowList;
+	balance = user.balance;
 	SetName(user.name);
 	SetPassword(user.password);
 	return *this;
 }
 
-bool User::Borrow(ID bookId)
+bool User::Borrow(const ID bookId)
 {
 	if (!isEnabled)
 	{
@@ -111,7 +111,7 @@ bool User::Borrow(ID bookId)
 	return true;
 }
 
-bool User::Return(ID bookID)
+bool User::Return(const ID bookID)
 {
 	for (auto i = borrowList.begin(); i != borrowList.end(); i++)
 	{

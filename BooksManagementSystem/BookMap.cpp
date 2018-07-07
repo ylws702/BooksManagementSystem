@@ -1,16 +1,6 @@
 #include "stdafx.h"
 #include "BookMap.h"
 
-
-BookMap::BookMap()
-{
-}
-
-
-BookMap::~BookMap()
-{
-}
-
 bool BookMap::Add(const Book & book)
 {
 	//图书已在列表中
