@@ -153,9 +153,11 @@
     <ClInclude Include="BookMap.h" />
     <ClInclude Include="Date.h" />
     <ClInclude Include="Root.h" />
+    <ClInclude Include="ShowHelper.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="User.h" />
+    <ClInclude Include="UserHelper.h" />
     <ClInclude Include="UserMap.h" />
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +168,7 @@
     <ClCompile Include="BooksManagementSystem.cpp" />
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="Root.cpp" />
+    <ClCompile Include="ShowHelper.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -173,6 +176,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="User.cpp" />
+    <ClCompile Include="UserHelper.cpp" />
     <ClCompile Include="UserMap.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

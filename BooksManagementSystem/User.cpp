@@ -74,7 +74,7 @@ void User::SetBalance(const double b)
 
 User User::operator=(const User & user)
 {
-	if (this== &user)
+	if (this == &user)
 	{
 		return *this;
 	}
@@ -97,14 +97,14 @@ bool User::Borrow(const ID bookId)
 	}
 	for (auto pair : borrowList)
 	{
-		if (pair.first== bookId)
+		if (pair.first == bookId)
 		{
 			return false;
 		}
 	}
-	pair<ID, Date> p(bookId, Date::Now() + borrowdays);
+	pair<ID, Date> p(bookId, Date::Now());
 	borrowList.push_back(p);
-	if (borrowList.size()>maxBooks)
+	if (borrowList.size() > maxBooks)
 	{
 		isEnabled = false;
 	}
@@ -115,7 +115,7 @@ bool User::Return(const ID bookID)
 {
 	for (auto i = borrowList.begin(); i != borrowList.end(); i++)
 	{
-		if (i->first==bookID)
+		if (i->first == bookID)
 		{
 			borrowList.erase(i);
 			return true;

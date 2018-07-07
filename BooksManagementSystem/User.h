@@ -6,6 +6,7 @@ typedef long long unsigned ID;
 class User
 {
 	friend class UserMap;
+	friend class UserHelper;
 public:
 	enum UserType
 	{

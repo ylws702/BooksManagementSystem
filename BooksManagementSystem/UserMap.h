@@ -1,14 +1,17 @@
 #pragma once
 #include <map>
 #include <fstream>
+#include <cstdlib>
 #include "User.h"
 class UserMap
 {
-public:
+	friend class UserHelper;
+private:
 	UserMap() {}
 	bool Add(const User& user);
 	bool Delete(ID id);
 	bool Find(ID id, User& result)const;
+	bool Find(const char* name, User& result)const;
 	static UserMap ReadMap(const char* path);
 	//参数表:
 	//path:列表要保存的地址
@@ -17,7 +20,6 @@ public:
 	bool WriteMap(const char* path)const;
 	//DEBUG用函数,发布时删除
 	void Print();
-private:
 	map<ID, User> userMap;
 };
 

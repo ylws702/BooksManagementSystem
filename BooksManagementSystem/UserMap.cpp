@@ -35,6 +35,19 @@ bool UserMap::Find(ID id, User & result) const
 	return true;
 }
 
+bool UserMap::Find(const char * name, User & result) const
+{
+	for (auto i = userMap.begin(); i != userMap.end(); i++)
+	{
+		if (0==strcmp(i->second.name,name))
+		{
+			result = i->second;
+			return true;
+		}
+	}
+	return false;
+}
+
 UserMap UserMap::ReadMap(const char * path)
 {
 	UserMap map;
