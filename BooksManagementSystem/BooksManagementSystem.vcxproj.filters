@@ -48,13 +48,16 @@
     <ClInclude Include="UserHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ShowHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AdminHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RootHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Show.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShowHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -92,13 +95,16 @@
     <ClCompile Include="UserHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ShowHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AdminHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RootHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Show.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShowHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

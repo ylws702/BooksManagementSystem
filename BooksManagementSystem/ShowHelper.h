@@ -1,52 +1,34 @@
 #pragma once
-#include <cstdio>
-#include "User.h"
-#include "Book.h"
+#include <vector>
+#include <string>
+#include <iostream>
+using namespace std;
 class ShowHelper
 {
 public:
-	static void ShowUser(const User& user);
-	static void ShowBook(const Book& book);
-	static void Clear();
-	static char GetCh();
+	ShowHelper()=delete;
+	ShowHelper(const string& header="", const string&footer="");
+	enum Alignment
+	{
+		Center,
+		Left
+	};
+	static const int width{ 72 };
+	static const int height{ 20 };
+	static const int marginH{ 4 };
+	static const int marginV{ 2 };
+	static string Header(const string& str, const char fill = '-');
+	static string ToCenter(const string& str, const char margin = '|');
+	static string ToLeft(const string& str, const unsigned int left = 4, const char margin = '|');
+	void Add(const string& str, const Alignment alignment=Left);
+	void SetHeader(const string& header = "", const string&footer = "");
+	void Reset(const string& header = "", const string&footer = "");
+	void Show()const;
+	vector<string> Normalize()const;
+	void Clear();
 private:
-#ifdef __linux
-#include <termios.h>
-	static struct termios old, new;
-	static void initTermios(int echo)
-	{
-		tcgetattr(0, &old); /* grab old terminal i/o settings */
-		new = old; /* make new settings same as old settings */
-		new.c_lflag &= ~ICANON; /* disable buffered i/o */
-		if (echo) {
-			new.c_lflag |= ECHO; /* set echo mode */
-		}
-		else {
-			new.c_lflag &= ~ECHO; /* set no echo mode */
-		}
-		tcsetattr(0, TCSANOW, &new); /* use these new terminal i/o settings now */
-	}
-	/* Restore old terminal i/o settings */
-	static void resetTermios(void)
-	{
-		tcsetattr(0, TCSANOW, &old);
-	}
-	/* Read 1 character - echo defines echo mode */
-	static char getch_(int echo)
-	{
-		char ch;
-		initTermios(echo);
-		ch = getchar();
-		resetTermios();
-		return ch;
-	}
-
-	/* Read 1 character without echo */
-	static char _getch(void)
-	{
-		return getch_(0);
-	}
-#endif // __linux
-
+	vector<pair<string, Alignment>> strs;
+	string header;
+	string footer;
 };
 
