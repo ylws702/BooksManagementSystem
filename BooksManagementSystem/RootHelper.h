@@ -1,6 +1,7 @@
 #pragma once
 #include "AdminMap.h"
 #include "Root.h"
+#include <cstring>
 class RootHelper
 {
 public:

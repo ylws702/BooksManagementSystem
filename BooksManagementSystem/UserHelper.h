@@ -1,5 +1,6 @@
 #pragma once
 #include "UserMap.h"
+#include <cstring>
 class UserHelper
 {
 public:

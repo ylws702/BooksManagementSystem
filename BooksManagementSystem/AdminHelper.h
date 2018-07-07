@@ -2,6 +2,7 @@
 #include "AdminMap.h"
 #include "UserMap.h"
 #include "BookMap.h"
+#include <cstring>
 class AdminHelper
 {
 public:
