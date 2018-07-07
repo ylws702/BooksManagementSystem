@@ -11,7 +11,14 @@ int main()
 {
 	cout << 12412;
 	ShowHelper::Clear();
-	ShowHelper::GetCh();
+	while (true)
+	{
+		cout << (int)ShowHelper::GetCh()<<endl;
+	}
+	if (ShowHelper::GetCh()=='2')
+	{
+		cout << "press 2" << endl;
+	}
     return 0;
 }
 
