@@ -8,7 +8,7 @@ bool BookMap::Add(const Book & book)
 	{
 		return false;
 	}
-	pair<size_t, Book>p(book.id, book);
+	pair<ID, Book>p(book.id, book);
 	bookMap.insert(p);
 	return true;
 }

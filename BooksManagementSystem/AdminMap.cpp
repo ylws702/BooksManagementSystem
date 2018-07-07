@@ -8,7 +8,7 @@ bool AdminMap::Add(const Admin & admin)
 	{
 		return false;
 	}
-	pair<size_t, Admin>p(admin.id, admin);
+	pair<ID, Admin>p(admin.id, admin);
 	adminMap.insert(p);
 	return true;
 }

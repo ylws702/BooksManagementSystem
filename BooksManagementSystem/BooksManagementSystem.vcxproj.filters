@@ -42,6 +42,9 @@
     <ClInclude Include="AdminMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Root.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -69,6 +72,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AdminMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Root.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
