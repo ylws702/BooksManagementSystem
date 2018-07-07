@@ -19,6 +19,6 @@ public:
 	//DEBUG用函数,发布时删除
 	void Print();
 private:
-	map<ID,Book> bookMap;
+	map<ID, Book> bookMap;
 };
 

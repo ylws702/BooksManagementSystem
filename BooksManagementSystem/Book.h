@@ -5,7 +5,7 @@ class Book
 {
 	friend class BookMap;
 public:
-	Book()=delete;
+	Book() = delete;
 	Book(ID id);
 	bool SetTitle(const char* title);
 	bool SetAuthor(const char* author);
@@ -15,7 +15,7 @@ public:
 	bool SetExist(bool exist);
 	~Book();
 private:
-	ID id;
+	ID id{ 0 };
 	char title[32];
 	char author[32];
 	char press[32];

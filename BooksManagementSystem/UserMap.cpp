@@ -2,15 +2,6 @@
 #include "UserMap.h"
 
 
-UserMap::UserMap()
-{
-}
-
-
-UserMap::~UserMap()
-{
-}
-
 bool UserMap::Add(const User & user)
 {
 	//用户已存在
@@ -30,6 +21,17 @@ bool UserMap::Delete(ID id)
 		return false;
 	}
 	userMap.erase(id);
+	return true;
+}
+
+bool UserMap::Find(ID id, User & result) const
+{
+	auto it = userMap.find(id);
+	if (it == userMap.end())
+	{
+		return false;
+	}
+	result = it->second;
 	return true;
 }
 

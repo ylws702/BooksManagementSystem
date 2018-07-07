@@ -18,6 +18,17 @@ User::User(ID id, const char * name, const char * password) :
 	SetPassword(password);
 }
 
+User::User(const User & user) :
+	id(user.id),
+	gender(user.gender),
+	type(user.type),
+	isEnabled(user.isEnabled),
+	borrowList(user.borrowList)
+{
+	SetName(user.name);
+	SetPassword(user.password);
+}
+
 bool User::SetName(const char * str)
 {
 	int i = 0;

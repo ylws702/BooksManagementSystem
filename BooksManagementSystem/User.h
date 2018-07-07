@@ -23,6 +23,7 @@ public:
 	User() = delete;
 	User(ID id);
 	User(ID id, const char *name, const char *password);
+	User(const User& user);
 	~User();
 	bool SetName(const char *name);
 	void SetGender(Gender gender);
@@ -31,7 +32,7 @@ public:
 	bool Borrow(ID bookID);
 	bool Return(ID bookID);
 private:
-	ID id;
+	ID id{ 0 };
 	//更改name长度需要同时修改SetName函数
 	char name[16];
 	Gender gender{ unknownGender };

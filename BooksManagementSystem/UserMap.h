@@ -5,10 +5,10 @@
 class UserMap
 {
 public:
-	UserMap();
-	~UserMap();
+	UserMap() {}
 	bool Add(const User& user);
 	bool Delete(ID id);
+	bool Find(ID id, User& result)const;
 	static UserMap ReadMap(const char* path);
 	//参数表:
 	//path:列表要保存的地址
