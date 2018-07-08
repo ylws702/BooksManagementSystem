@@ -40,6 +40,7 @@ public:
 	const char* GetUserGender(const ID id);
 	const char* GetUserType(const ID id);
 	bool ReportLoss(const ID id);
+	bool UndoReportLoss(const ID id);
 	bool Accept(const ID userID, const ID bookID);
 	bool Save()const;
 	list<ID> FindBookByTitle(const char* title)const;

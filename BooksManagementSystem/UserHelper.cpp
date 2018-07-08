@@ -5,7 +5,11 @@
 bool UserHelper::Login(const ID id, const char * password)
 {
 	auto it = userMap.userMap.find(id);
-	if (userMap.userMap.end()== it)
+	if (userMap.userMap.end() == it)
+	{
+		return Loggedin = false;
+	}
+	if (!it->second.isEnabled)
 	{
 		return Loggedin = false;
 	}
@@ -53,14 +57,14 @@ const char * UserHelper::GetUserName() const
 	return user.name;
 }
 
-bool UserHelper::Borrow(const ID bookID) 
+bool UserHelper::Borrow(const ID bookID)
 {
 	if (!Loggedin)
 	{
 		return false;
 	}
 	auto it = bookMap.bookMap.find(bookID);
-	if ( bookMap.bookMap.end()==it)
+	if (bookMap.bookMap.end() == it)
 	{
 		return false;
 	}
@@ -162,7 +166,7 @@ bool UserHelper::GetBookExist(const ID id) const
 	return bookMap.bookMap.find(id)->second.exist;
 }
 
- list<pair<ID, Date>> UserHelper::GetBorrowList()const
+list<pair<ID, Date>> UserHelper::GetBorrowList()const
 {
 	if (!Loggedin)
 	{
@@ -188,7 +192,7 @@ list<ID> UserHelper::FindBookByTitle(const char * str) const
 	{
 		title = p.second.title;
 		start = 0;
-		while (start<32 && title[start] != '\0')
+		while (start < 32 && title[start] != '\0')
 		{
 			for (int i = 0; i < 32; i++)
 			{

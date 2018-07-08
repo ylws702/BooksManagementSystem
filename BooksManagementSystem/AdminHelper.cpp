@@ -353,7 +353,25 @@ bool AdminHelper::ReportLoss(const ID id)
 	{
 		return false;
 	}
+	if (userMap.userMap.find(id)!= userMap.userMap.end())
+	{
+		return false;
+	}
 	userMap.userMap.find(id)->second.isEnabled = false;
+	return true;
+}
+
+bool AdminHelper::UndoReportLoss(const ID id)
+{
+	if (!Loggedin)
+	{
+		return false;
+	}
+	if (userMap.userMap.find(id) != userMap.userMap.end())
+	{
+		return false;
+	}
+	userMap.userMap.find(id)->second.isEnabled = true;
 	return true;
 }
 
