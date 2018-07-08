@@ -37,10 +37,7 @@ void Show::MainMenu()
 		helper.Add("(2)  图书管理员");
 		helper.Add("(3)  系统管理员");
 		helper.Add("(0)  退 出");
-		for (auto str : helper.Normalize())
-		{
-			cout << str << endl;
-		}
+		helper.Show();
 		switch (GetCh())
 		{
 		case '1':
@@ -708,8 +705,7 @@ void Show::AddUser(AdminHelper & admin)
 	cin >> gender;
 	cout << "输入类型:(1)本科生(2)研究生(3)教师";
 	cin >> type;
-	cout << "输入用户密码:";
-	cin >> password;
+
 	Clear();
 	ShowHelper helper("添加用户", "");
 	helper.Add("正在保存修改...");
