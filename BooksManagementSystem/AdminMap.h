@@ -9,7 +9,8 @@ class AdminMap
 	friend class RootHelper;
 	AdminMap() {}
 	bool Add(const Admin& admin);
-	bool Find(ID id, Admin& result)const;
+	bool Delete(const ID id);
+	bool Find(const ID id, Admin& result)const;
 	bool Find(const char* name, Admin& result)const;
 	static AdminMap ReadMap(const char* path);
 	//²ÎÊý±í:

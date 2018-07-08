@@ -11,14 +11,25 @@
 class Show
 {
 public:
-	static void ShowUser(const User& user);
-	static void ShowBook(const Book& book);
 	static void Clear();
 	static char GetCh();
 	static void MainMenu();
 	static void UserMenu();
 	static void AdminMenu();
+	static void AddBook(AdminHelper& admin);
+	static void RemoveBook(AdminHelper& admin);
+	static void ModifyBook(AdminHelper& admin);
+	static void FindBook(AdminHelper& admin);
+	static void AddUser(AdminHelper& admin);
+	static void RemoveUser(AdminHelper& admin);
+	static void ReportLoss(AdminHelper& admin);
+	static void UndoReportLoss(AdminHelper& admin);
+	static void ChangeAdminPassword(AdminHelper& admin);
 	static void RootMenu();
+	static void AddAdmin(RootHelper& root);
+	static void RemoveAdmin(RootHelper& root);
+	static void FindAdmin(RootHelper& root);
+	static void ChangeRootPassword(RootHelper& root);
 //private:
 	static const int width{ 72 };
 	static const int height{ 20 };

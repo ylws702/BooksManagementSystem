@@ -1,10 +1,17 @@
 #include "stdafx.h"
 #include "Admin.h"
 
-Admin::Admin(ID id):id(id)
+Admin::Admin(const ID id):id(id)
 {
 	SetName("Œﬁ–≈œ¢");
 	SetPassword("123456");
+}
+
+Admin::Admin(const ID id, const char * name, const char * password):
+	id(id)
+{
+	SetName(name);
+	SetPassword(password);
 }
 
 bool Admin::SetName(const char * str)

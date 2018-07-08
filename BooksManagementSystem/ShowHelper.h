@@ -6,8 +6,8 @@ using namespace std;
 class ShowHelper
 {
 public:
-	ShowHelper()=delete;
-	ShowHelper(const string& header="", const string&footer="");
+	ShowHelper() {}
+	ShowHelper(const string& header = "", const string&footer = "");
 	enum Alignment
 	{
 		Center,
@@ -20,7 +20,7 @@ public:
 	static string Header(const string& str, const char fill = '-');
 	static string ToCenter(const string& str, const char margin = '|');
 	static string ToLeft(const string& str, const unsigned int left = 4, const char margin = '|');
-	void Add(const string& str, const Alignment alignment=Left);
+	void Add(const string& str = "", const Alignment alignment = Left);
 	void SetHeader(const string& header = "", const string&footer = "");
 	void Reset(const string& header = "", const string&footer = "");
 	void Show()const;

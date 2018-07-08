@@ -13,6 +13,22 @@ Book::Book(ID id):
 }
 
 
+Book::Book(
+	const ID id,
+	const char * title,
+	const char * author, 
+	const char * press,
+	const char * date,
+	const char * type):
+	id(id),exist(true)
+{
+	SetTitle(title);
+	SetAuthor(author);
+	SetPress(press);
+	SetDate(date);
+	SetType(type);
+}
+
 bool Book::SetTitle(const char * str)
 {
 	int i = 0;

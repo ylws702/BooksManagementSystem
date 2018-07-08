@@ -10,6 +10,10 @@ public:
 	bool Logout();
 	bool TestPassword(const char* password);
 	bool ChangePassword(const char* oldpw, const char* newpw);
+	ID AddAdmin(const char * name, const char * password);
+	bool RemoveAdmin(const ID id);
+	const char * GetAdminName(const ID id);
+	bool Save()const;
 private:
 	const char*adminMapPath{ "admin" };
 	const char*rootPath{ "root" };

@@ -2,14 +2,6 @@
 #include "Show.h"
 
 
-void Show::ShowUser(const User & user)
-{
-}
-
-void Show::ShowBook(const Book & book)
-{
-}
-
 #ifdef __linux
 #define CLEAR "clear"
 #endif // !__linux
@@ -137,50 +129,84 @@ void Show::UserMenu()
 
 void Show::AdminMenu()
 {
-	Clear();
-	UserHelper user;
-	char username[16], password[32];
+	AdminHelper admin;
+	char name[16], password[32];
 	ShowHelper helper("", "");
 	while (true)
 	{
-		Clear();
 		cout << "用户名:";
-		cin >> username;
+		cin >> name;
 		cout << "密码:";
 		cin >> password;
-		if (!user.Login(username, password))
+		if (admin.Login(name, password))
 		{
-			Clear();
-			helper.Reset("欢迎读者使用图书管理系统", "按任意键重试!");
-			helper.Add("用户名或密码错误!", ShowHelper::Center);
-			helper.Show();
-			GetCh();
+			break;
+		}
+		Clear();
+		helper.Reset("欢迎使用图书管理系统", "按(q)返回主菜单,其余键重试!");
+		helper.Add("用户名或密码错误!", ShowHelper::Center);
+		helper.Show();
+		switch (GetCh())
+		{
+		case 'q':
+			return;
+		default:
+			break;
 		}
 	}
+	Clear();
+	helper.Reset((string)name + ",欢迎使用图书管理系统", "按任意键继续");
+	helper.Add("登录成功", ShowHelper::Center);
+	helper.Show();
+	GetCh();
 	while (true)
 	{
 		Clear();
-		helper.Reset("欢迎读者使用图书管理系统", "请选择数字键选择相应的服务");
-		helper.Add("(1)  查询书籍信息");
-		helper.Add("(2)  查询借阅信息");
-		helper.Add("(3)  修改登录密码");
+		helper.Reset("图书管理员:" + (string)name, "请选择数字键选择相应的服务");
+		helper.Add("(1)  新增书籍");
+		helper.Add("(2)  删除书籍");
+		helper.Add("(3)  修改书籍信息");
+		helper.Add("(4)  查询图书");
+		helper.Add("(5)  添加读者用户");
+		helper.Add("(6)  删除读者用户");
+		helper.Add("(7)  借书证挂失");
+		helper.Add("(8)  借书证解除挂失");
+		helper.Add("(9)  更改密码");
 		helper.Add("(0)  退 出");
 		helper.Show();
 		switch (GetCh())
 		{
 		case '1':
-			UserMenu();
+			AddBook(admin);
 			break;
 		case '2':
-			//Search();
+			RemoveBook(admin);
 			break;
 		case '3':
-			//DeleteBook();
+			ModifyBook(admin);
+			break;
+		case '4':
+			FindBook(admin);
+			break;
+		case '5':
+			AddUser(admin);
+			break;
+		case '6':
+			RemoveUser(admin);
+			break;
+		case '7':
+			ReportLoss(admin);
+			break;
+		case '8':
+			UndoReportLoss(admin);
+			break;
+		case '9':
+			ChangeAdminPassword(admin);
 			break;
 		case '0':
 			Clear();
 			helper.Clear();
-			helper.SetHeader("图书管理系统", "按任意键退出");
+			helper.SetHeader("图书管理系统", "按任意键返回主菜单");
 			helper.Add("谢 谢 使 用 !", ShowHelper::Center);
 			for (auto str : helper.Normalize())
 			{
@@ -194,15 +220,469 @@ void Show::AdminMenu()
 	}
 }
 
+void Show::AddBook(AdminHelper & admin)
+{
+	ID id;
+	char title[32];
+	char author[32];
+	char press[32];
+	char date[32];
+	char type[32];
+	cout << "输入编号:";
+	cin >> id;
+	cout << "输入标题:";
+	cin >> title;
+	cout << "输入作者:";
+	cin >> author;
+	cout << "输入出版社:";
+	cin >> press;
+	cout << "输入出版日期:";
+	cin >> date;
+	cout << "输入类型:";
+	cin >> type;
+	admin.AddBook(id,title, author, press, date, type);
+	Clear();
+	ShowHelper helper("添加书籍", "");
+	helper.Add("正在保存修改...");
+	helper.Show();
+	if (!admin.Save())
+	{
+		Clear();
+		helper.Reset("添加书籍", "按任意键返回系统管理员菜单");
+		helper.Add("保存失败!");
+		helper.Show();
+		GetCh();
+		return;
+	}
+	Clear();
+	helper.Reset("添加书籍", "按任意键返回系统管理员菜单");
+	helper.Add("成功保存修改!");
+	helper.Add("");
+	helper.Add("已成功添加图书:《"+string(title)+"》");
+	helper.Add("编号:"+to_string(id));
+	helper.Add("作者:"+string(author));
+	helper.Add("出版社:"+string(press));
+	helper.Add("出版日期:" + string(date));
+	helper.Add("类型:" + string(type));
+	helper.Show();
+	GetCh();
+}
+
+void Show::RemoveBook(AdminHelper & admin)
+{
+	ID id;
+	cout << "输入书籍编号:";
+	cin >> id;
+	string title = admin.GetBookTitle(id);
+	string author = admin.GetBookAuthor(id);
+	string press = admin.GetBookPress(id);
+	string date = admin.GetBookDate(id);
+	string type = admin.GetBookType(id);
+	ShowHelper helper("", "");
+	if (nullptr == admin.GetBookTitle(id))
+	{
+		Clear();
+		helper.Reset("删除书籍", "按任意键返回图书管理员菜单");
+		helper.Add("没有找到该书籍!");
+		helper.Show();
+		GetCh();
+		return;
+	}
+	Clear();
+	helper.Reset("删除书籍", "(y)是------(n)否");
+	helper.Add("编号:"+to_string(id));
+	helper.Add("");
+	helper.Add("标题:"+string(title));
+	helper.Add("作者:" + string(author));
+	helper.Add("出版社:" + string(press));
+	helper.Add("出版日期:" + string(date));
+	helper.Add("类型:"+string(type));
+	helper.Show();
+	while (true)
+	{
+		switch (GetCh())
+		{
+		case 'y':Clear();
+			helper.Reset("删除书籍", "");
+			helper.Add("正在保存修改...");
+			helper.Show();
+			if (!(admin.RemoveBook(id)&&admin.Save()))
+			{
+				Clear();
+				helper.Reset("删除书籍", "按任意键返回系统管理员菜单");
+				helper.Add("删除失败!");
+				helper.Show();
+				GetCh();
+			}
+			Clear();
+			helper.Reset("删除书籍", "按任意键返回系统管理员菜单");
+			helper.Add("成功保存修改!");
+			helper.Add("");
+			helper.Add("已成功删除《"+title+"》");
+			helper.Add("");
+			helper.Add("编号:"+ to_string(id));
+			helper.Add("作者:" + author);
+			helper.Add("出版社:" + press);
+			helper.Add("出版日期:" + date);
+			helper.Add("类型:" + type);
+			helper.Show();
+			GetCh();
+			return;
+		case 'n':
+			Clear();
+			helper.Reset("删除书籍", "按任意键返回系统管理员菜单");
+			helper.Add("已取消操作!");
+			helper.Show();
+			GetCh();
+			return;
+		default:
+			break;
+		}
+	}
+}
+
+void Show::ModifyBook(AdminHelper & admin)
+{
+	ID id;
+	cout << "输入书籍编号:";
+	cin >> id;
+	char str[32];
+	string title;
+	string author;
+	string press;
+	string date;
+	string type;
+	ShowHelper helper("", "");
+	if (nullptr == admin.GetBookTitle(id))
+	{
+		Clear();
+		helper.Reset("修改书籍", "按任意键返回图书管理员菜单");
+		helper.Add("没有找到该书籍!");
+		helper.Show();
+		GetCh();
+		return;
+	}
+	while (true)
+	{
+		title = admin.GetBookTitle(id);
+		author = admin.GetBookAuthor(id);
+		press = admin.GetBookPress(id);
+		date = admin.GetBookDate(id);
+		type = admin.GetBookType(id);
+		Clear();
+		helper.Reset("修改书籍", "请选择数字键选择修改的内容,按(q)返回");
+		helper.Add("编号:" + to_string(id));
+		helper.Add("");
+		helper.Add("选择修改的内容:");
+		helper.Add("(1)  标题:" + string(title));
+		helper.Add("(2)  作者:" + string(author));
+		helper.Add("(3)  出版社:" + string(press));
+		helper.Add("(4)  出版日期:" + string(date));
+		helper.Add("(5)  类型:" + string(type));
+		helper.Show();
+		switch (GetCh())
+		{
+		case '1':
+			cout << "输入新标题:";
+			cin >> str;
+			if (!admin.SetBookTitle(id, str) && admin.Save())
+			{
+				Clear();
+				helper.Reset("修改书籍", "按任意键继续");
+				helper.Add("修改失败！", ShowHelper::Center);
+				GetCh();
+				continue;
+			}
+			Clear();
+			helper.Reset("修改书籍", "按任意键继续");
+			helper.Add("修改成功！", ShowHelper::Center);
+			helper.Show();
+			GetCh();
+			break;
+		case '2':
+			cout << "输入新作者:";
+			cin >> str;
+			if (!admin.SetBookAuthor(id, str) && admin.Save())
+			{
+				Clear();
+				helper.Reset("修改书籍", "按任意键继续");
+				helper.Add("修改作者失败！", ShowHelper::Center);
+				GetCh();
+				continue;
+			}
+			Clear();
+			helper.Reset("修改书籍", "按任意键继续");
+			helper.Add("修改作者成功！", ShowHelper::Center);
+			helper.Show();
+			GetCh();
+			break;
+		case '3':
+			cout << "输入新出版社:";
+			cin >> str;
+			if (!admin.SetBookPress(id, str) && admin.Save())
+			{
+				Clear();
+				helper.Reset("修改书籍", "按任意键继续");
+				helper.Add("修改出版社失败！", ShowHelper::Center);
+				GetCh();
+				continue;
+			}
+			Clear();
+			helper.Reset("修改书籍", "按任意键继续");
+			helper.Add("修改出版社成功！", ShowHelper::Center);
+			helper.Show();
+			GetCh();
+			break;
+		case '4':
+			cout << "输入新出版日期:";
+			cin >> str;
+			if (!admin.SetBookDate(id, str) && admin.Save())
+			{
+				Clear();
+				helper.Reset("修改书籍", "按任意键继续");
+				helper.Add("修改出版社失败！", ShowHelper::Center);
+				GetCh();
+				continue;
+			}
+			Clear();
+			helper.Reset("修改书籍", "按任意键继续");
+			helper.Add("修改出版社成功！", ShowHelper::Center);
+			helper.Show();
+			GetCh();
+			break;
+		case '5':
+			cout << "输入新类型:";
+			cin >> str;
+			if (!admin.SetBookType(id, str) && admin.Save())
+			{
+				Clear();
+				helper.Reset("修改书籍", "按任意键继续");
+				helper.Add("修改类型失败！", ShowHelper::Center);
+				GetCh();
+				continue;
+			}
+			Clear();
+			helper.Reset("修改书籍", "按任意键继续");
+			helper.Add("修改类型成功！", ShowHelper::Center);
+			helper.Show();
+			GetCh();
+			break;
+		case 'q':
+			return;
+		default:
+			break;
+		}
+	}
+}
+
+void Show::FindBook(AdminHelper & admin)
+{
+	ID id;
+	cout << "输入图书编号:";
+	cin >> id;
+	const char* title = admin.GetBookTitle(id);
+	const char* author = admin.GetBookAuthor(id);
+	const char* press = admin.GetBookPress(id);
+	const char* date = admin.GetBookDate(id);
+	const char* type = admin.GetBookType(id);
+	ShowHelper helper("", "");
+	if (nullptr == title)
+	{
+		Clear();
+		helper.Reset("查找书籍", "按任意键返回图书管理员菜单");
+		helper.Add("没有找到该编号的书籍!");
+		helper.Show();
+		GetCh();
+		return;
+	}
+	Clear();
+	helper.Reset("查找书籍", "按任意键返回图书管理员菜单");
+	helper.Add("查找结果");
+	helper.Add("ID:"+ to_string(id));
+	helper.Add();
+	helper.Add("标题:" + string(title));
+	helper.Add("作者:" + string(author));
+	helper.Add("出版社:" + string(press));
+	helper.Add("出版日期:" + string(date));
+	helper.Add("类型:" + string(type));
+	helper.Show();
+	GetCh();
+}
+
+void Show::AddUser(AdminHelper & admin)
+{
+	ID id;
+	char name[16];
+	char password[32]; 
+	int gender;
+	int type;
+	cout << "输入用户编号:";
+	cin >> id;
+	cout << "输入用户名:";
+	cin >> name;
+	cout << "输入用户密码:";
+	cin >> password;
+	cout << "输入性别:(1)男(2)女:";
+	cin >> gender;
+	cout << "输入类型:(1)本科生(2)研究生(3)教师";
+	cin >> type;
+	cout << "输入用户密码:";
+	cin >> password;
+	Clear();
+	ShowHelper helper("添加用户", "");
+	helper.Add("正在保存修改...");
+	helper.Show();
+	if (!(admin.AddUser(id, name, password, gender, type) && admin.Save()))
+	{
+		Clear();
+		helper.Reset("添加管理员", "按任意键返回图书管理员菜单");
+		helper.Add("保存失败!");
+		helper.Show();
+		GetCh();
+		return;
+	}
+	Clear();
+	helper.Reset("添加管理员", "按任意键返回图书管理员菜单");
+	helper.Add("成功保存修改!");
+	helper.Add();
+	helper.Add("已成功添加用户:"+ string(name));
+	helper.Add();
+	helper.Add("编号:" + to_string(id));
+	helper.Add("性别:" + string(admin.GetUserGender(id)));
+	helper.Add("类型:" + string(admin.GetUserType(id)));
+	helper.Show();
+	GetCh();
+}
+
+void Show::RemoveUser(AdminHelper & admin)
+{
+	ID id;
+	cout << "输入用户ID:";
+	cin >> id;
+	const char* name = admin.GetUserName(id);
+	ShowHelper helper("", "");
+	if (nullptr == name)
+	{
+		Clear();
+		helper.Reset("删除用户", "按任意键返回图书管理员菜单");
+		helper.Add("没有找到该用户!");
+		helper.Show();
+		GetCh();
+		return;
+	}
+	Clear();
+	helper.Reset("删除用户", "(y)是------(n)否");
+	helper.Add("用户名:" + string(name));
+	helper.Add();
+	helper.Add("编号:" + to_string(id));
+	helper.Add("性别:" + string(admin.GetUserGender(id)));
+	helper.Add("类型:" + string(admin.GetUserType(id)));
+	helper.Show();
+	string namecopy = name;
+	while (true)
+	{
+		switch (GetCh())
+		{
+		case 'y':Clear();
+			helper.Reset("删除用户", "");
+			helper.Add("正在保存修改...");
+			helper.Show();
+			if (!(admin.RemoveUser(id) && admin.Save()))
+			{
+				Clear();
+				helper.Reset("删除用户", "按任意键返回图书管理员菜单");
+				helper.Add("删除失败!");
+				helper.Show();
+				GetCh();
+			}
+			Clear();
+			helper.Reset("删除用户", "按任意键返回图书管理员菜单");
+			helper.Add("成功保存修改!");
+			helper.Add("");
+			helper.Add("已成功删除用户:");
+			helper.Add(namecopy);
+			helper.Add("");
+			helper.Add("ID:");
+			helper.Add(to_string(id));
+			helper.Show();
+			GetCh();
+			return;
+		case 'n':
+			Clear();
+			helper.Reset("删除用户", "按任意键返回图书管理员菜单");
+			helper.Add("已取消操作!");
+			helper.Show();
+			GetCh();
+			return;
+		default:
+			break;
+		}
+	}
+}
+
+void Show::ReportLoss(AdminHelper & admin)
+{
+}
+
+void Show::UndoReportLoss(AdminHelper & admin)
+{
+}
+
+void Show::ChangeAdminPassword(AdminHelper & admin)
+{
+	char oldpw[32];
+	char newpw[32];
+	ShowHelper helper("", "");
+	while (true)
+	{
+		cout << "输入原密码:";
+		cin >> oldpw;
+		if (admin.TestPassword(oldpw))
+		{
+			break;
+		}
+		Clear();
+		helper.Reset("更改密码", "按(q)返回,其余键重试");
+		helper.Add("密码错误!");
+		helper.Show();
+		switch (GetCh())
+		{
+		case 'q':
+			return;
+		default:
+			break;
+		}
+	}
+	cout << "输入新密码:";
+	cin >> newpw;
+	Clear();
+	helper.Reset("更改密码", "");
+	helper.Add("正在保存...");
+	helper.Show();
+	if (!(admin.ChangePassword(oldpw, newpw) && admin.Save()))
+	{
+		Clear();
+		helper.Reset("更改密码", "按任意键返回图书管理员菜单");
+		helper.Add("保存失败!");
+		helper.Show();
+		GetCh();
+	}
+	Clear();
+	helper.Reset("更改密码", "按任意键返回图书管理员菜单");
+	helper.Add("保存成功!");
+	helper.Add("");
+	helper.Add("已成功更改密码!");
+	helper.Show();
+	GetCh();
+}
+
 void Show::RootMenu()
 {
-	Clear();
 	RootHelper root;
 	char password[32];
 	ShowHelper helper("", "");
 	while (true)
 	{
-		Clear();
 		cout << "密码:";
 		cin >> password;
 		if (root.Login(password))
@@ -222,18 +702,22 @@ void Show::RootMenu()
 		helper.Add("(1)  添加图书管理员");
 		helper.Add("(2)  删除图书管理员");
 		helper.Add("(3)  查找图书管理员");
+		helper.Add("(4)  更改密码");
 		helper.Add("(0)  注 销");
 		helper.Show();
 		switch (GetCh())
 		{
 		case '1':
-			UserMenu();
+			AddAdmin(root);
 			break;
 		case '2':
-			//Search();
+			RemoveAdmin(root);
 			break;
 		case '3':
-			//DeleteBook();
+			FindAdmin(root);
+			break;
+		case '4':
+			ChangeRootPassword(root);
 			break;
 		case '0':
 			Clear();
@@ -250,5 +734,171 @@ void Show::RootMenu()
 			break;
 		}
 	}
+}
+
+void Show::AddAdmin(RootHelper&root)
+{
+	char name[16];
+	char password[32];
+	cout << "输入用户名:";
+	cin >> name;
+	cout << "输入密码:";
+	cin >> password;
+	ID id = root.AddAdmin(name, password);
+	Clear();
+	ShowHelper helper("添加管理员", "");
+	helper.Add("正在保存修改...");
+	helper.Show();
+	if (!root.Save())
+	{
+		Clear();
+		helper.Reset("添加管理员", "按任意键返回系统管理员菜单");
+		helper.Add("保存失败!");
+		helper.Show();
+		GetCh();
+		return;
+	}
+	Clear();
+	helper.Reset("添加管理员", "按任意键返回系统管理员菜单");
+	helper.Add("成功保存修改!");
+	helper.Add("");
+	helper.Add("已成功添加管理员:");
+	helper.Add(name);
+	helper.Add("");
+	helper.Add("ID:");
+	helper.Add(to_string(id));
+	helper.Show();
+	GetCh();
+}
+
+void Show::RemoveAdmin(RootHelper & root)
+{
+	ID id;
+	cout << "输入管理员ID:";
+	cin >> id;
+	const char* name = root.GetAdminName(id);
+	ShowHelper helper("", "");
+	if (nullptr == name)
+	{
+		Clear();
+		helper.Reset("删除管理员", "按任意键返回系统管理员菜单");
+		helper.Add("没有找到该管理员!");
+		helper.Show();
+		GetCh();
+		return;
+	}
+	Clear();
+	helper.Reset("删除管理员", "(y)是------(n)否");
+	helper.Add("ID:");
+	helper.Add(to_string(id));
+	helper.Add("");
+	helper.Add("用户名:");
+	helper.Add(name);
+	helper.Show();
+	string namecopy = name;
+	while (true)
+	{
+		switch (GetCh())
+		{
+		case 'y':Clear();
+			helper.Reset("删除管理员", "");
+			helper.Add("正在保存修改...");
+			helper.Show();
+			if (!(root.RemoveAdmin(id) && root.Save()))
+			{
+				Clear();
+				helper.Reset("删除管理员", "按任意键返回系统管理员菜单");
+				helper.Add("删除失败!");
+				helper.Show();
+				GetCh();
+			}
+			Clear();
+			helper.Reset("删除管理员", "按任意键返回系统管理员菜单");
+			helper.Add("成功保存修改!");
+			helper.Add("");
+			helper.Add("已成功删除管理员:");
+			helper.Add(namecopy);
+			helper.Add("");
+			helper.Add("ID:");
+			helper.Add(to_string(id));
+			helper.Show();
+			GetCh();
+			return;
+		case 'n':
+			Clear();
+			helper.Reset("删除管理员", "按任意键返回系统管理员菜单");
+			helper.Add("已取消操作!");
+			helper.Show();
+			GetCh();
+			return;
+		default:
+			break;
+		}
+	}
+}
+
+void Show::FindAdmin(RootHelper & root)
+{
+	ID id;
+	cout << "输入管理员ID:";
+	cin >> id;
+	const char* name = root.GetAdminName(id);
+	ShowHelper helper("", "");
+	if (nullptr == name)
+	{
+		Clear();
+		helper.Reset("删除管理员", "按任意键返回系统管理员菜单");
+		helper.Add("没有找到该管理员!");
+		helper.Show();
+		GetCh();
+		return;
+	}
+	Clear();
+	helper.Reset("查找管理员", "按任意键返回系统管理员菜单");
+	helper.Add("查找结果");
+	helper.Add("ID:");
+	helper.Add(to_string(id));
+	helper.Add("");
+	helper.Add("用户名:");
+	helper.Add(name);
+	helper.Show();
+	GetCh();
+}
+
+void Show::ChangeRootPassword(RootHelper & root)
+{
+	char oldpw[32];
+	char newpw[32];
+	while (true)
+	{
+		cout << "输入原密码:";
+		cin >> oldpw;
+		if (root.TestPassword(oldpw))
+		{
+			break;
+		}
+		cout << "密码错误!" << endl;
+	}
+	cout << "输入新密码:";
+	cin >> newpw;
+	Clear();
+	ShowHelper helper("更改密码", "");
+	helper.Add("正在保存...");
+	helper.Show();
+	if (!(root.ChangePassword(oldpw, newpw) && root.Save()))
+	{
+		Clear();
+		helper.Reset("更改密码", "按任意键返回系统管理员菜单");
+		helper.Add("保存失败!");
+		helper.Show();
+		GetCh();
+	}
+	Clear();
+	helper.Reset("更改密码", "按任意键返回系统管理员菜单");
+	helper.Add("保存成功!");
+	helper.Add("");
+	helper.Add("已成功更改密码!");
+	helper.Show();
+	GetCh();
 }
 

@@ -14,7 +14,17 @@ bool AdminMap::Add(const Admin & admin)
 	return true;
 }
 
-bool AdminMap::Find(ID id, Admin & result) const
+bool AdminMap::Delete(const ID id)
+{
+	if (adminMap.find(id) == adminMap.end())
+	{
+		return false;
+	}
+	adminMap.erase(id);
+	return true;
+}
+
+bool AdminMap::Find(const ID id, Admin & result) const
 {
 	auto it = adminMap.find(id);
 	if (it == adminMap.end())

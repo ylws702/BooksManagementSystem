@@ -4,9 +4,11 @@ class Admin
 {
 	friend class AdminMap;
 	friend class AdminHelper;
+	friend class RootHelper;
 public:
 	Admin() = delete;
-	Admin(ID id);
+	Admin(const ID id);
+	Admin(const ID id, const char *name, const char *password);
 private:
 	bool SetName(const char *name);
 	bool SetPassword(const char *password);
