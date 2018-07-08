@@ -2,13 +2,23 @@
 #include "AdminHelper.h"
 
 
-bool AdminHelper::Login(const char * name, const char * password)
+bool AdminHelper::Login(const ID id,const char * name, const char * password)
 {
-	if (!adminMap.Find(name, admin))
+	auto it = adminMap.adminMap.find(id);
+	if (adminMap.adminMap.end()==it)
 	{
 		return Loggedin = false;
 	}
-	return Loggedin = strcmp(admin.password, password) == 0;
+	if (strcmp(it->second.name, name) != 0)
+	{
+		return Loggedin = false;
+	}
+	if (strcmp(it->second.password, password) != 0)
+	{
+		return Loggedin = false;
+	}
+	admin = it->second;
+	return Loggedin = true;
 }
 
 bool AdminHelper::Logout()
@@ -264,7 +274,7 @@ const char * AdminHelper::GetUserName(const ID id)
 {
 	if (!Loggedin)
 	{
-		return false;
+		return nullptr;
 	}
 	if (userMap.userMap.find(id) == userMap.userMap.end())
 	{
@@ -277,7 +287,7 @@ const char * AdminHelper::GetUserGender(const ID id)
 {
 	if (!Loggedin)
 	{
-		return false;
+		return nullptr;
 	}
 	if (userMap.userMap.find(id) == userMap.userMap.end())
 	{
@@ -301,7 +311,7 @@ const char * AdminHelper::GetUserType(const ID id)
 {
 	if (!Loggedin)
 	{
-		return false;
+		return nullptr;
 	}
 	if (userMap.userMap.find(id) == userMap.userMap.end())
 	{
@@ -341,6 +351,7 @@ bool AdminHelper::Accept(const ID userID, const ID bookID)
 		return false;
 	}
 	userMap.userMap.find(userID)->second.Return(bookID);
+	bookMap.bookMap.find(bookID)->second.exist=true;
 	return true;
 }
 

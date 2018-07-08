@@ -12,10 +12,19 @@ class Show
 {
 public:
 	static void Clear();
+	enum Key
+	{
+		Up=40,
+		Down=48,
+		Left=43,
+		Right=45
+	};
 	static char GetCh();
 	static void MainMenu();
 	static void UserMenu();
 	static void FindBook(UserHelper& user);
+	static void BorrowBook(UserHelper& user);
+	static void GetBorrowInfo(UserHelper& user);
 	static void AdminMenu();
 	static void AddBook(AdminHelper& admin);
 	static void RemoveBook(AdminHelper& admin);
@@ -25,6 +34,7 @@ public:
 	static void RemoveUser(AdminHelper& admin);
 	static void ReportLoss(AdminHelper& admin);
 	static void UndoReportLoss(AdminHelper& admin);
+	static void ReturnBook(AdminHelper& admin);
 	static void ChangeAdminPassword(AdminHelper& admin);
 	static void RootMenu();
 	static void AddAdmin(RootHelper& root);
@@ -32,10 +42,6 @@ public:
 	static void FindAdmin(RootHelper& root);
 	static void ChangeRootPassword(RootHelper& root);
 //private:
-	static const int width{ 72 };
-	static const int height{ 20 };
-	static const int marginH{ 4 };
-	static const int marginV{ 2 };
 #ifdef __linux
 #include <termios.h>
 	static struct termios old, newer;

@@ -6,15 +6,18 @@ class UserHelper
 {
 public:
 	UserHelper() {}
-	bool Login(const char * name, const char* password);
-	bool TestPassword(const char* password);
+	bool Login(const ID id, const char* password);
+	bool TestPassword(const char* password)const;
 	bool ChangePassword(const char* oldpw, const char* newpw);
-	bool GetBorrow(list<pair<ID, Date>>& result) const;
-	const char* GetBookTitle(const ID id);
-	const char* GetBookAuthor(const ID id);
-	const char* GetBookPress(const ID id);
-	const char* GetBookDate(const ID id);
-	const char* GetBookType(const ID id);
+	const char* GetUserName()const;
+	bool Borrow(const ID bookID);
+	const char* GetBookTitle(const ID id)const;
+	const char* GetBookAuthor(const ID id)const;
+	const char* GetBookPress(const ID id)const;
+	const char* GetBookDate(const ID id)const;
+	const char* GetBookType(const ID id)const;
+	const list<pair<ID, Date>> GetBorrowList()const;
+	bool Save()const;
 private:
 	const char*userMapPath{ "user" };
 	const char*bookMapPath{ "book" };

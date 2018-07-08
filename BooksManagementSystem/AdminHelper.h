@@ -7,7 +7,7 @@ class AdminHelper
 {
 public:
 	AdminHelper() {}
-	bool Login(const char * name, const char* password);
+	bool Login(const ID id,const char * name, const char* password);
 	bool Logout();
 	bool TestPassword(const char* password);
 	bool ChangePassword(const char* oldpw, const char* newpw);
