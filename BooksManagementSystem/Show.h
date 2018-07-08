@@ -26,6 +26,7 @@ public:
 	static void FindBookByTitle(UserHelper& user);
 	static void BorrowBook(UserHelper& user);
 	static void GetBorrowInfo(UserHelper& user);
+	static void ChangeUserPassword(UserHelper& user);
 	static void AdminMenu();
 	static void AddBook(AdminHelper& admin);
 	static void RemoveBook(AdminHelper& admin);

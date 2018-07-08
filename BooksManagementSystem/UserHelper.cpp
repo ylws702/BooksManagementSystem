@@ -44,6 +44,10 @@ bool UserHelper::ChangePassword(const char * oldpw, const char * newpw)
 	{
 		return false;
 	}
+	if (!user.SetPassword(newpw))
+	{
+		return false;
+	}
 	//TODO:LOG
 	return true;
 }

@@ -122,6 +122,7 @@ void Show::UserMenu()
 			GetBorrowInfo(user);
 			break;
 		case '4':
+			ChangeUserPassword(user);
 			break;
 		case '0':
 			Clear();
@@ -382,6 +383,69 @@ void Show::GetBorrowInfo(UserHelper & user)
 			break;
 		}
 	}
+}
+
+void Show::ChangeUserPassword(UserHelper & user)
+{
+	char oldpw[32];
+	char newpw[32];
+	char newpw2[32];
+	ShowHelper helper("", "");
+	while (true)
+	{
+		cout << "输入原密码:";
+		cin >> oldpw;
+		if (user.TestPassword(oldpw))
+		{
+			break;
+		}
+		Clear();
+		helper.Reset("更改密码", "按(q)返回,其余键重试");
+		helper.Add("密码错误!");
+		helper.Show();
+		switch (GetCh())
+		{
+		case 'q':
+			return;
+		default:
+			break;
+		}
+	}
+	while (true)
+	{
+		cout << "输入新密码:";
+		cin >> newpw;
+		cout << "再次输入新密码:";
+		cin >> newpw2;
+		if (strcmp(newpw, newpw2) == 0)
+		{
+			break;
+		}
+		Clear();
+		helper.Reset("更改密码", "按任意键继续");
+		helper.Add("两次输入的密码不匹配!");
+		helper.Show();
+		GetCh();
+	}
+	Clear();
+	helper.Reset("更改密码", "");
+	helper.Add("正在保存...");
+	helper.Show();
+	if (!user.ChangePassword(oldpw, newpw))
+	{
+		Clear();
+		helper.Reset("更改密码", "按任意键返回图书管理员菜单");
+		helper.Add("保存失败!");
+		helper.Show();
+		GetCh();
+	}
+	Clear();
+	helper.Reset("更改密码", "按任意键返回图书管理员菜单");
+	helper.Add("保存成功!");
+	helper.Add("");
+	helper.Add("已成功更改密码!");
+	helper.Show();
+	GetCh();
 }
 
 void Show::AdminMenu()
@@ -767,6 +831,7 @@ void Show::FindBookByID(AdminHelper & admin)
 	const char* press = admin.GetBookPress(id);
 	const char* date = admin.GetBookDate(id);
 	const char* type = admin.GetBookType(id);
+	bool  exist = admin.GetBookExist(id);
 	ShowHelper helper("", "");
 	if (nullptr == title)
 	{
@@ -787,6 +852,15 @@ void Show::FindBookByID(AdminHelper & admin)
 	helper.Add("出版社:" + string(press));
 	helper.Add("出版日期:" + string(date));
 	helper.Add("类型:" + string(type));
+	helper.Add();
+	if (exist)
+	{
+		helper.Add("在馆");
+	}
+	else
+	{
+		helper.Add("不在馆");
+	}
 	helper.Show();
 	GetCh();
 }
@@ -798,7 +872,7 @@ void Show::FindBookByTitle(AdminHelper & admin)
 	cin >> str;
 	ShowHelper helper("", "");
 	auto ids = admin.FindBookByTitle(str);
-	if (ids.size()==0)
+	if (ids.size() == 0)
 	{
 		Clear();
 		helper.Reset("查找书籍", "按任意键返回图书管理员菜单");
@@ -1021,6 +1095,7 @@ void Show::ChangeAdminPassword(AdminHelper & admin)
 {
 	char oldpw[32];
 	char newpw[32];
+	char newpw2[32];
 	ShowHelper helper("", "");
 	while (true)
 	{
@@ -1042,13 +1117,27 @@ void Show::ChangeAdminPassword(AdminHelper & admin)
 			break;
 		}
 	}
-	cout << "输入新密码:";
-	cin >> newpw;
+	while (true)
+	{
+		cout << "输入新密码:";
+		cin >> newpw;
+		cout << "再次输入新密码:";
+		cin >> newpw2;
+		if (strcmp(newpw, newpw2) == 0)
+		{
+			break;
+		}
+		Clear();
+		helper.Reset("更改密码", "按任意键继续");
+		helper.Add("两次输入的密码不匹配!");
+		helper.Show();
+		GetCh();
+	}
 	Clear();
 	helper.Reset("更改密码", "");
 	helper.Add("正在保存...");
 	helper.Show();
-	if (!(admin.ChangePassword(oldpw, newpw) && admin.Save()))
+	if (!admin.ChangePassword(oldpw, newpw))
 	{
 		Clear();
 		helper.Reset("更改密码", "按任意键返回图书管理员菜单");
