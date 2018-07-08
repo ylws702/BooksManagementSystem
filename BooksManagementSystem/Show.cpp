@@ -815,7 +815,7 @@ void Show::ReturnBook(AdminHelper & admin)
 	ID uid,bookID;
 	cout << "输入用户编号:";
 	cin >> uid;
-	cout << "输入用户名:";
+	cout << "输入图书编号:";
 	cin >> bookID;
 	Clear();
 	ShowHelper helper("还书", "");
