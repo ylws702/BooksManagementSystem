@@ -149,13 +149,69 @@ const char * UserHelper::GetBookType(const ID id)const
 	return bookMap.bookMap.find(id)->second.type;
 }
 
-const list<pair<ID, Date>> UserHelper::GetBorrowList()const
+bool UserHelper::GetBookExist(const ID id) const
+{
+	if (!Loggedin)
+	{
+		return false;
+	}
+	if (bookMap.bookMap.find(id) == bookMap.bookMap.end())
+	{
+		return false;
+	}
+	return bookMap.bookMap.find(id)->second.exist;
+}
+
+ list<pair<ID, Date>> UserHelper::GetBorrowList()const
 {
 	if (!Loggedin)
 	{
 		return list<pair<ID, Date>>();
 	}
 	return user.borrowList;
+}
+
+list<ID> UserHelper::FindBookByTitle(const char * str) const
+{
+	list<ID> result;
+	if (!Loggedin)
+	{
+		return list<ID>();
+	}
+	if (nullptr == str || '\0' == *str)
+	{
+		return list<ID>();
+	}
+	char const *title;
+	int start;
+	for (auto p : bookMap.bookMap)
+	{
+		title = p.second.title;
+		start = 0;
+		while (start<32 && title[start] != '\0')
+		{
+			for (int i = 0; i < 32; i++)
+			{
+				if ('\0' == str[i])
+				{
+					result.push_back(p.first);
+					start = 32;
+					break;
+				}
+				if ('\0' == title[start + i])
+				{
+					start = 32;
+					break;
+				}
+				if (title[start + i] != str[i])
+				{
+					break;
+				}
+			}
+			start++;
+		}
+	}
+	return result;
 }
 
 bool UserHelper::Save() const

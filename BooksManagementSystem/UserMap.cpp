@@ -72,6 +72,11 @@ UserMap UserMap::ReadMap(const char * path)
 		{
 			ifs.read((char*)&p, sizeof(pair<ID, Date>));
 			current.borrowList.push_back(p);
+			//防止过大的n爆掉内存
+			if (ifs.eof())
+			{
+				break;
+			}
 		}
 		map.Add(current);
 	}

@@ -16,7 +16,9 @@ public:
 	const char* GetBookPress(const ID id)const;
 	const char* GetBookDate(const ID id)const;
 	const char* GetBookType(const ID id)const;
-	const list<pair<ID, Date>> GetBorrowList()const;
+	bool GetBookExist(const ID id)const;
+	list<pair<ID, Date>> GetBorrowList()const;
+	list<ID> FindBookByTitle(const char* title)const;
 	bool Save()const;
 private:
 	const char*userMapPath{ "user" };
