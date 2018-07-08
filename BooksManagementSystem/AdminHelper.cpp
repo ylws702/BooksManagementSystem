@@ -376,6 +376,17 @@ bool AdminHelper::Save() const
 	return true;
 }
 
+list<ID> AdminHelper::FindBookByName(const char* name) const
+{
+	list<ID> result;
+	if (!Loggedin)
+	{
+		return list<ID>();
+	}
+
+	return list<ID>();
+}
+
 //list<ID> AdminHelper::OverdueBookList()const
 //{
 //	list<ID> result;

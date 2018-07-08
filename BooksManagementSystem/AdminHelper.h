@@ -3,6 +3,7 @@
 #include "UserMap.h"
 #include "BookMap.h"
 #include <cstring>
+#include <list>
 class AdminHelper
 {
 public:
@@ -40,6 +41,7 @@ public:
 	bool ReportLoss(const ID id);
 	bool Accept(const ID userID, const ID bookID);
 	bool Save()const;
+	list<ID> FindBookByName(const char* name)const;
 	//list<ID> OverdueBookList()const;
 private:
 	const char*adminMapPath{ "admin" };
