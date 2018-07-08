@@ -885,9 +885,9 @@ void Show::AddUser(AdminHelper & admin)
 	cin >> name;
 	cout << "输入用户密码:";
 	cin >> password;
-	cout << "输入性别:(1)男(2)女:";
+	cout << "输入性别(1)男(2)女:";
 	cin >> gender;
-	cout << "输入类型:(1)本科生(2)研究生(3)教师";
+	cout << "输入类型(1)本科生(2)研究生(3)教师:";
 	cin >> type;
 
 	Clear();

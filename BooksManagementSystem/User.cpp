@@ -13,7 +13,9 @@ User::User(const ID id,
 	const char * password,
 	const Gender gender,
 	const UserType type) :
-	id(id)
+	id(id),
+	gender(gender),
+	type(type)
 {
 	SetName(name);
 	SetPassword(password);
