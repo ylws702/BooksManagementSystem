@@ -1090,10 +1090,124 @@ void Show::RemoveUser(AdminHelper & admin)
 
 void Show::ReportLoss(AdminHelper & admin)
 {
+	ID id;
+	cout << "输入用户ID:";
+	cin >> id;
+	const char* name = admin.GetUserName(id);
+	ShowHelper helper("", "");
+	if (nullptr == name)
+	{
+		Clear();
+		helper.Reset("挂失", "按任意键返回图书管理员菜单");
+		helper.Add("没有找到该用户!");
+		helper.Show();
+		GetCh();
+		return;
+	}
+	Clear();
+	helper.Reset("挂失", "(y)是------(n)否");
+	helper.Add("用户名:" + string(name));
+	helper.Add();
+	helper.Add("编号:" + to_string(id));
+	helper.Add("性别:" + string(admin.GetUserGender(id)));
+	helper.Add("类型:" + string(admin.GetUserType(id)));
+	helper.Show();
+	while (true)
+	{
+		switch (GetCh())
+		{
+		case 'y':Clear();
+			if (!(admin.ReportLoss(id) && admin.Save()))
+			{
+				Clear();
+				helper.Reset("挂失", "按任意键返回图书管理员菜单");
+				helper.Add("挂失失败!");
+				helper.Show();
+				GetCh();
+			}
+			Clear();
+			helper.Reset("挂失", "按任意键返回图书管理员菜单");
+			helper.Add("挂失成功!");
+			helper.Add("");
+			helper.Add(name);
+			helper.Add("");
+			helper.Add("ID:");
+			helper.Add(to_string(id));
+			helper.Show();
+			GetCh();
+			return;
+		case 'n':
+			Clear();
+			helper.Reset("挂失", "按任意键返回图书管理员菜单");
+			helper.Add("已取消操作!");
+			helper.Show();
+			GetCh();
+			return;
+		default:
+			break;
+		}
+	}
 }
 
 void Show::UndoReportLoss(AdminHelper & admin)
 {
+	ID id;
+	cout << "输入用户ID:";
+	cin >> id;
+	const char* name = admin.GetUserName(id);
+	ShowHelper helper("", "");
+	if (nullptr == name)
+	{
+		Clear();
+		helper.Reset("解除挂失", "按任意键返回图书管理员菜单");
+		helper.Add("没有找到该用户!");
+		helper.Show();
+		GetCh();
+		return;
+	}
+	Clear();
+	helper.Reset("解除挂失", "(y)是------(n)否");
+	helper.Add("用户名:" + string(name));
+	helper.Add();
+	helper.Add("编号:" + to_string(id));
+	helper.Add("性别:" + string(admin.GetUserGender(id)));
+	helper.Add("类型:" + string(admin.GetUserType(id)));
+	helper.Show();
+	while (true)
+	{
+		switch (GetCh())
+		{
+		case 'y':Clear();
+			if (!(admin.ReportLoss(id) && admin.Save()))
+			{
+				Clear();
+				helper.Reset("解除挂失", "按任意键返回图书管理员菜单");
+				helper.Add("解除挂失失败!");
+				helper.Show();
+				GetCh();
+			}
+			Clear();
+			helper.Reset("解除挂失", "按任意键返回图书管理员菜单");
+			helper.Add("解除挂失成功!");
+			helper.Add("");
+			helper.Add(name);
+			helper.Add("");
+			helper.Add("ID:");
+			helper.Add(to_string(id));
+			helper.Show();
+			GetCh();
+			return;
+		case 'n':
+			Clear();
+			helper.Reset("挂失", "按任意键返回图书管理员菜单");
+			helper.Add("已取消操作!");
+			helper.Show();
+			GetCh();
+			return;
+		default:
+			break;
+		}
+	}
 }
 
 void Show::ReturnBook(AdminHelper & admin)
@@ -1101,7 +1215,7 @@ void Show::ReturnBook(AdminHelper & admin)
 	ID uid, bookID;
 	cout << "输入用户编号:";
 	cin >> uid;
-	cout << "输入用户名:";
+	cout << "输入书籍编号:";
 	cin >> bookID;
 	Clear();
 	ShowHelper helper("还书", "");
