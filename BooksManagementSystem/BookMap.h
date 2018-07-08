@@ -17,8 +17,8 @@ class BookMap
 	//文件保存成功返回true,失败返回false
 	bool WriteMap(const char* path)const;
 	map<ID, Book> bookMap;
-public:
-	//DEBUG用函数,发布时删除111
-	void Print();
+//public:
+//	//DEBUG用函数,发布时删除111
+//	void Print();
 };
 

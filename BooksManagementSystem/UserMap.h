@@ -19,7 +19,7 @@ class UserMap
 	//文件保存成功返回true,失败返回false
 	bool WriteMap(const char* path)const;
 	//DEBUG用函数,发布时删除
-	void Print();
+	//void Print();
 	map<ID, User> userMap;
 };
 

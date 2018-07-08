@@ -56,20 +56,20 @@ bool BookMap::WriteMap(const char* path)const
 	ofs.close();
 	return true;
 }
-#include<iostream>
-#include<iomanip>
-using namespace std;
-void BookMap::Print()
-{
-	for (auto pair : bookMap)
-	{
-		std::cout << setw(16) << pair.second.id
-			<< setw(16) << pair.second.title
-			<< setw(16) << pair.second.author
-			<< setw(16) << pair.second.press
-			<< setw(16) << pair.second.date
-			<< setw(16) << pair.second.type
-			<< setw(2) << pair.second.exist
-			<< endl;
-	}
-}
+//#include<iostream>
+//#include<iomanip>
+//using namespace std;
+//void BookMap::Print()
+//{
+//	for (auto pair : bookMap)
+//	{
+//		std::cout << setw(16) << pair.second.id
+//			<< setw(16) << pair.second.title
+//			<< setw(16) << pair.second.author
+//			<< setw(16) << pair.second.press
+//			<< setw(16) << pair.second.date
+//			<< setw(16) << pair.second.type
+//			<< setw(2) << pair.second.exist
+//			<< endl;
+//	}
+//}
