@@ -56,6 +56,9 @@ AdminMap AdminMap::ReadMap(const char * path)
 	ifstream ifs(path, ios::in | ios::binary);
 	if (ifs.fail())
 	{
+		map.Add(Admin(1, "a", "123456"));
+		map.Add(Admin(2, "b", "123456"));
+		map.Add(Admin(3, "c", "123456"));
 		return map;
 	}
 	while (!ifs.read((char*)&current, sizeof(Admin)).eof())
