@@ -113,7 +113,25 @@ void Show::UserMenu()
 		switch (GetCh())
 		{
 		case '1':
-			FindBookByID(user);
+			Clear();
+			helper.Reset("查找书籍", "选择数字键选择方式,其余键返回");
+			helper.Add("选择查找方式:");
+			helper.Add();
+			helper.Add("(1)  编号");
+			helper.Add("(2)  标题");
+			helper.Show();
+			switch (GetCh())
+			{
+			case '1':
+				FindBookByID(user);
+				break;
+			case '2':
+				FindBookByTitle(user);
+				break;
+			default:
+				break;
+			}
+			break;
 			break;
 		case '2':
 			BorrowBook(user);
@@ -151,26 +169,36 @@ void Show::FindBookByID(UserHelper & user)
 	const char* press = user.GetBookPress(id);
 	const char* date = user.GetBookDate(id);
 	const char* type = user.GetBookType(id);
+	bool  exist = user.GetBookExist(id);
 	ShowHelper helper("", "");
 	if (nullptr == title)
 	{
 		Clear();
-		helper.Reset("查找书籍", "按任意键返回上一级菜单");
+		helper.Reset("查找书籍", "按任意键返回图书管理员菜单");
 		helper.Add("没有找到该编号的书籍!");
 		helper.Show();
 		GetCh();
 		return;
 	}
 	Clear();
-	helper.Reset("查找书籍", "按任意键返回上一级菜单");
+	helper.Reset("查找书籍", "按任意键返回图书管理员菜单");
 	helper.Add("查找结果");
-	helper.Add("ID:" + to_string(id));
+	helper.Add("《" + string(title) + "》", ShowHelper::Center);
 	helper.Add();
-	helper.Add("标题:" + string(title));
+	helper.Add("ID:" + to_string(id));
 	helper.Add("作者:" + string(author));
 	helper.Add("出版社:" + string(press));
 	helper.Add("出版日期:" + string(date));
 	helper.Add("类型:" + string(type));
+	helper.Add();
+	if (exist)
+	{
+		helper.Add("在馆");
+	}
+	else
+	{
+		helper.Add("不在馆");
+	}
 	helper.Show();
 	GetCh();
 }
@@ -215,7 +243,9 @@ void Show::FindBookByTitle(UserHelper & user)
 			"第" + to_string(i) + "页,共" + size + "页。" +
 			"左右键翻页" +
 			",按(q)返回");
-		helper.Add("标题:" + title);
+		helper.Add("《" + string(title) + "》", ShowHelper::Center);
+		helper.Add();
+		helper.Add("ID:" + to_string(id));
 		helper.Add("作者:" + author);
 		helper.Add("出版社:" + press);
 		helper.Add("出版日期:" + date);
@@ -353,7 +383,9 @@ void Show::GetBorrowInfo(UserHelper & user)
 			"第" + to_string(i) + "页,共" + size + "页。" +
 			"左右键翻页" +
 			",按(q)返回");
-		helper.Add("标题:" + title);
+		helper.Add("《" + string(title) + "》", ShowHelper::Center);
+		helper.Add();
+		helper.Add("ID:" + to_string(id));
 		helper.Add("作者:" + author);
 		helper.Add("出版社:" + press);
 		helper.Add("出版日期:" + date);
@@ -845,9 +877,9 @@ void Show::FindBookByID(AdminHelper & admin)
 	Clear();
 	helper.Reset("查找书籍", "按任意键返回图书管理员菜单");
 	helper.Add("查找结果");
-	helper.Add("ID:" + to_string(id));
+	helper.Add("《" + string(title)+"》",ShowHelper::Center);
 	helper.Add();
-	helper.Add("标题:" + string(title));
+	helper.Add("ID:" + to_string(id));
 	helper.Add("作者:" + string(author));
 	helper.Add("出版社:" + string(press));
 	helper.Add("出版日期:" + string(date));
