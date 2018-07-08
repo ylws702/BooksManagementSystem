@@ -70,50 +70,60 @@ void Show::MainMenu()
 
 void Show::UserMenu()
 {
-	Clear();
 	UserHelper user;
-	char username[16], password[32];
+	char name[16], password[32];
 	ShowHelper helper("", "");
 	while (true)
 	{
-		Clear();
 		cout << "用户名:";
-		cin >> username;
+		cin >> name;
 		cout << "密码:";
 		cin >> password;
-		if (!user.Login(username, password))
+		if (user.Login(name, password))
 		{
-			Clear();
-			helper.Reset("欢迎读者使用图书管理系统", "按任意键重试!");
-			helper.Add("用户名或密码错误!", ShowHelper::Center);
-			helper.Show();
-			GetCh();
+			break;
+		}
+		Clear();
+		helper.Reset("普通用户登录", "按(q)返回主菜单,其余键重试!");
+		helper.Add("用户名或密码错误!", ShowHelper::Center);
+		helper.Show();
+		switch (GetCh())
+		{
+		case 'q':
+			return;
+		default:
+			break;
 		}
 	}
+	Clear();
+	helper.Reset((string)name + ",欢迎使用", "按任意键继续");
+	helper.Add("登录成功", ShowHelper::Center);
+	helper.Show();
+	GetCh();
 	while (true)
 	{
 		Clear();
-		helper.Reset("欢迎读者使用图书管理系统", "请选择数字键选择相应的服务");
-		helper.Add("(1)  查询书籍信息");
+		helper.Reset("普通用户:" + (string)name, "请选择数字键选择相应的服务");
+		helper.Add("(1)  查询书籍");
 		helper.Add("(2)  查询借阅信息");
-		helper.Add("(3)  修改登录密码");
+		helper.Add("(3)  更改密码");
 		helper.Add("(0)  退 出");
 		helper.Show();
 		switch (GetCh())
 		{
 		case '1':
-			UserMenu();
+			FindBook(user);
 			break;
 		case '2':
-			//Search();
+			//RemoveBook(admin);
 			break;
 		case '3':
-			//DeleteBook();
+			//ModifyBook(admin);
 			break;
 		case '0':
 			Clear();
 			helper.Clear();
-			helper.SetHeader("图书管理系统", "按任意键退出");
+			helper.SetHeader("再见"+string(name), "按任意键返回主菜单");
 			helper.Add("谢 谢 使 用 !", ShowHelper::Center);
 			for (auto str : helper.Normalize())
 			{
@@ -125,6 +135,40 @@ void Show::UserMenu()
 			break;
 		}
 	}
+}
+
+void Show::FindBook(UserHelper & user)
+{
+	ID id;
+	cout << "输入图书编号:";
+	cin >> id;
+	const char* title = user.GetBookTitle(id);
+	const char* author = user.GetBookAuthor(id);
+	const char* press = user.GetBookPress(id);
+	const char* date = user.GetBookDate(id);
+	const char* type = user.GetBookType(id);
+	ShowHelper helper("", "");
+	if (nullptr == title)
+	{
+		Clear();
+		helper.Reset("查找书籍", "按任意键返回图书管理员菜单");
+		helper.Add("没有找到该编号的书籍!");
+		helper.Show();
+		GetCh();
+		return;
+	}
+	Clear();
+	helper.Reset("查找书籍", "按任意键返回图书管理员菜单");
+	helper.Add("查找结果");
+	helper.Add("ID:" + to_string(id));
+	helper.Add();
+	helper.Add("标题:" + string(title));
+	helper.Add("作者:" + string(author));
+	helper.Add("出版社:" + string(press));
+	helper.Add("出版日期:" + string(date));
+	helper.Add("类型:" + string(type));
+	helper.Show();
+	GetCh();
 }
 
 void Show::AdminMenu()
@@ -143,7 +187,7 @@ void Show::AdminMenu()
 			break;
 		}
 		Clear();
-		helper.Reset("欢迎使用图书管理系统", "按(q)返回主菜单,其余键重试!");
+		helper.Reset("图书管理员登录", "按(q)返回主菜单,其余键重试!");
 		helper.Add("用户名或密码错误!", ShowHelper::Center);
 		helper.Show();
 		switch (GetCh())

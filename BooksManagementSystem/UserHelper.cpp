@@ -48,3 +48,68 @@ bool UserHelper::GetBorrow(list<pair<ID, Date>>& result) const
 	return true;
 }
 
+const char * UserHelper::GetBookTitle(const ID id)
+{
+	if (!Loggedin)
+	{
+		return nullptr;
+	}
+	if (bookMap.bookMap.find(id) == bookMap.bookMap.end())
+	{
+		return nullptr;
+	}
+	return bookMap.bookMap.find(id)->second.title;
+}
+
+const char * UserHelper::GetBookAuthor(const ID id)
+{
+	if (!Loggedin)
+	{
+		return nullptr;
+	}
+	if (bookMap.bookMap.find(id) == bookMap.bookMap.end())
+	{
+		return nullptr;
+	}
+	return bookMap.bookMap.find(id)->second.author;
+}
+
+const char * UserHelper::GetBookPress(const ID id)
+{
+	if (!Loggedin)
+	{
+		return nullptr;
+	}
+	if (bookMap.bookMap.find(id) == bookMap.bookMap.end())
+	{
+		return nullptr;
+	}
+	return bookMap.bookMap.find(id)->second.press;
+}
+
+const char * UserHelper::GetBookDate(const ID id)
+{
+	if (!Loggedin)
+	{
+		return nullptr;
+	}
+	if (bookMap.bookMap.find(id) == bookMap.bookMap.end())
+	{
+		return nullptr;
+	}
+	return bookMap.bookMap.find(id)->second.date;
+}
+
+const char * UserHelper::GetBookType(const ID id)
+{
+	if (!Loggedin)
+	{
+		return nullptr;
+	}
+	if (bookMap.bookMap.find(id) == bookMap.bookMap.end())
+	{
+		return nullptr;
+	}
+	return bookMap.bookMap.find(id)->second.type;
+}
+

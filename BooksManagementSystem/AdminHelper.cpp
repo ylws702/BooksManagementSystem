@@ -79,7 +79,7 @@ const char* AdminHelper::GetBookTitle(const ID id)
 {
 	if (!Loggedin)
 	{
-		return false;
+		return nullptr;
 	}
 	if (bookMap.bookMap.find(id) == bookMap.bookMap.end())
 	{
@@ -92,7 +92,7 @@ const char * AdminHelper::GetBookAuthor(const ID id)
 {
 	if (!Loggedin)
 	{
-		return false;
+		return nullptr;
 	}
 	if (bookMap.bookMap.find(id) == bookMap.bookMap.end())
 	{
@@ -105,7 +105,7 @@ const char * AdminHelper::GetBookPress(const ID id)
 {
 	if (!Loggedin)
 	{
-		return false;
+		return nullptr;
 	}
 	if (bookMap.bookMap.find(id) == bookMap.bookMap.end())
 	{
@@ -118,7 +118,7 @@ const char * AdminHelper::GetBookDate(const ID id)
 {
 	if (!Loggedin)
 	{
-		return false;
+		return nullptr;
 	}
 	if (bookMap.bookMap.find(id) == bookMap.bookMap.end())
 	{
@@ -131,7 +131,7 @@ const char * AdminHelper::GetBookType(const ID id)
 {
 	if (!Loggedin)
 	{
-		return false;
+		return nullptr;
 	}
 	if (bookMap.bookMap.find(id) == bookMap.bookMap.end())
 	{

@@ -5,6 +5,7 @@
 using namespace std;
 class BookMap
 {
+	friend class UserHelper;
 	friend class AdminHelper;
 	BookMap() {}
 	bool Add(const Book& book);

@@ -15,6 +15,7 @@ public:
 	static char GetCh();
 	static void MainMenu();
 	static void UserMenu();
+	static void FindBook(UserHelper& user);
 	static void AdminMenu();
 	static void AddBook(AdminHelper& admin);
 	static void RemoveBook(AdminHelper& admin);

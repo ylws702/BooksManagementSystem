@@ -4,6 +4,7 @@ typedef long long unsigned ID;
 class Book
 {
 	friend class BookMap;
+	friend class UserHelper;
 	friend class AdminHelper;
 public:
 	Book() = delete;
