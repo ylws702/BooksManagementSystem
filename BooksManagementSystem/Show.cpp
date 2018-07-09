@@ -25,6 +25,28 @@ char Show::GetCh()
 	return c;
 }
 
+ID Show::GetID()
+{
+	ID id;
+	stringstream ss;
+	string s;
+	cin >> s;
+	ss << s;
+	ss >> id;
+	return id;
+}
+
+unsigned int Show::GetUInt()
+{
+	unsigned int uint;
+	stringstream ss;
+	string s;
+	cin >> s;
+	ss << s;
+	ss >> uint;
+	return uint;
+}
+
 void Show::MainMenu()
 {
 	;
@@ -78,7 +100,7 @@ void Show::UserMenu()
 	while (true)
 	{
 		cout << "用户编号:";
-		cin >> uid;
+		uid = GetID();
 		cout << "密码:";
 		cin >> password;
 		debug("正在进行密码的验证，调用user.Login()，若要进行下一步调试。请按任意键");
@@ -193,7 +215,7 @@ void Show::FindBookByID(UserHelper & user)
 	while (true)
 	{
 		cout << "输入图书编号:";
-		cin >> id;
+		id = GetID();
 		title = user.GetBookTitle(id);
 		author = user.GetBookAuthor(id);
 		press = user.GetBookPress(id);
@@ -642,7 +664,7 @@ void Show::BorrowBook(UserHelper & user)
 	while (true)
 	{
 		cout << "输入图书编号:";
-		cin >> id;
+		id = GetID();
 		title = user.GetBookTitle(id);
 		author = user.GetBookAuthor(id);
 		press = user.GetBookPress(id);
@@ -894,7 +916,7 @@ void Show::AdminMenu()
 	while (true)
 	{
 		cout << "编号:";
-		cin >> id;
+		id = GetID();
 		cout << "用户名:";
 		cin >> name;
 		cout << "密码:";
@@ -1064,7 +1086,7 @@ void Show::AddBook(AdminHelper & admin)
 	while (true)
 	{
 		cout << "输入编号:";
-		cin >> id;
+		id = GetID();
 		cout << "输入标题:";
 		cin >> title;
 		cout << "输入作者:";
@@ -1076,7 +1098,7 @@ void Show::AddBook(AdminHelper & admin)
 		cout << "输入类型:";
 		cin >> type;
 		cout << "输入数量:";
-		cin >> number;
+		number = GetUInt();
 		admin.AddBook(id, title, author, press, date, type, number);
 		Clear();
 		ShowHelper helper("添加书籍", "");
@@ -1116,7 +1138,7 @@ void Show::RemoveBookByID(AdminHelper & admin, ID id)
 	if (0 == id)
 	{
 		cout << "输入书籍编号:";
-		cin >> id;
+		id = GetID();
 		const char* title = admin.GetBookTitle(id);
 		if (nullptr == admin.GetBookTitle(id))
 		{
@@ -1332,7 +1354,7 @@ void Show::ModifyBookByID(AdminHelper & admin, ID id)
 	if (0 == id)
 	{
 		cout << "输入书籍编号:";
-		cin >> id;
+		id = GetID();
 		if (nullptr == admin.GetBookTitle(id))
 		{
 			Clear();
@@ -1568,7 +1590,7 @@ void Show::FindBookByID(AdminHelper & admin)
 	while (true)
 	{
 		cout << "输入图书编号:";
-		cin >> id;
+		id = GetID();
 		title = admin.GetBookTitle(id);
 		author = admin.GetBookAuthor(id);
 		press = admin.GetBookPress(id);
@@ -2010,15 +2032,15 @@ void Show::AddUser(AdminHelper & admin)
 	while (true)
 	{
 		cout << "输入用户编号:";
-		cin >> id;
+		id = GetID();
 		cout << "输入用户名:";
 		cin >> name;
 		cout << "输入用户密码:";
 		cin >> password;
 		cout << "输入性别(1)男(2)女:";
-		cin >> gender;
+		gender = GetUInt();
 		cout << "输入类型(1)本科生(2)研究生(3)教师:";
-		cin >> type;
+		type = GetUInt();
 		Clear();
 		ShowHelper helper("添加用户", "");
 		helper.Add("正在保存修改...");
@@ -2053,7 +2075,7 @@ void Show::RemoveUser(AdminHelper & admin)
 {
 	ID id;
 	cout << "输入用户ID:";
-	cin >> id;
+	id = GetID();
 	const char* name = admin.GetUserName(id);
 	ShowHelper helper("", "");
 	if (nullptr == name)
@@ -2119,7 +2141,7 @@ void Show::ReportLoss(AdminHelper & admin)
 {
 	ID id;
 	cout << "输入用户ID:";
-	cin >> id;
+	id = GetID();
 	const char* name = admin.GetUserName(id);
 	ShowHelper helper("", "");
 	if (nullptr == name)
@@ -2180,7 +2202,7 @@ void Show::UndoReportLoss(AdminHelper & admin)
 {
 	ID id;
 	cout << "输入用户ID:";
-	cin >> id;
+	id = GetID();
 	const char* name = admin.GetUserName(id);
 	ShowHelper helper("", "");
 	if (nullptr == name)
@@ -2241,9 +2263,9 @@ void Show::ReturnBook(AdminHelper & admin)
 {
 	ID uid, bookID;
 	cout << "输入用户编号:";
-	cin >> uid;
+	uid = GetID();
 	cout << "输入书籍编号:";
-	cin >> bookID;
+	bookID=GetID();
 	Clear();
 	ShowHelper helper("还书", "");
 	helper.Add("正在保存修改...");
@@ -2432,7 +2454,7 @@ void Show::RemoveAdmin(RootHelper & root)
 {
 	ID id;
 	cout << "输入管理员ID:";
-	cin >> id;
+	id = GetID();
 	const char* name = root.GetAdminName(id);
 	ShowHelper helper("", "");
 	if (nullptr == name)
@@ -2498,7 +2520,7 @@ void Show::FindAdmin(RootHelper & root)
 {
 	ID id;
 	cout << "输入管理员ID:";
-	cin >> id;
+	id = GetID();
 	const char* name = root.GetAdminName(id);
 	ShowHelper helper("", "");
 	if (nullptr == name)

@@ -11,6 +11,7 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
+#include <sstream>
 #include "User.h"
 #include "Book.h"
 #include "ShowHelper.h"
@@ -23,12 +24,14 @@ public:
 	static void Clear();
 	enum Key
 	{
-		Up=40,
-		Down=48,
-		Left=43,
-		Right=45
+		Up = 40,
+		Down = 48,
+		Left = 43,
+		Right = 45
 	};
 	static char GetCh();
+	static ID GetID();
+	static unsigned int GetUInt();
 	static void MainMenu();
 	static void UserMenu();
 	static void FindBookByID(UserHelper& user);
@@ -62,7 +65,7 @@ public:
 	static void RemoveAdmin(RootHelper& root);
 	static void FindAdmin(RootHelper& root);
 	static void ChangeRootPassword(RootHelper& root);
-//private:
+	//private:
 #ifdef __linux
 	static struct termios old, newer;
 	static void initTermios(int echo)
