@@ -649,7 +649,7 @@ void Show::BorrowBook(UserHelper & user)
 		date = user.GetBookDate(id);
 		type = user.GetBookType(id);
 		exist = user.GetBookExist(id);
-		restCount= to_string(user.GetBookRestCount(id));
+		restCount = to_string(user.GetBookRestCount(id));
 		totalCount = to_string(user.GetBookTotalCount(id));
 		if (nullptr == title)
 		{
@@ -948,6 +948,7 @@ void Show::AdminMenu()
 			helper.Add();
 			helper.Add("(1)  按书名删除");
 			helper.Add("(2)  按编号删除");
+			helper.Add("(d)  全部删除");
 			helper.Show();
 			switch (GetCh())
 			{
@@ -956,6 +957,9 @@ void Show::AdminMenu()
 				break;
 			case '2':
 				RemoveBookByID(admin);
+				break;
+			case 'd':
+				RemoveAllBooks(admin);
 				break;
 			default:
 				break;
@@ -1278,6 +1282,41 @@ void Show::RemoveBookByTitle(AdminHelper & admin)
 				return;
 			}
 		}
+	}
+}
+
+void Show::RemoveAllBooks(AdminHelper & admin)
+{
+	Clear();
+	ShowHelper helper("删除全部书籍!!!", "按(y)删除,其余键返回");
+	helper.Add("警告", ShowHelper::Center);
+	helper.Add();
+	helper.Add("这将删除全部书籍!!!");
+	helper.Add("确认?");
+	helper.Show();
+	switch (GetCh())
+	{
+	case 'y':
+		Clear();
+		helper.Reset("删除全部书籍", "按任意键键返回");
+		if (!(admin.RemoveAllBooks() && admin.Save()))
+		{
+			helper.Add("删除失败!", ShowHelper::Center);
+		}
+		else
+		{
+			helper.Add("删除成功!", ShowHelper::Center);
+		}
+		helper.Show();
+		GetCh();
+		return;
+	default:
+		Clear();
+		helper.Reset("删除全部书籍", "按任意键键返回");
+		helper.Add("已取消操作!", ShowHelper::Center);
+		helper.Show();
+		GetCh();
+		break;
 	}
 }
 
@@ -1985,7 +2024,7 @@ void Show::AddUser(AdminHelper & admin)
 		helper.Add("正在保存修改...");
 		helper.Show();
 		Clear();
-		helper.Reset("添加管理员", "按(c)继续添加,其他键返回");
+		helper.Reset("添加用户", "按(c)继续添加,其他键返回");
 		if (!(admin.AddUser(id, name, password, gender, type) && admin.Save()))
 		{
 			helper.Add("保存失败!");

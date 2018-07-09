@@ -90,6 +90,16 @@ bool AdminHelper::RemoveBook(const ID id)
 	return true;
 }
 
+bool AdminHelper::RemoveAllBooks()
+{
+	if (!Loggedin)
+	{
+		return false;
+	}
+	bookMap.bookMap.clear();
+	return true;
+}
+
 const char* AdminHelper::GetBookTitle(const ID id)const
 {
 	if (!Loggedin)

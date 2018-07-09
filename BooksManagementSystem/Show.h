@@ -43,6 +43,7 @@ public:
 	static void AddBook(AdminHelper& admin);
 	static void RemoveBookByID(AdminHelper& admin, ID bookID = 0);
 	static void RemoveBookByTitle(AdminHelper& admin);
+	static void RemoveAllBooks(AdminHelper& admin);
 	static void ModifyBookByID(AdminHelper& admin, ID id = 0);
 	static void ModifyBookByTitle(AdminHelper& admin);
 	static void FindBookByID(AdminHelper& admin);

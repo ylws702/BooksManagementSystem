@@ -66,6 +66,7 @@ public:
 	// 参  数 : const ID id : 图书编号
 	//************************************
 	bool RemoveBook(const ID id);
+	bool RemoveAllBooks();
 	//************************************
 	// 函数名 : GetBookTitle
 	// 功  能 : 获取指定编号的图书的标题
