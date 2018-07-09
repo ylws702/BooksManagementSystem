@@ -242,7 +242,7 @@ void Show::FindBookByTitle(UserHelper & user)
 		helper.Reset("查询结果",
 			"第" + to_string(i) + "页,共" + size + "页。" +
 			"左右键翻页" +
-			",按(q)返回");
+			",其余键返回");
 		helper.Add("《" + string(title) + "》", ShowHelper::Center);
 		helper.Add();
 		helper.Add("ID:" + to_string(id));
@@ -278,70 +278,107 @@ void Show::FindBookByTitle(UserHelper & user)
 			i--;
 			it--;
 			break;
-		case 'q':
-			return;
 		default:
-			break;
+			return;
 		}
 	}
 }
 
 void Show::BorrowBook(UserHelper & user)
 {
+	bool goOn = false;
 	ID id;
-	cout << "输入图书编号:";
-	cin >> id;
-	const char* title = user.GetBookTitle(id);
-	const char* author = user.GetBookAuthor(id);
-	const char* press = user.GetBookPress(id);
-	const char* date = user.GetBookDate(id);
-	const char* type = user.GetBookType(id);
+	const char* title;
+	const char*author;
+	const char* press;
+	const char* date;
+	const char* type;
+	bool exist;
 	ShowHelper helper("", "");
-	if (nullptr == title)
-	{
-		Clear();
-		helper.Reset("借阅书籍", "按任意键返回上一级菜单");
-		helper.Add("没有找到该编号的书籍!");
-		helper.Show();
-		GetCh();
-		return;
-	}
 	while (true)
 	{
-		Clear();
-		helper.Reset("确认借阅书籍", "(y)是------(n)否");
-		helper.Add("ID:" + to_string(id));
-		helper.Add();
-		helper.Add("标题:" + string(title));
-		helper.Add("作者:" + string(author));
-		helper.Add("出版社:" + string(press));
-		helper.Add("出版日期:" + string(date));
-		helper.Add("类型:" + string(type));
-		helper.Show();
-		switch (GetCh())
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cout << "输入图书编号:";
+		cin >> id;
+		title = user.GetBookTitle(id);
+		author = user.GetBookAuthor(id);
+		press = user.GetBookPress(id);
+		date = user.GetBookDate(id);
+		type = user.GetBookType(id);
+		exist = user.GetBookExist(id);
+		if (nullptr == title)
 		{
-		case 'y':
-			if (!user.Borrow(id))
-			{
-
-			}
-			if (!user.Save())
-			{
-
-			}
 			Clear();
-			helper.Reset("借阅书籍", "按任意键返回");
-			helper.Add("借书成功");
+			helper.Reset("借阅书籍", "按(c)继续,其余键返回");
+			helper.Add("没有找到该编号的书籍!");
+			helper.Show();
+			switch (GetCh())
+			{
+			case 'c':
+				break;
+			default:
+				return;
+			}
+			continue;
+		}
+		if (!exist)
+		{
+			Clear();
+			helper.Reset("借阅书籍", "按(c)继续,其余键返回");
+			helper.Add("该编号的书籍不在馆内!");
+			helper.Show();
+			switch (GetCh())
+			{
+			case 'c':
+				break;
+			default:
+				return;
+			}
+			continue;
+		}
+		while (true)
+		{
+			Clear();
+			helper.Reset("确认借阅书籍", "(y)是------(n)否");
 			helper.Add("ID:" + to_string(id));
 			helper.Add();
 			helper.Add("标题:" + string(title));
+			helper.Add("作者:" + string(author));
+			helper.Add("出版社:" + string(press));
+			helper.Add("出版日期:" + string(date));
+			helper.Add("类型:" + string(type));
 			helper.Show();
-			GetCh();
-			return;
-		default:
-			break;
+			switch (GetCh())
+			{
+			case 'y':
+				Clear();
+				helper.Reset("借阅书籍", "按(c)继续,其余键返回");
+				if (!(user.Borrow(id) && user.Save()))
+				{
+					helper.Add("借书失败");
+				}
+				else
+				{
+					helper.Add("借书成功");
+				}
+				helper.Add("ID:" + to_string(id));
+				helper.Add();
+				helper.Add("标题:" + string(title));
+				helper.Show();
+				switch (GetCh())
+				{
+				case 'c':
+					break;
+				default:
+					return;
+				}
+				break;
+			default:
+				break;
+			}
 		}
 	}
+
 }
 
 void Show::GetBorrowInfo(UserHelper & user)
@@ -382,7 +419,7 @@ void Show::GetBorrowInfo(UserHelper & user)
 		helper.Reset("借阅信息",
 			"第" + to_string(i) + "页,共" + size + "页。" +
 			"左右键翻页" +
-			",按(q)返回");
+			",其余键返回");
 		helper.Add("《" + string(title) + "》", ShowHelper::Center);
 		helper.Add();
 		helper.Add("ID:" + to_string(id));
@@ -432,15 +469,15 @@ void Show::ChangeUserPassword(UserHelper & user)
 			break;
 		}
 		Clear();
-		helper.Reset("更改密码", "按(q)返回,其余键重试");
+		helper.Reset("更改密码", "按(c)重试,其余键返回");
 		helper.Add("密码错误!");
 		helper.Show();
 		switch (GetCh())
 		{
-		case 'q':
-			return;
-		default:
+		case 'c':
 			break;
+		default:
+			return;
 		}
 	}
 	while (true)
@@ -474,7 +511,7 @@ void Show::ChangeUserPassword(UserHelper & user)
 	Clear();
 	helper.Reset("更改密码", "按任意键返回图书管理员菜单");
 	helper.Add("保存成功!");
-	helper.Add("");
+	helper.Add();
 	helper.Add("已成功更改密码!");
 	helper.Show();
 	GetCh();
@@ -634,7 +671,7 @@ void Show::AddBook(AdminHelper & admin)
 	Clear();
 	helper.Reset("添加书籍", "按任意键返回系统管理员菜单");
 	helper.Add("成功保存修改!");
-	helper.Add("");
+	helper.Add();
 	helper.Add("已成功添加图书:《" + string(title) + "》");
 	helper.Add("编号:" + to_string(id));
 	helper.Add("作者:" + string(author));
@@ -668,7 +705,7 @@ void Show::RemoveBook(AdminHelper & admin)
 	Clear();
 	helper.Reset("删除书籍", "(y)是------(n)否");
 	helper.Add("编号:" + to_string(id));
-	helper.Add("");
+	helper.Add();
 	helper.Add("标题:" + string(title));
 	helper.Add("作者:" + string(author));
 	helper.Add("出版社:" + string(press));
@@ -695,9 +732,9 @@ void Show::RemoveBook(AdminHelper & admin)
 			Clear();
 			helper.Reset("删除书籍", "按任意键返回系统管理员菜单");
 			helper.Add("成功保存修改!");
-			helper.Add("");
+			helper.Add();
 			helper.Add("已成功删除《" + title + "》");
-			helper.Add("");
+			helper.Add();
 			helper.Add("编号:" + to_string(id));
 			helper.Add("作者:" + author);
 			helper.Add("出版社:" + press);
@@ -750,7 +787,7 @@ void Show::ModifyBook(AdminHelper & admin)
 		Clear();
 		helper.Reset("修改书籍", "请选择数字键选择修改的内容,按(q)返回");
 		helper.Add("编号:" + to_string(id));
-		helper.Add("");
+		helper.Add();
 		helper.Add("选择修改的内容:");
 		helper.Add("(1)  标题:" + string(title));
 		helper.Add("(2)  作者:" + string(author));
@@ -877,7 +914,7 @@ void Show::FindBookByID(AdminHelper & admin)
 	Clear();
 	helper.Reset("查找书籍", "按任意键返回图书管理员菜单");
 	helper.Add("查找结果");
-	helper.Add("《" + string(title)+"》",ShowHelper::Center);
+	helper.Add("《" + string(title) + "》", ShowHelper::Center);
 	helper.Add();
 	helper.Add("ID:" + to_string(id));
 	helper.Add("作者:" + string(author));
@@ -1066,10 +1103,10 @@ void Show::RemoveUser(AdminHelper & admin)
 			Clear();
 			helper.Reset("删除用户", "按任意键返回图书管理员菜单");
 			helper.Add("成功保存修改!");
-			helper.Add("");
+			helper.Add();
 			helper.Add("已成功删除用户:");
 			helper.Add(namecopy);
-			helper.Add("");
+			helper.Add();
 			helper.Add("ID:");
 			helper.Add(to_string(id));
 			helper.Show();
@@ -1128,9 +1165,9 @@ void Show::ReportLoss(AdminHelper & admin)
 			Clear();
 			helper.Reset("挂失", "按任意键返回图书管理员菜单");
 			helper.Add("挂失成功!");
-			helper.Add("");
+			helper.Add();
 			helper.Add(name);
-			helper.Add("");
+			helper.Add();
 			helper.Add("ID:");
 			helper.Add(to_string(id));
 			helper.Show();
@@ -1189,9 +1226,9 @@ void Show::UndoReportLoss(AdminHelper & admin)
 			Clear();
 			helper.Reset("解除挂失", "按任意键返回图书管理员菜单");
 			helper.Add("解除挂失成功!");
-			helper.Add("");
+			helper.Add();
 			helper.Add(name);
-			helper.Add("");
+			helper.Add();
 			helper.Add("ID:");
 			helper.Add(to_string(id));
 			helper.Show();
@@ -1294,7 +1331,7 @@ void Show::ChangeAdminPassword(AdminHelper & admin)
 	Clear();
 	helper.Reset("更改密码", "按任意键返回图书管理员菜单");
 	helper.Add("保存成功!");
-	helper.Add("");
+	helper.Add();
 	helper.Add("已成功更改密码!");
 	helper.Show();
 	GetCh();
@@ -1385,10 +1422,10 @@ void Show::AddAdmin(RootHelper&root)
 	Clear();
 	helper.Reset("添加管理员", "按任意键返回系统管理员菜单");
 	helper.Add("成功保存修改!");
-	helper.Add("");
+	helper.Add();
 	helper.Add("已成功添加管理员:");
 	helper.Add(name);
-	helper.Add("");
+	helper.Add();
 	helper.Add("ID:");
 	helper.Add(to_string(id));
 	helper.Show();
@@ -1415,7 +1452,7 @@ void Show::RemoveAdmin(RootHelper & root)
 	helper.Reset("删除管理员", "(y)是------(n)否");
 	helper.Add("ID:");
 	helper.Add(to_string(id));
-	helper.Add("");
+	helper.Add();
 	helper.Add("用户名:");
 	helper.Add(name);
 	helper.Show();
@@ -1439,10 +1476,10 @@ void Show::RemoveAdmin(RootHelper & root)
 			Clear();
 			helper.Reset("删除管理员", "按任意键返回系统管理员菜单");
 			helper.Add("成功保存修改!");
-			helper.Add("");
+			helper.Add();
 			helper.Add("已成功删除管理员:");
 			helper.Add(namecopy);
-			helper.Add("");
+			helper.Add();
 			helper.Add("ID:");
 			helper.Add(to_string(id));
 			helper.Show();
@@ -1482,7 +1519,7 @@ void Show::FindAdmin(RootHelper & root)
 	helper.Add("查找结果");
 	helper.Add("ID:");
 	helper.Add(to_string(id));
-	helper.Add("");
+	helper.Add();
 	helper.Add("用户名:");
 	helper.Add(name);
 	helper.Show();
@@ -1520,7 +1557,7 @@ void Show::ChangeRootPassword(RootHelper & root)
 	Clear();
 	helper.Reset("更改密码", "按任意键返回系统管理员菜单");
 	helper.Add("保存成功!");
-	helper.Add("");
+	helper.Add();
 	helper.Add("已成功更改密码!");
 	helper.Show();
 	GetCh();
