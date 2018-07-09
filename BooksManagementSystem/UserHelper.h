@@ -15,8 +15,13 @@ public:
 	const char* GetBookAuthor(const ID id)const;
 	const char* GetBookPress(const ID id)const;
 	const char* GetBookDate(const ID id)const;
+	//获取书籍类型
 	const char* GetBookType(const ID id)const;
+	//查找馆内是否有该书
+	//不存在或余量不足均返回false
 	bool GetBookExist(const ID id)const;
+	unsigned int GetBookRestCount(const ID id)const;
+	unsigned int GetBookTotalCount(const ID id)const;
 	list<pair<ID, Date>> GetBorrowList()const;
 	list<ID> FindBookByTitle(const char* title)const;
 	bool Save()const;
