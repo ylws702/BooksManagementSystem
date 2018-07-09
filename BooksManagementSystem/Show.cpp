@@ -1481,10 +1481,16 @@ void Show::RootMenu()
 			break;
 		}
 		Clear();
-		helper.Reset("欢迎使用图书管理系统", "按任意键重试!");
+		helper.Reset("普通用户登录", "按(q)返回主菜单,其余键重试!");
 		helper.Add("密码错误!", ShowHelper::Center);
 		helper.Show();
-		GetCh();
+		switch (GetCh())
+		{
+		case 'q':
+			return;
+		default:
+			break;
+		}
 	}
 	while (true)
 	{
