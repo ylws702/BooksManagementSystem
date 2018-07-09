@@ -187,8 +187,8 @@ void Show::FindBookByID(UserHelper & user)
 		press = user.GetBookPress(id);
 		date = user.GetBookDate(id);
 		type = user.GetBookType(id);
-		totalCount = user.GetBookRestCount(id);
-		restCount = user.GetBookRestCount(id);
+		totalCount = to_string(user.GetBookTotalCount(id));
+		restCount = to_string(user.GetBookRestCount(id));
 		//exist = user.GetBookExist(id);
 		ShowHelper helper("", "");
 		if (nullptr == title)
@@ -285,8 +285,8 @@ void Show::FindBookByTitle(UserHelper & user)
 			date = user.GetBookDate(*it);
 			type = user.GetBookType(*it);
 			exist = user.GetBookExist(*it);
-			totalCount = user.GetBookRestCount(id);
-			restCount = user.GetBookRestCount(id);
+			totalCount = to_string(user.GetBookTotalCount(id));
+			restCount = to_string(user.GetBookRestCount(id));
 			helper.Reset("查询结果",
 				"第" + to_string(i) + "页,共" + size + "页。" +
 				"左右键翻页" +
@@ -991,8 +991,8 @@ void Show::FindBookByID(AdminHelper & admin)
 		press = admin.GetBookPress(id);
 		date = admin.GetBookDate(id);
 		type = admin.GetBookType(id);
-		totalCount = admin.GetBookRestCount(id);
-		restCount = admin.GetBookRestCount(id);
+		totalCount = to_string(admin.GetBookTotalCount(id));
+		restCount = to_string(admin.GetBookRestCount(id));
 		//exist = user.GetBookExist(id);
 		ShowHelper helper("", "");
 		if (nullptr == title)
@@ -1089,8 +1089,8 @@ void Show::FindBookByTitle(AdminHelper & admin)
 			date = admin.GetBookDate(*it);
 			type = admin.GetBookType(*it);
 			exist = admin.GetBookExist(*it);
-			totalCount = admin.GetBookRestCount(id);
-			restCount = admin.GetBookRestCount(id);
+			totalCount = to_string(admin.GetBookTotalCount(id));
+			restCount = to_string(admin.GetBookRestCount(id));
 			helper.Reset("查询结果",
 				"第" + to_string(i) + "页,共" + size + "页。" +
 				"左右键翻页" +
