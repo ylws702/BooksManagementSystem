@@ -305,10 +305,10 @@ void Show::BorrowBook(UserHelper & user)
 	const char* date;
 	const char* type;
 	bool exist;
+	bool flag;
 	ShowHelper helper("", "");
 	while (true)
 	{
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		cout << "输入图书编号:";
 		cin >> id;
 		title = user.GetBookTitle(id);
@@ -383,8 +383,28 @@ void Show::BorrowBook(UserHelper & user)
 				default:
 					return;
 				}
+				flag = true;
+				break;
+			case 'n':
+				Clear();
+				helper.Reset("借阅书籍", "按(c)继续,其余键返回");
+				helper.Add("已取消操作",ShowHelper::Center);
+				helper.Show();
+				switch (GetCh())
+				{
+				case 'c':
+					break;
+				default:
+					return;
+				}
+				flag = true;
 				break;
 			default:
+				flag = false;
+				break;
+			}
+			if (flag)
+			{
 				break;
 			}
 		}
@@ -461,7 +481,7 @@ void Show::GetBorrowInfo(UserHelper & user)
 			it--;
 			break;
 		default:
-			break;
+			return;
 		}
 	}
 }
@@ -648,50 +668,57 @@ void Show::AdminMenu()
 
 void Show::AddBook(AdminHelper & admin)
 {
-	ID id;
-	char title[32];
-	char author[32];
-	char press[32];
-	char date[32];
-	char type[32];
-	cout << "输入编号:";
-	cin >> id;
-	cout << "输入标题:";
-	cin >> title;
-	cout << "输入作者:";
-	cin >> author;
-	cout << "输入出版社:";
-	cin >> press;
-	cout << "输入出版日期:";
-	cin >> date;
-	cout << "输入类型:";
-	cin >> type;
-	admin.AddBook(id, title, author, press, date, type);
-	Clear();
-	ShowHelper helper("添加书籍", "");
-	helper.Add("正在保存修改...");
-	helper.Show();
-	if (!admin.Save())
+	while (true)
 	{
+		ID id;
+		char title[32];
+		char author[32];
+		char press[32];
+		char date[32];
+		char type[32];
+		cout << "输入编号:";
+		cin >> id;
+		cout << "输入标题:";
+		cin >> title;
+		cout << "输入作者:";
+		cin >> author;
+		cout << "输入出版社:";
+		cin >> press;
+		cout << "输入出版日期:";
+		cin >> date;
+		cout << "输入类型:";
+		cin >> type;
+		admin.AddBook(id, title, author, press, date, type);
 		Clear();
-		helper.Reset("添加书籍", "按任意键返回系统管理员菜单");
-		helper.Add("保存失败!");
+		ShowHelper helper("添加书籍", "");
+		helper.Add("正在保存修改...");
 		helper.Show();
-		GetCh();
-		return;
+		Clear();
+		helper.Reset("添加书籍", "按(c)继续,其余键返回图书管理员菜单");
+		if (!admin.Save())
+		{
+			helper.Add("保存失败!");
+		}
+		else
+		{
+			helper.Add("成功保存修改!");
+			helper.Add();
+			helper.Add("已成功添加图书:《" + string(title) + "》");
+			helper.Add("编号:" + to_string(id));
+			helper.Add("作者:" + string(author));
+			helper.Add("出版社:" + string(press));
+			helper.Add("出版日期:" + string(date));
+			helper.Add("类型:" + string(type));
+		}
+		helper.Show();
+		switch (GetCh())
+		{
+		case 'c':
+			break;
+		default:
+			return;
+		}
 	}
-	Clear();
-	helper.Reset("添加书籍", "按任意键返回系统管理员菜单");
-	helper.Add("成功保存修改!");
-	helper.Add();
-	helper.Add("已成功添加图书:《" + string(title) + "》");
-	helper.Add("编号:" + to_string(id));
-	helper.Add("作者:" + string(author));
-	helper.Add("出版社:" + string(press));
-	helper.Add("出版日期:" + string(date));
-	helper.Add("类型:" + string(type));
-	helper.Show();
-	GetCh();
 }
 
 void Show::RemoveBook(AdminHelper & admin)
@@ -985,8 +1012,10 @@ void Show::FindBookByTitle(AdminHelper & admin)
 		helper.Reset("查询结果",
 			"第" + to_string(i) + "页,共" + size + "页。" +
 			"左右键翻页" +
-			",按(q)返回");
-		helper.Add("标题:" + title);
+			",其余键返回");
+		helper.Add("《" + string(title) + "》", ShowHelper::Center);
+		helper.Add();
+		helper.Add("ID:" + to_string(id));
 		helper.Add("作者:" + author);
 		helper.Add("出版社:" + press);
 		helper.Add("出版日期:" + date);
@@ -1019,10 +1048,8 @@ void Show::FindBookByTitle(AdminHelper & admin)
 			i--;
 			it--;
 			break;
-		case 'q':
-			return;
 		default:
-			break;
+			return;
 		}
 	}
 }

@@ -27,7 +27,7 @@ bool UserHelper::TestPassword(const char * password)const
 	{
 		return false;
 	}
-	return strcmp(password, user.password);
+	return strcmp(password, user.password) == 0;
 }
 
 bool UserHelper::ChangePassword(const char * oldpw, const char * newpw)
