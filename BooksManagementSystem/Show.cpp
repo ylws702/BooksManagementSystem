@@ -28,7 +28,8 @@ char Show::GetCh()
 }
 
 void Show::MainMenu()
-{;
+{
+	;
 	ShowHelper helper("", "");
 	while (true)
 	{
@@ -40,11 +41,11 @@ void Show::MainMenu()
 		helper.Add("(3)  系统管理员");
 		helper.Add("(0)  退 出");
 		helper.Show();
-		
+
 		switch (GetCh())
 		{
 		case '1':
-			
+
 			UserMenu();
 			break;
 		case '2':
@@ -388,7 +389,7 @@ void Show::BorrowBook(UserHelper & user)
 			case 'n':
 				Clear();
 				helper.Reset("借阅书籍", "按(c)继续,其余键返回");
-				helper.Add("已取消操作",ShowHelper::Center);
+				helper.Add("已取消操作", ShowHelper::Center);
 				helper.Show();
 				switch (GetCh())
 				{
@@ -1061,41 +1062,46 @@ void Show::AddUser(AdminHelper & admin)
 	char password[32];
 	int gender;
 	int type;
-	cout << "输入用户编号:";
-	cin >> id;
-	cout << "输入用户名:";
-	cin >> name;
-	cout << "输入用户密码:";
-	cin >> password;
-	cout << "输入性别(1)男(2)女:";
-	cin >> gender;
-	cout << "输入类型(1)本科生(2)研究生(3)教师:";
-	cin >> type;
-
-	Clear();
-	ShowHelper helper("添加用户", "");
-	helper.Add("正在保存修改...");
-	helper.Show();
-	if (!(admin.AddUser(id, name, password, gender, type) && admin.Save()))
+	while (true)
 	{
+		cout << "输入用户编号:";
+		cin >> id;
+		cout << "输入用户名:";
+		cin >> name;
+		cout << "输入用户密码:";
+		cin >> password;
+		cout << "输入性别(1)男(2)女:";
+		cin >> gender;
+		cout << "输入类型(1)本科生(2)研究生(3)教师:";
+		cin >> type;
 		Clear();
-		helper.Reset("添加管理员", "按任意键返回图书管理员菜单");
-		helper.Add("保存失败!");
+		ShowHelper helper("添加用户", "");
+		helper.Add("正在保存修改...");
 		helper.Show();
-		GetCh();
-		return;
+		Clear();
+		helper.Reset("添加管理员", "按(c)继续添加,其他键返回");
+		if (!(admin.AddUser(id, name, password, gender, type) && admin.Save()))
+		{
+			helper.Add("保存失败!");
+		}
+		else
+		{
+			helper.Add("成功保存修改!"); helper.Add();
+			helper.Add("已成功添加用户:" + string(name));
+			helper.Add();
+			helper.Add("编号:" + to_string(id));
+			helper.Add("性别:" + string(admin.GetUserGender(id)));
+			helper.Add("类型:" + string(admin.GetUserType(id)));
+		}
+		helper.Show();
+		switch (GetCh())
+		{
+		case 'c':
+			break;
+		default:
+			return;
+		}
 	}
-	Clear();
-	helper.Reset("添加管理员", "按任意键返回图书管理员菜单");
-	helper.Add("成功保存修改!");
-	helper.Add();
-	helper.Add("已成功添加用户:" + string(name));
-	helper.Add();
-	helper.Add("编号:" + to_string(id));
-	helper.Add("性别:" + string(admin.GetUserGender(id)));
-	helper.Add("类型:" + string(admin.GetUserType(id)));
-	helper.Show();
-	GetCh();
 }
 
 void Show::RemoveUser(AdminHelper & admin)
