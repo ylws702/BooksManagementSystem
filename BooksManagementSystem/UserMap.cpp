@@ -72,6 +72,11 @@ UserMap UserMap::ReadMap(const char * path)
 		{
 			ifs.read((char*)&p, sizeof(pair<ID, Date>));
 			current.borrowList.push_back(p);
+			//防止过大的n爆掉内存
+			if (ifs.eof())
+			{
+				break;
+			}
 		}
 		map.Add(current);
 	}
@@ -109,17 +114,17 @@ bool UserMap::WriteMap(const char * path) const
 	return true;
 }
 
-#include<iostream>
-#include<iomanip>
-using namespace std;
-void UserMap::Print()
-{
-	for (auto pair : userMap)
-	{
-		std::cout << setw(16) << pair.second.id
-			<< setw(16) << pair.second.name
-			<< setw(16) << pair.second.gender
-			<< setw(16) << pair.second.isEnabled
-			<< endl;
-	}
-}
+//#include<iostream>
+//#include<iomanip>
+//using namespace std;
+//void UserMap::Print()
+//{
+//	for (auto pair : userMap)
+//	{
+//		std::cout << setw(16) << pair.second.id
+//			<< setw(16) << pair.second.name
+//			<< setw(16) << pair.second.gender
+//			<< setw(16) << pair.second.isEnabled
+//			<< endl;
+//	}
+//}

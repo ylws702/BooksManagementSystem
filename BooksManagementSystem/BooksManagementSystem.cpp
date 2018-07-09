@@ -9,6 +9,5 @@ using namespace std;
 int main()
 {
 	Show::MainMenu();
-    return 0;
+	return 0;
 }
-
