@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Show.h"
+#include"debug.h"
 
 
 #ifdef __linux
@@ -27,20 +28,23 @@ char Show::GetCh()
 }
 
 void Show::MainMenu()
-{
+{;
 	ShowHelper helper("", "");
 	while (true)
 	{
 		Clear();
+		debug("正在创建界面，调用的是Show::MainMenu()，若要进行下一步调试。请按任意键");
 		helper.Reset("欢迎使用图书管理系统", "请选择数字键选择相应的服务");
 		helper.Add("(1)  普通用户");
 		helper.Add("(2)  图书管理员");
 		helper.Add("(3)  系统管理员");
 		helper.Add("(0)  退 出");
 		helper.Show();
+		
 		switch (GetCh())
 		{
 		case '1':
+			
 			UserMenu();
 			break;
 		case '2':
@@ -78,11 +82,13 @@ void Show::UserMenu()
 		cin >> uid;
 		cout << "密码:";
 		cin >> password;
+		debug("正在进行密码的验证，调用user.Login()，若要进行下一步调试。请按任意键");
 		if (user.Login(uid, password))
 		{
 			break;
 		}
 		Clear();
+		debug("正在输出错误信息，调用helper.Reset(),helper.Add()，helper.Show(),判断字符是否为q,若要进行下一步调试。请按任意键");
 		helper.Reset("普通用户登录", "按(q)返回主菜单,其余键重试!");
 		helper.Add("用户名或密码错误!", ShowHelper::Center);
 		helper.Show();
@@ -96,6 +102,7 @@ void Show::UserMenu()
 	}
 	name = user.GetUserName();
 	Clear();
+	debug("正在，若要进行下一步调试。请按任意键");
 	helper.Reset(name + ",欢迎使用", "按任意键继续");
 	helper.Add("登录成功", ShowHelper::Center);
 	helper.Show();
@@ -103,6 +110,7 @@ void Show::UserMenu()
 	while (true)
 	{
 		Clear();
+		debug("正在，若要进行下一步调试。请按任意键");
 		helper.Reset("普通用户:" + name, "请选择数字键选择相应的服务");
 		helper.Add("(1)  查询书籍");
 		helper.Add("(2)  借书");
@@ -126,6 +134,7 @@ void Show::UserMenu()
 		case '0':
 			Clear();
 			helper.Clear();
+			debug("正在，若要进行下一步调试。请按任意键");
 			helper.SetHeader("再见" + string(name), "按任意键返回主菜单");
 			helper.Add("谢 谢 使 用 !", ShowHelper::Center);
 			for (auto str : helper.Normalize())
@@ -154,6 +163,7 @@ void Show::FindBook(UserHelper & user)
 	if (nullptr == title)
 	{
 		Clear();
+		debug("正在，若要进行下一步调试。请按任意键");
 		helper.Reset("查找书籍", "按任意键返回上一级菜单");
 		helper.Add("没有找到该编号的书籍!");
 		helper.Show();
@@ -161,6 +171,7 @@ void Show::FindBook(UserHelper & user)
 		return;
 	}
 	Clear();
+	debug("正在，若要进行下一步调试。请按任意键");
 	helper.Reset("查找书籍", "按任意键返回上一级菜单");
 	helper.Add("查找结果");
 	helper.Add("ID:" + to_string(id));
@@ -188,6 +199,7 @@ void Show::BorrowBook(UserHelper & user)
 	if (nullptr == title)
 	{
 		Clear();
+		debug("正在，若要进行下一步调试。请按任意键");
 		helper.Reset("借阅书籍", "按任意键返回上一级菜单");
 		helper.Add("没有找到该编号的书籍!");
 		helper.Show();
@@ -197,6 +209,7 @@ void Show::BorrowBook(UserHelper & user)
 	while (true)
 	{
 		Clear();
+		debug("正在，若要进行下一步调试。请按任意键");
 		helper.Reset("确认借阅书籍", "(y)是------(n)否");
 		helper.Add("ID:" + to_string(id));
 		helper.Add();
@@ -218,6 +231,7 @@ void Show::BorrowBook(UserHelper & user)
 
 			}
 			Clear();
+			debug("正在，若要进行下一步调试。请按任意键");
 			helper.Reset("借阅书籍", "按任意键返回");
 			helper.Add("借书成功");
 			helper.Add("ID:" + to_string(id));
@@ -254,6 +268,7 @@ void Show::GetBorrowInfo(UserHelper & user)
 	while (true)
 	{
 		Clear();
+		debug("正在，若要进行下一步调试。请按任意键");
 		id = it->first;
 		title = user.GetBookTitle(id);
 		author = user.GetBookAuthor(id);
