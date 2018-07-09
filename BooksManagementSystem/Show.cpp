@@ -634,6 +634,8 @@ void Show::BorrowBook(UserHelper & user)
 	const char* press;
 	const char* date;
 	const char* type;
+	string totalCount;
+	string restCount;
 	bool exist;
 	bool flag;
 	ShowHelper helper("", "");
@@ -647,6 +649,8 @@ void Show::BorrowBook(UserHelper & user)
 		date = user.GetBookDate(id);
 		type = user.GetBookType(id);
 		exist = user.GetBookExist(id);
+		restCount= to_string(user.GetBookRestCount(id));
+		totalCount = to_string(user.GetBookTotalCount(id));
 		if (nullptr == title)
 		{
 			Clear();
@@ -688,6 +692,8 @@ void Show::BorrowBook(UserHelper & user)
 			helper.Add("出版社:" + string(press));
 			helper.Add("出版日期:" + string(date));
 			helper.Add("类型:" + string(type));
+			helper.Add();
+			helper.Add("在馆/总量:   " + restCount + "/" + totalCount);
 			helper.Show();
 			switch (GetCh())
 			{
@@ -2207,14 +2213,14 @@ void Show::ReturnBook(AdminHelper & admin)
 	{
 		Clear();
 		helper.Reset("还书", "按任意键返回图书管理员菜单");
-		helper.Add("保存失败!");
+		helper.Add("还书失败!");
 		helper.Show();
 		GetCh();
 		return;
 	}
 	Clear();
 	helper.Reset("添加管理员", "按任意键返回图书管理员菜单");
-	helper.Add("成功保存修改!");
+	helper.Add("还书成功!");
 	helper.Show();
 	GetCh();
 }
