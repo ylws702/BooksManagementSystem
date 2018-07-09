@@ -41,8 +41,10 @@ public:
 	static void ChangeUserPassword(UserHelper& user);
 	static void AdminMenu();
 	static void AddBook(AdminHelper& admin);
-	static void RemoveBook(AdminHelper& admin);
-	static void ModifyBook(AdminHelper& admin);
+	static void RemoveBookByID(AdminHelper& admin, ID bookID = 0);
+	static void RemoveBookByTitle(AdminHelper& admin);
+	static void ModifyBookByID(AdminHelper& admin, ID id = 0);
+	static void ModifyBookByTitle(AdminHelper& admin);
 	static void FindBookByID(AdminHelper& admin);
 	static void FindBookByTitle(AdminHelper& admin);
 	static void FindBorrowedBooks(AdminHelper& admin);
