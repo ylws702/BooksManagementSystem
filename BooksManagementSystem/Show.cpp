@@ -576,13 +576,13 @@ void Show::ChangeUserPassword(UserHelper & user)
 	if (!user.ChangePassword(oldpw, newpw))
 	{
 		Clear();
-		helper.Reset("更改密码", "按任意键返回图书管理员菜单");
+		helper.Reset("更改密码", "按任意键返回用户菜单");
 		helper.Add("保存失败!");
 		helper.Show();
 		GetCh();
 	}
 	Clear();
-	helper.Reset("更改密码", "按任意键返回图书管理员菜单");
+	helper.Reset("更改密码", "按任意键返回用户菜单");
 	helper.Add("保存成功!");
 	helper.Add();
 	helper.Add("已成功更改密码!");
