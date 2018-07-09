@@ -63,28 +63,42 @@ const char * UserHelper::GetUserName() const
 
 bool UserHelper::Borrow(const ID bookID)
 {
+	//没有登录
 	if (!Loggedin)
 	{
 		return false;
 	}
-	auto it = bookMap.bookMap.find(bookID);
-	if (bookMap.bookMap.end() == it)
-	{
-		return false;
-	}
-	if (!it->second.exist)
-	{
-		return false;
-	}
-	if (!it->second.SetExist(false))
-	{
-		return false;
-	}
 	auto itu = userMap.userMap.find(user.id);
+	//用户不存在
 	if (userMap.userMap.end() == itu)
 	{
 		return false;
 	}
+	auto it = bookMap.bookMap.find(bookID);
+	//书不存在
+	if (bookMap.bookMap.end() == it)
+	{
+		return false;
+	}
+	//书余量不足
+	if (it->second.restCount<=0)
+	{
+		return false;
+	}
+	//修改信息失败
+	if (!it->second.Decrease())
+	{
+		return false;
+	}
+	/*if (!it->second.exist)
+	{
+		return false;
+	}*/
+	/*if (!it->second.SetExist(false))
+	{
+		return false;
+	}*/
+	//加入用户借阅表
 	pair<ID, Date> p(bookID, Date::Now());
 	itu->second.borrowList.push_back(p);
 	user.borrowList.push_back(p);
@@ -163,11 +177,41 @@ bool UserHelper::GetBookExist(const ID id) const
 	{
 		return false;
 	}
+	//查无此书
 	if (bookMap.bookMap.find(id) == bookMap.bookMap.end())
 	{
 		return false;
 	}
-	return bookMap.bookMap.find(id)->second.exist;
+	//书籍余量是否大于0;
+	return bookMap.bookMap.find(id)->second.restCount > 0;
+}
+
+unsigned int UserHelper::GetBookRestCount(const ID id) const
+{
+	if (!Loggedin)
+	{
+		return 0;
+	}
+	//查无此书
+	if (bookMap.bookMap.find(id) == bookMap.bookMap.end())
+	{
+		return false;
+	}
+	return bookMap.bookMap.find(id)->second.restCount;
+}
+
+unsigned int UserHelper::GetBookTotalCount(const ID id) const
+{
+	if (!Loggedin)
+	{
+		return 0;
+	}
+	//查无此书
+	if (bookMap.bookMap.find(id) == bookMap.bookMap.end())
+	{
+		return false;
+	}
+	return bookMap.bookMap.find(id)->second.totalCount;
 }
 
 list<pair<ID, Date>> UserHelper::GetBorrowList()const

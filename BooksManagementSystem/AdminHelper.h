@@ -17,19 +17,22 @@ public:
 		const char* author,
 		const char* press,
 		const char* date,
-		const char* type);
+		const char* type,
+		const int number);
 	bool RemoveBook(const ID id);
-	const char* GetBookTitle(const ID id);
-	const char* GetBookAuthor(const ID id);
-	const char* GetBookPress(const ID id);
-	const char* GetBookDate(const ID id);
-	const char* GetBookType(const ID id);
+	const char* GetBookTitle(const ID id)const;
+	const char* GetBookAuthor(const ID id)const;
+	const char* GetBookPress(const ID id)const;
+	const char* GetBookDate(const ID id)const;
+	const char* GetBookType(const ID id)const;
 	bool GetBookExist(const ID id)const;
 	bool SetBookTitle(const ID id,const char* title);
 	bool SetBookAuthor(const ID id, const char* author);
 	bool SetBookPress(const ID id, const char* press);
 	bool SetBookDate(const ID id, const char* date);
 	bool SetBookType(const ID id, const char* type);
+	unsigned int GetBookRestCount(const ID id)const;
+	unsigned int GetBookTotalCount(const ID id)const;
 	bool AddUser(const ID id,
 		const char * name,
 		const char * password,
