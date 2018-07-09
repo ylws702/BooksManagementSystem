@@ -936,7 +936,24 @@ void Show::AdminMenu()
 			AddBook(admin);
 			break;
 		case '2':
-			RemoveBookByID(admin);
+			Clear();
+			helper.Reset("删除书籍", "选择数字键选择方式,其余键返回");
+			helper.Add("选择查找方式");
+			helper.Add();
+			helper.Add("(1)  按书名删除");
+			helper.Add("(2)  按编号删除");
+			helper.Show();
+			switch (GetCh())
+			{
+			case '1':
+				RemoveBookByTitle(admin);
+				break;
+			case '2':
+				RemoveBookByID(admin);
+				break;
+			default:
+				break;
+			}
 			break;
 		case '3':
 			Clear();
@@ -957,8 +974,6 @@ void Show::AdminMenu()
 			default:
 				break;
 			}
-			break;
-			ModifyBookByID(admin);
 			break;
 		case '4':
 			Clear();
