@@ -126,6 +126,9 @@ void Show::UserMenu()
 			helper.Add();
 			helper.Add("(1)  编号");
 			helper.Add("(2)  标题");
+			helper.Add("(3)  有借出书籍");
+			helper.Add("(4)  无借出书籍");
+			helper.Add("(5)  全部书籍");
 			helper.Show();
 			switch (GetCh())
 			{
@@ -134,6 +137,15 @@ void Show::UserMenu()
 				break;
 			case '2':
 				FindBookByTitle(user);
+				break;
+			case '3':
+				FindBorrowedBooks(user);
+				break;
+			case '4':
+				FindNotBorrowedBooks(user);
+				break;
+			case '5':
+				FindAllBooks(user);
 				break;
 			default:
 				break;
@@ -250,7 +262,7 @@ void Show::FindBookByTitle(UserHelper & user)
 	string type;
 	string totalCount;
 	string restCount;
-	bool exist;
+	//bool exist;
 	ID id;
 	unsigned int i;
 	while (true)
@@ -284,7 +296,7 @@ void Show::FindBookByTitle(UserHelper & user)
 			press = user.GetBookPress(*it);
 			date = user.GetBookDate(*it);
 			type = user.GetBookType(*it);
-			exist = user.GetBookExist(*it);
+			//exist = user.GetBookExist(*it);
 			totalCount = to_string(user.GetBookTotalCount(id));
 			restCount = to_string(user.GetBookRestCount(id));
 			helper.Reset("查询结果",
@@ -307,6 +319,246 @@ void Show::FindBookByTitle(UserHelper & user)
 			else
 			{
 				helper.Add("不在馆");
+			}*/
+			helper.Show();
+			switch (GetCh())
+			{
+			case Right:case Down:
+				if (i >= ids.size())
+				{
+					break;
+				}
+				i++;
+				it++;
+				break;
+			case Left:case Up:
+				if (i <= 1)
+				{
+					break;
+				}
+				i--;
+				it--;
+				break;
+			default:
+				return;
+			}
+		}
+	}
+}
+
+void Show::FindBorrowedBooks(UserHelper & user)
+{
+	ShowHelper helper("", "");
+	char str[32];
+	string size;
+	string title;
+	string author;
+	string press;
+	string date;
+	string type;
+	string totalCount;
+	string restCount;
+	//bool exist;
+	ID id;
+	unsigned int i;
+	while (true)
+	{
+		auto ids = user.GetBorrowedBooks();
+		size = to_string(ids.size());
+		auto it = ids.begin();
+		i = 1;
+		while (true)
+		{
+			Clear();
+			id = *it;
+			title = user.GetBookTitle(*it);
+			author = user.GetBookAuthor(*it);
+			press = user.GetBookPress(*it);
+			date = user.GetBookDate(*it);
+			type = user.GetBookType(*it);
+			//exist = user.GetBookExist(*it);
+			totalCount = to_string(user.GetBookTotalCount(id));
+			restCount = to_string(user.GetBookRestCount(id));
+			helper.Reset("查询结果",
+				"第" + to_string(i) + "页,共" + size + "页。" +
+				"左右键翻页" +
+				",其余键返回");
+			helper.Add("《" + string(title) + "》", ShowHelper::Center);
+			helper.Add();
+			helper.Add("ID:" + to_string(id));
+			helper.Add("作者:" + author);
+			helper.Add("出版社:" + press);
+			helper.Add("出版日期:" + date);
+			helper.Add("类型:" + type);
+			helper.Add();
+			helper.Add("在馆/总量:   " + restCount + "/" + totalCount);
+			/*if (exist)
+			{
+			helper.Add("在馆");
+			}
+			else
+			{
+			helper.Add("不在馆");
+			}*/
+			helper.Show();
+			switch (GetCh())
+			{
+			case Right:case Down:
+				if (i >= ids.size())
+				{
+					break;
+				}
+				i++;
+				it++;
+				break;
+			case Left:case Up:
+				if (i <= 1)
+				{
+					break;
+				}
+				i--;
+				it--;
+				break;
+			default:
+				return;
+			}
+		}
+	}
+}
+
+void Show::FindNotBorrowedBooks(UserHelper & user)
+{
+	ShowHelper helper("", "");
+	char str[32];
+	string size;
+	string title;
+	string author;
+	string press;
+	string date;
+	string type;
+	string totalCount;
+	string restCount;
+	//bool exist;
+	ID id;
+	unsigned int i;
+	while (true)
+	{
+		auto ids = user.GetNotBorrowedBooks();
+		size = to_string(ids.size());
+		auto it = ids.begin();
+		i = 1;
+		while (true)
+		{
+			Clear();
+			id = *it;
+			title = user.GetBookTitle(*it);
+			author = user.GetBookAuthor(*it);
+			press = user.GetBookPress(*it);
+			date = user.GetBookDate(*it);
+			type = user.GetBookType(*it);
+			//exist = user.GetBookExist(*it);
+			totalCount = to_string(user.GetBookTotalCount(id));
+			restCount = to_string(user.GetBookRestCount(id));
+			helper.Reset("查询结果",
+				"第" + to_string(i) + "页,共" + size + "页。" +
+				"左右键翻页" +
+				",其余键返回");
+			helper.Add("《" + string(title) + "》", ShowHelper::Center);
+			helper.Add();
+			helper.Add("ID:" + to_string(id));
+			helper.Add("作者:" + author);
+			helper.Add("出版社:" + press);
+			helper.Add("出版日期:" + date);
+			helper.Add("类型:" + type);
+			helper.Add();
+			helper.Add("在馆/总量:   " + restCount + "/" + totalCount);
+			/*if (exist)
+			{
+			helper.Add("在馆");
+			}
+			else
+			{
+			helper.Add("不在馆");
+			}*/
+			helper.Show();
+			switch (GetCh())
+			{
+			case Right:case Down:
+				if (i >= ids.size())
+				{
+					break;
+				}
+				i++;
+				it++;
+				break;
+			case Left:case Up:
+				if (i <= 1)
+				{
+					break;
+				}
+				i--;
+				it--;
+				break;
+			default:
+				return;
+			}
+		}
+	}
+}
+
+void Show::FindAllBooks(UserHelper & user)
+{
+	ShowHelper helper("", "");
+	char str[32];
+	string size;
+	string title;
+	string author;
+	string press;
+	string date;
+	string type;
+	string totalCount;
+	string restCount;
+	//bool exist;
+	ID id;
+	unsigned int i;
+	while (true)
+	{
+		auto ids = user.GetAllBooks();
+		size = to_string(ids.size());
+		auto it = ids.begin();
+		i = 1;
+		while (true)
+		{
+			Clear();
+			id = *it;
+			title = user.GetBookTitle(*it);
+			author = user.GetBookAuthor(*it);
+			press = user.GetBookPress(*it);
+			date = user.GetBookDate(*it);
+			type = user.GetBookType(*it);
+			//exist = user.GetBookExist(*it);
+			totalCount = to_string(user.GetBookTotalCount(id));
+			restCount = to_string(user.GetBookRestCount(id));
+			helper.Reset("查询结果",
+				"第" + to_string(i) + "页,共" + size + "页。" +
+				"左右键翻页" +
+				",其余键返回");
+			helper.Add("《" + string(title) + "》", ShowHelper::Center);
+			helper.Add();
+			helper.Add("ID:" + to_string(id));
+			helper.Add("作者:" + author);
+			helper.Add("出版社:" + press);
+			helper.Add("出版日期:" + date);
+			helper.Add("类型:" + type);
+			helper.Add();
+			helper.Add("在馆/总量:   " + restCount + "/" + totalCount);
+			/*if (exist)
+			{
+			helper.Add("在馆");
+			}
+			else
+			{
+			helper.Add("不在馆");
 			}*/
 			helper.Show();
 			switch (GetCh())
@@ -657,6 +909,9 @@ void Show::AdminMenu()
 			helper.Add();
 			helper.Add("(1)  编号");
 			helper.Add("(2)  标题");
+			helper.Add("(3)  有借出书籍");
+			helper.Add("(4)  无借出书籍");
+			helper.Add("(5)  全部书籍");
 			helper.Show();
 			switch (GetCh())
 			{
@@ -665,6 +920,15 @@ void Show::AdminMenu()
 				break;
 			case '2':
 				FindBookByTitle(admin);
+				break;
+			case '3':
+				FindBorrowedBooks(admin);
+				break;
+			case '4':
+				FindNotBorrowedBooks(admin);
+				break;
+			case '5':
+				FindAllBooks(admin);
 				break;
 			default:
 				break;
@@ -1089,6 +1353,246 @@ void Show::FindBookByTitle(AdminHelper & admin)
 			date = admin.GetBookDate(*it);
 			type = admin.GetBookType(*it);
 			exist = admin.GetBookExist(*it);
+			totalCount = to_string(admin.GetBookTotalCount(id));
+			restCount = to_string(admin.GetBookRestCount(id));
+			helper.Reset("查询结果",
+				"第" + to_string(i) + "页,共" + size + "页。" +
+				"左右键翻页" +
+				",其余键返回");
+			helper.Add("《" + string(title) + "》", ShowHelper::Center);
+			helper.Add();
+			helper.Add("ID:" + to_string(id));
+			helper.Add("作者:" + author);
+			helper.Add("出版社:" + press);
+			helper.Add("出版日期:" + date);
+			helper.Add("类型:" + type);
+			helper.Add();
+			helper.Add("在馆/总量:   " + restCount + "/" + totalCount);
+			/*if (exist)
+			{
+			helper.Add("在馆");
+			}
+			else
+			{
+			helper.Add("不在馆");
+			}*/
+			helper.Show();
+			switch (GetCh())
+			{
+			case Right:case Down:
+				if (i >= ids.size())
+				{
+					break;
+				}
+				i++;
+				it++;
+				break;
+			case Left:case Up:
+				if (i <= 1)
+				{
+					break;
+				}
+				i--;
+				it--;
+				break;
+			default:
+				return;
+			}
+		}
+	}
+}
+
+void Show::FindBorrowedBooks(AdminHelper & admin)
+{
+	ShowHelper helper("", "");
+	char str[32];
+	string size;
+	string title;
+	string author;
+	string press;
+	string date;
+	string type;
+	string totalCount;
+	string restCount;
+	//bool exist;
+	ID id;
+	unsigned int i;
+	while (true)
+	{
+		auto ids = admin.GetBorrowedBooks();
+		size = to_string(ids.size());
+		auto it = ids.begin();
+		i = 1;
+		while (true)
+		{
+			Clear();
+			id = *it;
+			title = admin.GetBookTitle(*it);
+			author = admin.GetBookAuthor(*it);
+			press = admin.GetBookPress(*it);
+			date = admin.GetBookDate(*it);
+			type = admin.GetBookType(*it);
+			//exist = user.GetBookExist(*it);
+			totalCount = to_string(admin.GetBookTotalCount(id));
+			restCount = to_string(admin.GetBookRestCount(id));
+			helper.Reset("查询结果",
+				"第" + to_string(i) + "页,共" + size + "页。" +
+				"左右键翻页" +
+				",其余键返回");
+			helper.Add("《" + string(title) + "》", ShowHelper::Center);
+			helper.Add();
+			helper.Add("ID:" + to_string(id));
+			helper.Add("作者:" + author);
+			helper.Add("出版社:" + press);
+			helper.Add("出版日期:" + date);
+			helper.Add("类型:" + type);
+			helper.Add();
+			helper.Add("在馆/总量:   " + restCount + "/" + totalCount);
+			/*if (exist)
+			{
+			helper.Add("在馆");
+			}
+			else
+			{
+			helper.Add("不在馆");
+			}*/
+			helper.Show();
+			switch (GetCh())
+			{
+			case Right:case Down:
+				if (i >= ids.size())
+				{
+					break;
+				}
+				i++;
+				it++;
+				break;
+			case Left:case Up:
+				if (i <= 1)
+				{
+					break;
+				}
+				i--;
+				it--;
+				break;
+			default:
+				return;
+			}
+		}
+	}
+}
+
+void Show::FindNotBorrowedBooks(AdminHelper & admin)
+{
+	ShowHelper helper("", "");
+	char str[32];
+	string size;
+	string title;
+	string author;
+	string press;
+	string date;
+	string type;
+	string totalCount;
+	string restCount;
+	//bool exist;
+	ID id;
+	unsigned int i;
+	while (true)
+	{
+		auto ids = admin.GetNotBorrowedBooks();
+		size = to_string(ids.size());
+		auto it = ids.begin();
+		i = 1;
+		while (true)
+		{
+			Clear();
+			id = *it;
+			title = admin.GetBookTitle(*it);
+			author = admin.GetBookAuthor(*it);
+			press = admin.GetBookPress(*it);
+			date = admin.GetBookDate(*it);
+			type = admin.GetBookType(*it);
+			//exist = user.GetBookExist(*it);
+			totalCount = to_string(admin.GetBookTotalCount(id));
+			restCount = to_string(admin.GetBookRestCount(id));
+			helper.Reset("查询结果",
+				"第" + to_string(i) + "页,共" + size + "页。" +
+				"左右键翻页" +
+				",其余键返回");
+			helper.Add("《" + string(title) + "》", ShowHelper::Center);
+			helper.Add();
+			helper.Add("ID:" + to_string(id));
+			helper.Add("作者:" + author);
+			helper.Add("出版社:" + press);
+			helper.Add("出版日期:" + date);
+			helper.Add("类型:" + type);
+			helper.Add();
+			helper.Add("在馆/总量:   " + restCount + "/" + totalCount);
+			/*if (exist)
+			{
+			helper.Add("在馆");
+			}
+			else
+			{
+			helper.Add("不在馆");
+			}*/
+			helper.Show();
+			switch (GetCh())
+			{
+			case Right:case Down:
+				if (i >= ids.size())
+				{
+					break;
+				}
+				i++;
+				it++;
+				break;
+			case Left:case Up:
+				if (i <= 1)
+				{
+					break;
+				}
+				i--;
+				it--;
+				break;
+			default:
+				return;
+			}
+		}
+	}
+}
+
+void Show::FindAllBooks(AdminHelper & admin)
+{
+	ShowHelper helper("", "");
+	char str[32];
+	string size;
+	string title;
+	string author;
+	string press;
+	string date;
+	string type;
+	string totalCount;
+	string restCount;
+	//bool exist;
+	ID id;
+	unsigned int i;
+	while (true)
+	{
+		auto ids = admin.GetAllBooks();
+		size = to_string(ids.size());
+		auto it = ids.begin();
+		i = 1;
+		while (true)
+		{
+			Clear();
+			id = *it;
+			title = admin.GetBookTitle(*it);
+			author = admin.GetBookAuthor(*it);
+			press = admin.GetBookPress(*it);
+			date = admin.GetBookDate(*it);
+			type = admin.GetBookType(*it);
+			//exist = user.GetBookExist(*it);
 			totalCount = to_string(admin.GetBookTotalCount(id));
 			restCount = to_string(admin.GetBookRestCount(id));
 			helper.Reset("查询结果",

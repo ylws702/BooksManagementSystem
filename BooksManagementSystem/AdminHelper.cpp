@@ -288,6 +288,54 @@ unsigned int AdminHelper::GetBookTotalCount(const ID id) const
 	return bookMap.bookMap.find(id)->second.totalCount;
 }
 
+list<ID> AdminHelper::GetAllBooks() const
+{
+	list<ID> result;
+	if (!Loggedin)
+	{
+		return result;
+	}
+	for (auto p:bookMap.bookMap)
+	{
+		result.push_back(p.first);
+	}
+	return result;
+}
+
+list<ID> AdminHelper::GetBorrowedBooks() const
+{
+	list<ID> result;
+	if (!Loggedin)
+	{
+		return result;
+	}
+	for (auto p : bookMap.bookMap)
+	{
+		if (p.second.restCount<p.second.totalCount)
+		{
+			result.push_back(p.first);
+		}
+	}
+	return result;
+}
+
+list<ID> AdminHelper::GetNotBorrowedBooks() const
+{
+	list<ID> result;
+	if (!Loggedin)
+	{
+		return result;
+	}
+	for (auto p : bookMap.bookMap)
+	{
+		if (p.second.restCount == p.second.totalCount)
+		{
+			result.push_back(p.first);
+		}
+	}
+	return result;
+}
+
 bool AdminHelper::AddUser(const ID id,
 	const char * name,
 	const char * password,

@@ -24,6 +24,9 @@ public:
 	unsigned int GetBookTotalCount(const ID id)const;
 	list<pair<ID, Date>> GetBorrowList()const;
 	list<ID> FindBookByTitle(const char* title)const;
+	list<ID> GetAllBooks()const;
+	list<ID> GetBorrowedBooks()const;
+	list<ID> GetNotBorrowedBooks()const;
 	bool Save()const;
 private:
 	const char*userMapPath{ "user" };

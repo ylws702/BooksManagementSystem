@@ -33,6 +33,9 @@ public:
 	static void UserMenu();
 	static void FindBookByID(UserHelper& user);
 	static void FindBookByTitle(UserHelper& user);
+	static void FindBorrowedBooks(UserHelper& user);
+	static void FindNotBorrowedBooks(UserHelper& user);
+	static void FindAllBooks(UserHelper& user);
 	static void BorrowBook(UserHelper& user);
 	static void GetBorrowInfo(UserHelper& user);
 	static void ChangeUserPassword(UserHelper& user);
@@ -42,6 +45,9 @@ public:
 	static void ModifyBook(AdminHelper& admin);
 	static void FindBookByID(AdminHelper& admin);
 	static void FindBookByTitle(AdminHelper& admin);
+	static void FindBorrowedBooks(AdminHelper& admin);
+	static void FindNotBorrowedBooks(AdminHelper& admin);
+	static void FindAllBooks(AdminHelper& admin);
 	static void AddUser(AdminHelper& admin);
 	static void RemoveUser(AdminHelper& admin);
 	static void ReportLoss(AdminHelper& admin);
