@@ -77,7 +77,7 @@ const char * RootHelper::GetAdminName(const ID id)
 {
 	if (!Loggedin)
 	{
-		return false;
+		return nullptr;
 	}
 	if (adminMap.adminMap.find(id)== adminMap.adminMap.end())
 	{

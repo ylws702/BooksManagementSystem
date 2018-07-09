@@ -6,17 +6,15 @@
 #ifdef __linux
 #define CLEAR "clear"
 #endif // !__linux
+
 #ifdef _WIN32
 #define CLEAR "cls"
 #endif // _WIN32
+
 void Show::Clear()
 {
 	system(CLEAR);
 }
-
-#ifdef _WIN32
-#include <conio.h>
-#endif // _WIN32
 
 char Show::GetCh()
 {
