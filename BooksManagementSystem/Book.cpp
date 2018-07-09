@@ -3,7 +3,7 @@
 
 
 Book::Book(ID id):
-	id(id),exist(true)
+	id(id),exist(true),totalCount(1),restCount(1)
 {
 	SetAuthor("无信息");
 	SetDate("无信息");
@@ -19,8 +19,9 @@ Book::Book(
 	const char * author, 
 	const char * press,
 	const char * date,
-	const char * type):
-	id(id),exist(true)
+	const char * type,
+	const int number):
+	id(id),exist(true),totalCount(number),restCount(number)
 {
 	SetTitle(title);
 	SetAuthor(author);
@@ -102,6 +103,34 @@ bool Book::SetType(const char * str)
 		i++;
 	}
 	return false;
+}
+
+bool Book::SetTotalCount(const unsigned int count)
+{
+	totalCount = count;
+	return true;
+}
+
+bool Book::SetRestCount(const unsigned int count)
+{
+	restCount = count;
+	return true;
+}
+
+bool Book::Increase()
+{
+	restCount++;
+	return true;
+}
+
+bool Book::Decrease()
+{
+	if (restCount<=0)
+	{
+		return false;
+	}
+	restCount--;
+	return true;
 }
 
 bool Book::SetExist(bool exist)

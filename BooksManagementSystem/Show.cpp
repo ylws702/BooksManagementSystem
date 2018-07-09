@@ -177,7 +177,9 @@ void Show::FindBookByID(UserHelper & user)
 	const char* press;
 	const char* date;
 	const char* type;
-	bool  exist;
+	string totalCount;
+	string restCount;
+	//bool  exist;
 	while (true)
 	{
 		cout << "输入图书编号:";
@@ -187,7 +189,9 @@ void Show::FindBookByID(UserHelper & user)
 		press = user.GetBookPress(id);
 		date = user.GetBookDate(id);
 		type = user.GetBookType(id);
-		exist = user.GetBookExist(id);
+		totalCount = user.GetBookRestCount(id);
+		restCount = user.GetBookRestCount(id);
+		//exist = user.GetBookExist(id);
 		ShowHelper helper("", "");
 		if (nullptr == title)
 		{
@@ -216,14 +220,15 @@ void Show::FindBookByID(UserHelper & user)
 		helper.Add("出版日期:" + string(date));
 		helper.Add("类型:" + string(type));
 		helper.Add();
-		if (exist)
+		helper.Add("在馆/总量:   " + restCount+"/"+totalCount);
+		/*if (exist)
 		{
 			helper.Add("在馆");
 		}
 		else
 		{
 			helper.Add("不在馆");
-		}
+		}*/
 		helper.Show();
 		switch (GetCh())
 		{
@@ -245,6 +250,8 @@ void Show::FindBookByTitle(UserHelper & user)
 	string press;
 	string date;
 	string type;
+	string totalCount;
+	string restCount;
 	bool exist;
 	ID id;
 	unsigned int i;
@@ -280,6 +287,8 @@ void Show::FindBookByTitle(UserHelper & user)
 			date = user.GetBookDate(*it);
 			type = user.GetBookType(*it);
 			exist = user.GetBookExist(*it);
+			totalCount = user.GetBookRestCount(id);
+			restCount = user.GetBookRestCount(id);
 			helper.Reset("查询结果",
 				"第" + to_string(i) + "页,共" + size + "页。" +
 				"左右键翻页" +
@@ -292,14 +301,15 @@ void Show::FindBookByTitle(UserHelper & user)
 			helper.Add("出版日期:" + date);
 			helper.Add("类型:" + type);
 			helper.Add();
-			if (exist)
+			helper.Add("在馆/总量:   " + restCount + "/" + totalCount);
+			/*if (exist)
 			{
 				helper.Add("在馆");
 			}
 			else
 			{
 				helper.Add("不在馆");
-			}
+			}*/
 			helper.Show();
 			switch (GetCh())
 			{
@@ -699,14 +709,15 @@ void Show::AdminMenu()
 
 void Show::AddBook(AdminHelper & admin)
 {
+	ID id;
+	char title[32];
+	char author[32];
+	char press[32];
+	char date[32];
+	char type[32];
+	int number;
 	while (true)
 	{
-		ID id;
-		char title[32];
-		char author[32];
-		char press[32];
-		char date[32];
-		char type[32];
 		cout << "输入编号:";
 		cin >> id;
 		cout << "输入标题:";
@@ -719,7 +730,9 @@ void Show::AddBook(AdminHelper & admin)
 		cin >> date;
 		cout << "输入类型:";
 		cin >> type;
-		admin.AddBook(id, title, author, press, date, type);
+		cout << "输入数量:";
+		cin >> number;
+		admin.AddBook(id, title, author, press, date, type, number);
 		Clear();
 		ShowHelper helper("添加书籍", "");
 		helper.Add("正在保存修改...");
@@ -968,7 +981,9 @@ void Show::FindBookByID(AdminHelper & admin)
 	const char* press;
 	const char* date;
 	const char* type;
-	bool  exist;
+	string totalCount;
+	string restCount;
+	//bool  exist;
 	while (true)
 	{
 		cout << "输入图书编号:";
@@ -978,7 +993,9 @@ void Show::FindBookByID(AdminHelper & admin)
 		press = admin.GetBookPress(id);
 		date = admin.GetBookDate(id);
 		type = admin.GetBookType(id);
-		exist = admin.GetBookExist(id);
+		totalCount = admin.GetBookRestCount(id);
+		restCount = admin.GetBookRestCount(id);
+		//exist = user.GetBookExist(id);
 		ShowHelper helper("", "");
 		if (nullptr == title)
 		{
@@ -1007,14 +1024,15 @@ void Show::FindBookByID(AdminHelper & admin)
 		helper.Add("出版日期:" + string(date));
 		helper.Add("类型:" + string(type));
 		helper.Add();
-		if (exist)
+		helper.Add("在馆/总量:   " + restCount + "/" + totalCount);
+		/*if (exist)
 		{
-			helper.Add("在馆");
+		helper.Add("在馆");
 		}
 		else
 		{
-			helper.Add("不在馆");
-		}
+		helper.Add("不在馆");
+		}*/
 		helper.Show();
 		switch (GetCh())
 		{
@@ -1036,6 +1054,8 @@ void Show::FindBookByTitle(AdminHelper & admin)
 	string press;
 	string date;
 	string type;
+	string totalCount;
+	string restCount;
 	bool exist;
 	ID id;
 	unsigned int i;
@@ -1071,6 +1091,8 @@ void Show::FindBookByTitle(AdminHelper & admin)
 			date = admin.GetBookDate(*it);
 			type = admin.GetBookType(*it);
 			exist = admin.GetBookExist(*it);
+			totalCount = admin.GetBookRestCount(id);
+			restCount = admin.GetBookRestCount(id);
 			helper.Reset("查询结果",
 				"第" + to_string(i) + "页,共" + size + "页。" +
 				"左右键翻页" +
@@ -1083,14 +1105,15 @@ void Show::FindBookByTitle(AdminHelper & admin)
 			helper.Add("出版日期:" + date);
 			helper.Add("类型:" + type);
 			helper.Add();
-			if (exist)
+			helper.Add("在馆/总量:   " + restCount + "/" + totalCount);
+			/*if (exist)
 			{
-				helper.Add("在馆");
+			helper.Add("在馆");
 			}
 			else
 			{
-				helper.Add("不在馆");
-			}
+			helper.Add("不在馆");
+			}*/
 			helper.Show();
 			switch (GetCh())
 			{
@@ -1458,10 +1481,16 @@ void Show::RootMenu()
 			break;
 		}
 		Clear();
-		helper.Reset("欢迎使用图书管理系统", "按任意键重试!");
+		helper.Reset("普通用户登录", "按(q)返回主菜单,其余键重试!");
 		helper.Add("密码错误!", ShowHelper::Center);
 		helper.Show();
-		GetCh();
+		switch (GetCh())
+		{
+		case 'q':
+			return;
+		default:
+			break;
+		}
 	}
 	while (true)
 	{

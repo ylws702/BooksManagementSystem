@@ -64,13 +64,14 @@ bool AdminHelper::AddBook(
 	const char * author,
 	const char * press,
 	const char * date,
-	const char * type)
+	const char * type,
+	const int number)
 {
 	if (!Loggedin)
 	{
 		return false;
 	}
-	if (!bookMap.Add(Book(id, title, author, press, date, type)))
+	if (!bookMap.Add(Book(id, title, author, press, date, type,number)))
 	{
 		return false;
 	}
@@ -90,7 +91,7 @@ bool AdminHelper::RemoveBook(const ID id)
 	return true;
 }
 
-const char* AdminHelper::GetBookTitle(const ID id)
+const char* AdminHelper::GetBookTitle(const ID id)const
 {
 	if (!Loggedin)
 	{
@@ -103,7 +104,7 @@ const char* AdminHelper::GetBookTitle(const ID id)
 	return bookMap.bookMap.find(id)->second.title;
 }
 
-const char * AdminHelper::GetBookAuthor(const ID id)
+const char * AdminHelper::GetBookAuthor(const ID id)const
 {
 	if (!Loggedin)
 	{
@@ -116,7 +117,7 @@ const char * AdminHelper::GetBookAuthor(const ID id)
 	return bookMap.bookMap.find(id)->second.author;
 }
 
-const char * AdminHelper::GetBookPress(const ID id)
+const char * AdminHelper::GetBookPress(const ID id)const
 {
 	if (!Loggedin)
 	{
@@ -129,7 +130,7 @@ const char * AdminHelper::GetBookPress(const ID id)
 	return bookMap.bookMap.find(id)->second.press;
 }
 
-const char * AdminHelper::GetBookDate(const ID id)
+const char * AdminHelper::GetBookDate(const ID id)const
 {
 	if (!Loggedin)
 	{
@@ -142,7 +143,7 @@ const char * AdminHelper::GetBookDate(const ID id)
 	return bookMap.bookMap.find(id)->second.date;
 }
 
-const char * AdminHelper::GetBookType(const ID id)
+const char * AdminHelper::GetBookType(const ID id)const
 {
 	if (!Loggedin)
 	{
@@ -161,11 +162,13 @@ bool AdminHelper::GetBookExist(const ID id) const
 	{
 		return false;
 	}
+	//查无此书
 	if (bookMap.bookMap.find(id) == bookMap.bookMap.end())
 	{
 		return false;
 	}
-	return bookMap.bookMap.find(id)->second.exist;
+	//书籍余量是否大于0;
+	return bookMap.bookMap.find(id)->second.restCount > 0;
 }
 
 bool AdminHelper::SetBookTitle(const ID id, const char* title)
@@ -256,6 +259,34 @@ bool AdminHelper::SetBookType(const ID id, const char * type)
 		return false;
 	}
 	return true;
+}
+
+unsigned int AdminHelper::GetBookRestCount(const ID id) const
+{
+	if (!Loggedin)
+	{
+		return 0;
+	}
+	//查无此书
+	if (bookMap.bookMap.find(id) == bookMap.bookMap.end())
+	{
+		return false;
+	}
+	return bookMap.bookMap.find(id)->second.restCount;
+}
+
+unsigned int AdminHelper::GetBookTotalCount(const ID id) const
+{
+	if (!Loggedin)
+	{
+		return 0;
+	}
+	//查无此书
+	if (bookMap.bookMap.find(id) == bookMap.bookMap.end())
+	{
+		return false;
+	}
+	return bookMap.bookMap.find(id)->second.totalCount;
 }
 
 bool AdminHelper::AddUser(const ID id,
@@ -386,8 +417,25 @@ bool AdminHelper::Accept(const ID userID, const ID bookID)
 	{
 		return false;
 	}
-	userMap.userMap.find(userID)->second.Return(bookID);
-	bookMap.bookMap.find(bookID)->second.exist=true;
+	auto u = userMap.userMap.find(userID);
+	if (userMap.userMap.end()==u)
+	{
+		return false;
+	}
+	if (!u->second.Return(bookID))
+	{
+		return false;
+	}
+	auto b = bookMap.bookMap.find(bookID);
+	if (bookMap.bookMap.end()==b)
+	{
+		return false;
+	}
+	if (!b->second.Increase())
+	{
+		return false;
+	}
+	//bookMap.bookMap.find(bookID)->second.exist=true;
 	return true;
 }
 
