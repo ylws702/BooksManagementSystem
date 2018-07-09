@@ -24,6 +24,7 @@ public:
 	const char* GetBookPress(const ID id);
 	const char* GetBookDate(const ID id);
 	const char* GetBookType(const ID id);
+	bool GetBookExist(const ID id)const;
 	bool SetBookTitle(const ID id,const char* title);
 	bool SetBookAuthor(const ID id, const char* author);
 	bool SetBookPress(const ID id, const char* press);
@@ -39,9 +40,10 @@ public:
 	const char* GetUserGender(const ID id);
 	const char* GetUserType(const ID id);
 	bool ReportLoss(const ID id);
+	bool UndoReportLoss(const ID id);
 	bool Accept(const ID userID, const ID bookID);
 	bool Save()const;
-	list<ID> FindBookByName(const char* name)const;
+	list<ID> FindBookByTitle(const char* title)const;
 	//list<ID> OverdueBookList()const;
 private:
 	const char*adminMapPath{ "admin" };

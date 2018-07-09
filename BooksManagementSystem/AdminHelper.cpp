@@ -35,6 +35,7 @@ bool AdminHelper::TestPassword(const char * password)
 	return strcmp(password, admin.password) == 0;
 }
 
+//会自动保存文件
 bool AdminHelper::ChangePassword(const char * oldpw, const char * newpw)
 {
 	if (strcmp(oldpw, admin.password) != 0)
@@ -46,6 +47,10 @@ bool AdminHelper::ChangePassword(const char * oldpw, const char * newpw)
 		return false;
 	}
 	if (!adminMap.WriteMap(adminMapPath))
+	{
+		return false;
+	}
+	if (!admin.SetPassword(newpw))
 	{
 		return false;
 	}
@@ -148,6 +153,19 @@ const char * AdminHelper::GetBookType(const ID id)
 		return nullptr;
 	}
 	return bookMap.bookMap.find(id)->second.type;
+}
+
+bool AdminHelper::GetBookExist(const ID id) const
+{
+	if (!Loggedin)
+	{
+		return false;
+	}
+	if (bookMap.bookMap.find(id) == bookMap.bookMap.end())
+	{
+		return false;
+	}
+	return bookMap.bookMap.find(id)->second.exist;
 }
 
 bool AdminHelper::SetBookTitle(const ID id, const char* title)
@@ -340,7 +358,25 @@ bool AdminHelper::ReportLoss(const ID id)
 	{
 		return false;
 	}
+	if (userMap.userMap.find(id)!= userMap.userMap.end())
+	{
+		return false;
+	}
 	userMap.userMap.find(id)->second.isEnabled = false;
+	return true;
+}
+
+bool AdminHelper::UndoReportLoss(const ID id)
+{
+	if (!Loggedin)
+	{
+		return false;
+	}
+	if (userMap.userMap.find(id) != userMap.userMap.end())
+	{
+		return false;
+	}
+	userMap.userMap.find(id)->second.isEnabled = true;
 	return true;
 }
 
@@ -376,15 +412,47 @@ bool AdminHelper::Save() const
 	return true;
 }
 
-list<ID> AdminHelper::FindBookByName(const char* name) const
+list<ID> AdminHelper::FindBookByTitle(const char* str) const
 {
 	list<ID> result;
 	if (!Loggedin)
 	{
 		return list<ID>();
 	}
-
-	return list<ID>();
+	if (nullptr==str||'\0'==*str)
+	{
+		return list<ID>();
+	}
+	char const *title;
+	int start;
+	for (auto p : bookMap.bookMap)
+	{
+		title = p.second.title;
+		start = 0;
+		while (start<32&&title[start]!='\0')
+		{
+			for (int i = 0; i < 32; i++)
+			{
+				if ('\0' == str[i])
+				{
+					result.push_back(p.first);
+					start = 32;
+					break;
+				}
+				if ('\0'==title[start + i])
+				{
+					start = 32;
+					break;
+				}
+				if (title[start+i]!=str[i])
+				{
+					break;
+				}
+			}
+			start++;
+		}
+	}
+	return result;
 }
 
 //list<ID> AdminHelper::OverdueBookList()const
