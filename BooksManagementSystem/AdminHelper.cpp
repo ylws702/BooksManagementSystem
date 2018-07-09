@@ -35,7 +35,6 @@ bool AdminHelper::TestPassword(const char * password)
 	return strcmp(password, admin.password) == 0;
 }
 
-//会自动保存文件
 bool AdminHelper::ChangePassword(const char * oldpw, const char * newpw)
 {
 	if (strcmp(oldpw, admin.password) != 0)
