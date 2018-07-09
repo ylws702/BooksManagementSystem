@@ -172,96 +172,49 @@ void Show::UserMenu()
 void Show::FindBookByID(UserHelper & user)
 {
 	ID id;
-	cout << "输入图书编号:";
-	cin >> id;
-	const char* title = user.GetBookTitle(id);
-	const char* author = user.GetBookAuthor(id);
-	const char* press = user.GetBookPress(id);
-	const char* date = user.GetBookDate(id);
-	const char* type = user.GetBookType(id);
-	bool  exist = user.GetBookExist(id);
-	ShowHelper helper("", "");
-	if (nullptr == title)
-	{
-		Clear();
-		debug("正在，若要进行下一步调试。请按任意键");
-		helper.Reset("查找书籍", "按任意键返回上一级菜单");
-		helper.Add("没有找到该编号的书籍!");
-		helper.Show();
-		GetCh();
-		return;
-	}
-	Clear();
-	debug("正在，若要进行下一步调试。请按任意键");
-	helper.Reset("查找书籍", "按任意键返回上一级菜单");
-	helper.Add("查找结果");
-	helper.Add("《" + string(title) + "》", ShowHelper::Center);
-	helper.Add();
-	helper.Add("ID:" + to_string(id));
-	helper.Add("作者:" + string(author));
-	helper.Add("出版社:" + string(press));
-	helper.Add("出版日期:" + string(date));
-	helper.Add("类型:" + string(type));
-	helper.Add();
-	if (exist)
-	{
-		helper.Add("在馆");
-	}
-	else
-	{
-		helper.Add("不在馆");
-	}
-	helper.Show();
-	GetCh();
-}
-
-void Show::FindBookByTitle(UserHelper & user)
-{
-	char str[32];
-	cout << "输入图书标题关键字:";
-	cin >> str;
-	ShowHelper helper("", "");
-	auto ids = user.FindBookByTitle(str);
-	if (ids.size() == 0)
-	{
-		Clear();
-		helper.Reset("查找书籍", "按任意键返回图书管理员菜单");
-		helper.Add("没有找到标题含" + string(str) + "的书籍!");
-		helper.Show();
-		GetCh();
-		return;
-	}
-	string size = to_string(ids.size());
-	string title;
-	string author;
-	string press;
-	string date;
-	string type;
-	bool exist;
-	ID id;
-	auto it = ids.begin();
-	unsigned int i = 1;
+	const char* title;
+	const char* author;
+	const char* press;
+	const char* date;
+	const char* type;
+	bool  exist;
 	while (true)
 	{
+		cout << "输入图书编号:";
+		cin >> id;
+		title = user.GetBookTitle(id);
+		author = user.GetBookAuthor(id);
+		press = user.GetBookPress(id);
+		date = user.GetBookDate(id);
+		type = user.GetBookType(id);
+		exist = user.GetBookExist(id);
+		ShowHelper helper("", "");
+		if (nullptr == title)
+		{
+			Clear();
+			debug("正在，若要进行下一步调试。请按任意键");
+			helper.Reset("查找书籍", "按(c)继续,其余键返回");
+			helper.Add("没有找到该编号的书籍!");
+			helper.Show();
+			switch (GetCh())
+			{
+			case 'c':
+				continue;
+			default:
+				return;
+			}
+		}
 		Clear();
-		id = *it;
-		title = user.GetBookTitle(*it);
-		author = user.GetBookAuthor(*it);
-		press = user.GetBookPress(*it);
-		date = user.GetBookDate(*it);
-		type = user.GetBookType(*it);
-		exist = user.GetBookExist(*it);
-		helper.Reset("查询结果",
-			"第" + to_string(i) + "页,共" + size + "页。" +
-			"左右键翻页" +
-			",其余键返回");
+		debug("正在，若要进行下一步调试。请按任意键");
+		helper.Reset("查找书籍", "按(c)继续,其余键返回");
+		helper.Add("查找结果");
 		helper.Add("《" + string(title) + "》", ShowHelper::Center);
 		helper.Add();
 		helper.Add("ID:" + to_string(id));
-		helper.Add("作者:" + author);
-		helper.Add("出版社:" + press);
-		helper.Add("出版日期:" + date);
-		helper.Add("类型:" + type);
+		helper.Add("作者:" + string(author));
+		helper.Add("出版社:" + string(press));
+		helper.Add("出版日期:" + string(date));
+		helper.Add("类型:" + string(type));
 		helper.Add();
 		if (exist)
 		{
@@ -274,24 +227,101 @@ void Show::FindBookByTitle(UserHelper & user)
 		helper.Show();
 		switch (GetCh())
 		{
-		case Right:case Down:
-			if (i >= ids.size())
-			{
-				break;
-			}
-			i++;
-			it++;
-			break;
-		case Left:case Up:
-			if (i <= 1)
-			{
-				break;
-			}
-			i--;
-			it--;
+		case 'c':
 			break;
 		default:
 			return;
+		}
+	}
+}
+
+void Show::FindBookByTitle(UserHelper & user)
+{
+	ShowHelper helper("", "");
+	char str[32];
+	string size;
+	string title;
+	string author;
+	string press;
+	string date;
+	string type;
+	bool exist;
+	ID id;
+	unsigned int i;
+	while (true)
+	{
+		cout << "输入图书标题关键字:";
+		cin >> str;
+		auto ids = user.FindBookByTitle(str);
+		if (ids.size() == 0)
+		{
+			Clear();
+			helper.Reset("查找书籍", "按(c)继续,其余键返回");
+			helper.Add("没有找到标题含\"" + string(str) + "\"的书籍!");
+			helper.Show();
+			switch (GetCh())
+			{
+			case 'c':
+				continue;
+			default:
+				return;
+			}
+		}
+		size = to_string(ids.size());
+		auto it = ids.begin();
+		i = 1;
+		while (true)
+		{
+			Clear();
+			id = *it;
+			title = user.GetBookTitle(*it);
+			author = user.GetBookAuthor(*it);
+			press = user.GetBookPress(*it);
+			date = user.GetBookDate(*it);
+			type = user.GetBookType(*it);
+			exist = user.GetBookExist(*it);
+			helper.Reset("查询结果",
+				"第" + to_string(i) + "页,共" + size + "页。" +
+				"左右键翻页" +
+				",其余键返回");
+			helper.Add("《" + string(title) + "》", ShowHelper::Center);
+			helper.Add();
+			helper.Add("ID:" + to_string(id));
+			helper.Add("作者:" + author);
+			helper.Add("出版社:" + press);
+			helper.Add("出版日期:" + date);
+			helper.Add("类型:" + type);
+			helper.Add();
+			if (exist)
+			{
+				helper.Add("在馆");
+			}
+			else
+			{
+				helper.Add("不在馆");
+			}
+			helper.Show();
+			switch (GetCh())
+			{
+			case Right:case Down:
+				if (i >= ids.size())
+				{
+					break;
+				}
+				i++;
+				it++;
+				break;
+			case Left:case Up:
+				if (i <= 1)
+				{
+					break;
+				}
+				i--;
+				it--;
+				break;
+			default:
+				return;
+			}
 		}
 	}
 }
@@ -933,94 +963,49 @@ void Show::ModifyBook(AdminHelper & admin)
 void Show::FindBookByID(AdminHelper & admin)
 {
 	ID id;
-	cout << "输入图书编号:";
-	cin >> id;
-	const char* title = admin.GetBookTitle(id);
-	const char* author = admin.GetBookAuthor(id);
-	const char* press = admin.GetBookPress(id);
-	const char* date = admin.GetBookDate(id);
-	const char* type = admin.GetBookType(id);
-	bool  exist = admin.GetBookExist(id);
-	ShowHelper helper("", "");
-	if (nullptr == title)
-	{
-		Clear();
-		helper.Reset("查找书籍", "按任意键返回图书管理员菜单");
-		helper.Add("没有找到该编号的书籍!");
-		helper.Show();
-		GetCh();
-		return;
-	}
-	Clear();
-	helper.Reset("查找书籍", "按任意键返回图书管理员菜单");
-	helper.Add("查找结果");
-	helper.Add("《" + string(title) + "》", ShowHelper::Center);
-	helper.Add();
-	helper.Add("ID:" + to_string(id));
-	helper.Add("作者:" + string(author));
-	helper.Add("出版社:" + string(press));
-	helper.Add("出版日期:" + string(date));
-	helper.Add("类型:" + string(type));
-	helper.Add();
-	if (exist)
-	{
-		helper.Add("在馆");
-	}
-	else
-	{
-		helper.Add("不在馆");
-	}
-	helper.Show();
-	GetCh();
-}
-
-void Show::FindBookByTitle(AdminHelper & admin)
-{
-	char str[32];
-	cout << "输入图书标题关键字:";
-	cin >> str;
-	ShowHelper helper("", "");
-	auto ids = admin.FindBookByTitle(str);
-	if (ids.size() == 0)
-	{
-		Clear();
-		helper.Reset("查找书籍", "按任意键返回图书管理员菜单");
-		helper.Add("没有找到标题含" + string(str) + "的书籍!");
-		helper.Show();
-		GetCh();
-		return;
-	}
-	string size = to_string(ids.size());
-	string title;
-	string author;
-	string press;
-	string date;
-	string type;
-	bool exist;
-	ID id;
-	auto it = ids.begin();
-	unsigned int i = 1;
+	const char* title;
+	const char* author;
+	const char* press;
+	const char* date;
+	const char* type;
+	bool  exist;
 	while (true)
 	{
+		cout << "输入图书编号:";
+		cin >> id;
+		title = admin.GetBookTitle(id);
+		author = admin.GetBookAuthor(id);
+		press = admin.GetBookPress(id);
+		date = admin.GetBookDate(id);
+		type = admin.GetBookType(id);
+		exist = admin.GetBookExist(id);
+		ShowHelper helper("", "");
+		if (nullptr == title)
+		{
+			Clear();
+			debug("正在，若要进行下一步调试。请按任意键");
+			helper.Reset("查找书籍", "按(c)继续,其余键返回");
+			helper.Add("没有找到该编号的书籍!");
+			helper.Show();
+			switch (GetCh())
+			{
+			case 'c':
+				continue;
+			default:
+				return;
+			}
+		}
 		Clear();
-		id = *it;
-		title = admin.GetBookTitle(*it);
-		author = admin.GetBookAuthor(*it);
-		press = admin.GetBookPress(*it);
-		date = admin.GetBookDate(*it);
-		type = admin.GetBookType(*it);
-		exist = admin.GetBookExist(*it);
-		helper.Reset("查询结果",
-			"第" + to_string(i) + "页,共" + size + "页。" +
-			"左右键翻页" +
-			",其余键返回");
+		debug("正在，若要进行下一步调试。请按任意键");
+		helper.Reset("查找书籍", "按(c)继续,其余键返回");
+		helper.Add("查找结果");
 		helper.Add("《" + string(title) + "》", ShowHelper::Center);
 		helper.Add();
 		helper.Add("ID:" + to_string(id));
-		helper.Add("作者:" + author);
-		helper.Add("出版社:" + press);
-		helper.Add("出版日期:" + date);
-		helper.Add("类型:" + type);
+		helper.Add("作者:" + string(author));
+		helper.Add("出版社:" + string(press));
+		helper.Add("出版日期:" + string(date));
+		helper.Add("类型:" + string(type));
 		helper.Add();
 		if (exist)
 		{
@@ -1033,24 +1018,101 @@ void Show::FindBookByTitle(AdminHelper & admin)
 		helper.Show();
 		switch (GetCh())
 		{
-		case Right:case Down:
-			if (i >= ids.size())
-			{
-				break;
-			}
-			i++;
-			it++;
-			break;
-		case Left:case Up:
-			if (i <= 1)
-			{
-				break;
-			}
-			i--;
-			it--;
+		case 'c':
 			break;
 		default:
 			return;
+		}
+	}
+}
+
+void Show::FindBookByTitle(AdminHelper & admin)
+{
+	ShowHelper helper("", "");
+	char str[32];
+	string size;
+	string title;
+	string author;
+	string press;
+	string date;
+	string type;
+	bool exist;
+	ID id;
+	unsigned int i;
+	while (true)
+	{
+		cout << "输入图书标题关键字:";
+		cin >> str;
+		auto ids = admin.FindBookByTitle(str);
+		if (ids.size() == 0)
+		{
+			Clear();
+			helper.Reset("查找书籍", "按(c)继续,其余键返回");
+			helper.Add("没有找到标题含\"" + string(str) + "\"的书籍!");
+			helper.Show();
+			switch (GetCh())
+			{
+			case 'c':
+				continue;
+			default:
+				return;
+			}
+		}
+		size = to_string(ids.size());
+		auto it = ids.begin();
+		i = 1;
+		while (true)
+		{
+			Clear();
+			id = *it;
+			title = admin.GetBookTitle(*it);
+			author = admin.GetBookAuthor(*it);
+			press = admin.GetBookPress(*it);
+			date = admin.GetBookDate(*it);
+			type = admin.GetBookType(*it);
+			exist = admin.GetBookExist(*it);
+			helper.Reset("查询结果",
+				"第" + to_string(i) + "页,共" + size + "页。" +
+				"左右键翻页" +
+				",其余键返回");
+			helper.Add("《" + string(title) + "》", ShowHelper::Center);
+			helper.Add();
+			helper.Add("ID:" + to_string(id));
+			helper.Add("作者:" + author);
+			helper.Add("出版社:" + press);
+			helper.Add("出版日期:" + date);
+			helper.Add("类型:" + type);
+			helper.Add();
+			if (exist)
+			{
+				helper.Add("在馆");
+			}
+			else
+			{
+				helper.Add("不在馆");
+			}
+			helper.Show();
+			switch (GetCh())
+			{
+			case Right:case Down:
+				if (i >= ids.size())
+				{
+					break;
+				}
+				i++;
+				it++;
+				break;
+			case Left:case Up:
+				if (i <= 1)
+				{
+					break;
+				}
+				i--;
+				it--;
+				break;
+			default:
+				return;
+			}
 		}
 	}
 }
