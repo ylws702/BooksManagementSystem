@@ -1,4 +1,13 @@
 #pragma once
+
+#ifdef __linux
+#include <termios.h>
+#endif // __linux
+
+#ifdef _WIN32
+#include <conio.h>
+#endif // _WIN32
+
 #include <cstdio>
 #include <iostream>
 #include <string>
@@ -46,7 +55,6 @@ public:
 	static void ChangeRootPassword(RootHelper& root);
 //private:
 #ifdef __linux
-#include <termios.h>
 	static struct termios old, newer;
 	static void initTermios(int echo)
 	{
