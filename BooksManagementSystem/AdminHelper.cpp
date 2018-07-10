@@ -464,7 +464,7 @@ bool AdminHelper::ReportLoss(const ID id)
 	{
 		return false;
 	}
-	userMap.userMap.find(id)->second.isEnabled = false;
+	userMap.userMap.find(id)->second.isEnabled = true;
 	return true;
 }
 

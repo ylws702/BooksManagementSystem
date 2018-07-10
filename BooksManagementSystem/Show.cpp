@@ -1551,7 +1551,7 @@ void Show::ModifyBookByID(AdminHelper & admin, ID id)
 			Clear();
 			debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("修改书籍", "按任意键继续");
-			helper.Add("修改出版社成功！", ShowHelper::Center);
+			helper.Add("修改出版日期成功！", ShowHelper::Center);
 			helper.Show();
 			GetCh();
 			break;
