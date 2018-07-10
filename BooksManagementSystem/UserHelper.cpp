@@ -266,6 +266,54 @@ list<ID> UserHelper::FindBookByTitle(const char * str) const
 	return result;
 }
 
+list<ID> UserHelper::GetAllBooks() const
+{
+	list<ID> result;
+	if (!Loggedin)
+	{
+		return result;
+	}
+	for (auto p : bookMap.bookMap)
+	{
+		result.push_back(p.first);
+	}
+	return result;
+}
+
+list<ID> UserHelper::GetBorrowedBooks() const
+{
+	list<ID> result;
+	if (!Loggedin)
+	{
+		return result;
+	}
+	for (auto p : bookMap.bookMap)
+	{
+		if (p.second.restCount < p.second.totalCount)
+		{
+			result.push_back(p.first);
+		}
+	}
+	return result;
+}
+
+list<ID> UserHelper::GetNotBorrowedBooks() const
+{
+	list<ID> result;
+	if (!Loggedin)
+	{
+		return result;
+	}
+	for (auto p : bookMap.bookMap)
+	{
+		if (p.second.restCount == p.second.totalCount)
+		{
+			result.push_back(p.first);
+		}
+	}
+	return result;
+}
+
 bool UserHelper::Save() const
 {
 	if (!Loggedin)

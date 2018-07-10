@@ -35,7 +35,6 @@ bool AdminHelper::TestPassword(const char * password)
 	return strcmp(password, admin.password) == 0;
 }
 
-//会自动保存文件
 bool AdminHelper::ChangePassword(const char * oldpw, const char * newpw)
 {
 	if (strcmp(oldpw, admin.password) != 0)
@@ -87,6 +86,30 @@ bool AdminHelper::RemoveBook(const ID id)
 	if (!bookMap.Delete(id))
 	{
 		return false;
+	}
+	for (auto p:userMap.userMap)
+	{
+		for (auto i = p.second.borrowList.begin();i!=p.second.borrowList.end();i++)
+		{
+			if (i->first==id)
+			{
+				i = p.second.borrowList.erase(i);
+			}
+		}
+	}
+	return true;
+}
+
+bool AdminHelper::RemoveAllBooks()
+{
+	if (!Loggedin)
+	{
+		return false;
+	}
+	bookMap.bookMap.clear();
+	for (auto p : userMap.userMap)
+	{
+		p.second.borrowList.clear();
 	}
 	return true;
 }
@@ -287,6 +310,54 @@ unsigned int AdminHelper::GetBookTotalCount(const ID id) const
 		return false;
 	}
 	return bookMap.bookMap.find(id)->second.totalCount;
+}
+
+list<ID> AdminHelper::GetAllBooks() const
+{
+	list<ID> result;
+	if (!Loggedin)
+	{
+		return result;
+	}
+	for (auto p:bookMap.bookMap)
+	{
+		result.push_back(p.first);
+	}
+	return result;
+}
+
+list<ID> AdminHelper::GetBorrowedBooks() const
+{
+	list<ID> result;
+	if (!Loggedin)
+	{
+		return result;
+	}
+	for (auto p : bookMap.bookMap)
+	{
+		if (p.second.restCount<p.second.totalCount)
+		{
+			result.push_back(p.first);
+		}
+	}
+	return result;
+}
+
+list<ID> AdminHelper::GetNotBorrowedBooks() const
+{
+	list<ID> result;
+	if (!Loggedin)
+	{
+		return result;
+	}
+	for (auto p : bookMap.bookMap)
+	{
+		if (p.second.restCount == p.second.totalCount)
+		{
+			result.push_back(p.first);
+		}
+	}
+	return result;
 }
 
 bool AdminHelper::AddUser(const ID id,

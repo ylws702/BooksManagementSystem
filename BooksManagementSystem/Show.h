@@ -11,6 +11,7 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
+#include <sstream>
 #include "User.h"
 #include "Book.h"
 #include "ShowHelper.h"
@@ -23,25 +24,36 @@ public:
 	static void Clear();
 	enum Key
 	{
-		Up=40,
-		Down=48,
-		Left=43,
-		Right=45
+		Up = 40,
+		Down = 48,
+		Left = 43,
+		Right = 45
 	};
 	static char GetCh();
+	static ID GetID();
+	static unsigned int GetUInt();
 	static void MainMenu();
 	static void UserMenu();
 	static void FindBookByID(UserHelper& user);
 	static void FindBookByTitle(UserHelper& user);
+	static void FindBorrowedBooks(UserHelper& user);
+	static void FindNotBorrowedBooks(UserHelper& user);
+	static void FindAllBooks(UserHelper& user);
 	static void BorrowBook(UserHelper& user);
 	static void GetBorrowInfo(UserHelper& user);
 	static void ChangeUserPassword(UserHelper& user);
 	static void AdminMenu();
 	static void AddBook(AdminHelper& admin);
-	static void RemoveBook(AdminHelper& admin);
-	static void ModifyBook(AdminHelper& admin);
+	static void RemoveBookByID(AdminHelper& admin, ID bookID = 0);
+	static void RemoveBookByTitle(AdminHelper& admin);
+	static void RemoveAllBooks(AdminHelper& admin);
+	static void ModifyBookByID(AdminHelper& admin, ID id = 0);
+	static void ModifyBookByTitle(AdminHelper& admin);
 	static void FindBookByID(AdminHelper& admin);
 	static void FindBookByTitle(AdminHelper& admin);
+	static void FindBorrowedBooks(AdminHelper& admin);
+	static void FindNotBorrowedBooks(AdminHelper& admin);
+	static void FindAllBooks(AdminHelper& admin);
 	static void AddUser(AdminHelper& admin);
 	static void RemoveUser(AdminHelper& admin);
 	static void ReportLoss(AdminHelper& admin);
@@ -53,7 +65,7 @@ public:
 	static void RemoveAdmin(RootHelper& root);
 	static void FindAdmin(RootHelper& root);
 	static void ChangeRootPassword(RootHelper& root);
-//private:
+	//private:
 #ifdef __linux
 	static struct termios old, newer;
 	static void initTermios(int echo)
