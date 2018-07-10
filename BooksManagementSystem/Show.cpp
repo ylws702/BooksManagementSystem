@@ -2323,6 +2323,7 @@ void Show::ReportLoss(AdminHelper & admin)
 				helper.Add("挂失失败!");
 				helper.Show();
 				GetCh();
+				return;
 			}
 			Clear();
 			debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
@@ -2389,6 +2390,7 @@ void Show::UndoReportLoss(AdminHelper & admin)
 				helper.Add("解除挂失失败!");
 				helper.Show();
 				GetCh();
+				return;
 			}
 			Clear();
 			debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
