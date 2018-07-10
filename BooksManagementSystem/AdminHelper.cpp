@@ -460,7 +460,7 @@ bool AdminHelper::ReportLoss(const ID id)
 	{
 		return false;
 	}
-	if (userMap.userMap.find(id)!= userMap.userMap.end())
+	if (userMap.userMap.find(id)== userMap.userMap.end())
 	{
 		return false;
 	}
@@ -474,7 +474,7 @@ bool AdminHelper::UndoReportLoss(const ID id)
 	{
 		return false;
 	}
-	else if (userMap.userMap.find(id) != userMap.userMap.end())
+	if (userMap.userMap.find(id) == userMap.userMap.end())
 	{
 		return false;
 	}
