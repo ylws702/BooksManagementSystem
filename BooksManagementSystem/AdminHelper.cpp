@@ -87,6 +87,30 @@ bool AdminHelper::RemoveBook(const ID id)
 	{
 		return false;
 	}
+	for (auto p:userMap.userMap)
+	{
+		for (auto i = p.second.borrowList.begin();i!=p.second.borrowList.end();i++)
+		{
+			if (i->first==id)
+			{
+				i = p.second.borrowList.erase(i);
+			}
+		}
+	}
+	return true;
+}
+
+bool AdminHelper::RemoveAllBooks()
+{
+	if (!Loggedin)
+	{
+		return false;
+	}
+	bookMap.bookMap.clear();
+	for (auto p : userMap.userMap)
+	{
+		p.second.borrowList.clear();
+	}
 	return true;
 }
 
