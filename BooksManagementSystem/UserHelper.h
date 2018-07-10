@@ -31,7 +31,7 @@ public:
 private:
 	const char*userMapPath{ "user" };
 	const char*bookMapPath{ "book" };
-	const char*userLogPath{ "user.log" };
+	//const char*userLogPath{ "user.log" };
 	User user{ User(0) };
 	UserMap userMap{ UserMap::ReadMap(userMapPath) };
 	BookMap bookMap{ BookMap::ReadMap(bookMapPath) };

@@ -272,8 +272,8 @@ private:
 	const char*userMapPath{ "user" };
 	//书籍信息文件路径
 	const char*bookMapPath{ "book" };
-	//日志文件路径
-	const char*logPath{ "log.txt" };
+	////日志文件路径
+	//const char*logPath{ "log.txt" };
 	//最大借书时间
 	const unsigned int overdueDays{ 90 };
 	//是否登录

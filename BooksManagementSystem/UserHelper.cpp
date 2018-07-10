@@ -49,13 +49,13 @@ bool UserHelper::ChangePassword(const char * oldpw, const char * newpw)
 		return false;
 	}
 	//TODO:LOG
-	ofstream ofs(userLogPath, ios::app);
-	if (ofs.fail())
-	{
-		return true;
-	}
-	//ofs<<Date::Now().
-	ofs.close();
+	//ofstream ofs(userLogPath, ios::app);
+	//if (ofs.fail())
+	//{
+	//	return true;
+	//}
+	////ofs<<Date::Now().
+	//ofs.close();
 	return true;
 }
 
