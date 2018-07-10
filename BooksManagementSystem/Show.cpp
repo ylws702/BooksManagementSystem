@@ -102,7 +102,18 @@ void Show::UserMenu()
 		cout << "用户编号:";
 		uid = GetID();
 		cout << "密码:";
-		cin >> password;
+		//cin >> password;
+		for (int i = 0; i < 32; i++)
+		{
+			password[i] = GetCh();
+			if (13 == password[i])
+			{
+				password[i] = '\0';
+				break;
+			}
+			cout << "*";
+		}
+		cout << endl;
 		debug("正在进行密码的验证，调用user.Login()，若要进行下一步调试。请按任意键");
 		if (user.Login(uid, password))
 		{
@@ -984,7 +995,19 @@ void Show::AdminMenu()
 		cout << "用户名:";
 		cin >> name;
 		cout << "密码:";
-		cin >> password;
+		//cin >> password;
+
+		for (int i = 0; i < 32; i++)
+		{
+			password[i] = GetCh();
+			if (13 == password[i])
+			{
+				password[i] = '\0';
+				break;
+			}
+			cout << "*";
+		}
+		cout << endl;
 		if (admin.Login(id, name, password))
 		{
 			break;
@@ -2457,7 +2480,18 @@ void Show::ChangeAdminPassword(AdminHelper & admin)
 	while (true)
 	{
 		cout << "输入原密码:";
-		cin >> oldpw;
+		for (int i = 0; i < 32; i++)
+		{
+			oldpw[i] = GetCh();
+			if (13== oldpw[i])
+			{
+				oldpw[i] = '\0';
+				break;
+			}
+			cout << "*";
+		}
+		cout << endl;
+		//cin >> oldpw;
 		if (admin.TestPassword(oldpw))
 		{
 			break;
@@ -2478,9 +2512,31 @@ void Show::ChangeAdminPassword(AdminHelper & admin)
 	while (true)
 	{
 		cout << "输入新密码:";
-		cin >> newpw;
+		for (int i = 0; i < 32; i++)
+		{
+			newpw[i] = GetCh();
+			if (13 == newpw[i])
+			{
+				newpw[i] = '\0';
+				break;
+			}
+			cout << "*";
+		}
+		cout << endl;
+		//cin >> oldpw;
 		cout << "再次输入新密码:";
-		cin >> newpw2;
+		//cin >> newpw2;
+		for (int i = 0; i < 32; i++)
+		{
+			newpw2[i] = GetCh();
+			if (13 == newpw2[i])
+			{
+				newpw2[i] = '\0';
+				break;
+			}
+			cout << "*";
+		}
+		cout << endl;
 		if (strcmp(newpw, newpw2) == 0)
 		{
 			break;
@@ -2524,7 +2580,18 @@ void Show::RootMenu()
 	while (true)
 	{
 		cout << "密码:";
-		cin >> password;
+		//cin >> password;
+		for (int i = 0; i < 32; i++)
+		{
+			password[i] = GetCh();
+			if (13 == password[i])
+			{
+				password[i] = '\0';
+				break;
+			}
+			cout << "*";
+		}
+		cout << endl;
 		if (root.Login(password))
 		{
 			break;
@@ -2732,7 +2799,18 @@ void Show::ChangeRootPassword(RootHelper & root)
 	while (true)
 	{
 		cout << "输入原密码:";
-		cin >> oldpw;
+		//cin >> oldpw;
+		for (int i = 0; i < 32; i++)
+		{
+			oldpw[i] = GetCh();
+			if (13 == oldpw[i])
+			{
+				oldpw[i] = '\0';
+				break;
+			}
+			cout << "*";
+		}
+		cout << endl;
 		if (root.TestPassword(oldpw))
 		{
 			break;
@@ -2740,6 +2818,17 @@ void Show::ChangeRootPassword(RootHelper & root)
 		cout << "密码错误!" << endl;
 	}
 	cout << "输入新密码:";
+	for (int i = 0; i < 32; i++)
+	{
+		oldpw[i] = GetCh();
+		if (13 == oldpw[i])
+		{
+			oldpw[i] = '\0';
+			break;
+		}
+		cout << "*";
+	}
+	//cout << endl;
 	cin >> newpw;
 	Clear();
 	debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
