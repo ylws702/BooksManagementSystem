@@ -27,7 +27,7 @@ char Show::GetCh()
 
 ID Show::GetID()
 {
-	ID id;
+	ID id=0;
 	stringstream ss;
 	string s;
 	cin >> s;
@@ -38,7 +38,7 @@ ID Show::GetID()
 
 unsigned int Show::GetUInt()
 {
-	unsigned int uint;
+	unsigned int uint=0;
 	stringstream ss;
 	string s;
 	cin >> s;
@@ -123,7 +123,7 @@ void Show::UserMenu()
 	}
 	name = user.GetUserName();
 	Clear();
-	debug("正在，若要进行下一步调试。请按任意键");
+	debug("调用helper.Reset()，helper.Add()输出登录信息，若要进行下一步调试。请按任意键");
 	helper.Reset(name + ",欢迎使用", "按任意键继续");
 	helper.Add("登录成功", ShowHelper::Center);
 	helper.Show();
@@ -131,7 +131,7 @@ void Show::UserMenu()
 	while (true)
 	{
 		Clear();
-		debug("正在，若要进行下一步调试。请按任意键");
+		debug("正在创建用户界面，调用helper.Reset（），helper.Add（），helper.Show()，若要进行下一步调试。请按任意键");
 		helper.Reset("普通用户:" + name, "请选择数字键选择相应的服务");
 		helper.Add("(1)  查询书籍");
 		helper.Add("(2)  借书");
@@ -143,6 +143,7 @@ void Show::UserMenu()
 		{
 		case '1':
 			Clear();
+			debug("正在创建查找书籍界面，使用helper.Reset（），helper.Add()，helper.Show()，若要进行下一步调试。请按任意键");
 			helper.Reset("查找书籍", "选择数字键选择方式,其余键返回");
 			helper.Add("选择查找方式:");
 			helper.Add();
@@ -155,18 +156,23 @@ void Show::UserMenu()
 			switch (GetCh())
 			{
 			case '1':
+				debug("正在进行依靠ID查找，调用FindBookByID(user)，若要进行下一步调试。请按任意键");
 				FindBookByID(user);
 				break;
 			case '2':
+				debug("正在进行依靠名称查找，调用FindBookByTitle(user);，若要进行下一步调试。请按任意键");
 				FindBookByTitle(user);
 				break;
 			case '3':
+				debug("正在进行有借出书籍查找，调用FindBorrowedBooks(user)，若要进行下一步调试。请按任意键");
 				FindBorrowedBooks(user);
 				break;
 			case '4':
+				debug("正在进行无借出书籍查找，调用FindNotBorrowedBooks(user)，若要进行下一步调试。请按任意键");
 				FindNotBorrowedBooks(user);
 				break;
 			case '5':
+				debug("正在显示全部书籍，调用FindAllBooks(user)，若要进行下一步调试。请按任意键");
 				FindAllBooks(user);
 				break;
 			default:
@@ -175,18 +181,22 @@ void Show::UserMenu()
 			break;
 			break;
 		case '2':
+			debug("正在进入借书界面，调用BorrowBook(user)，若要进行下一步调试。请按任意键");
 			BorrowBook(user);
 			break;
 		case '3':
+			debug("正在进入查询借书信息界面，调用GetBorrowInfo(user)，若要进行下一步调试。请按任意键");
 			GetBorrowInfo(user);
 			break;
 		case '4':
+			debug("正在更改密码操作，调用ChangeUserPassword(user)，若要进行下一步调试。请按任意键");
 			ChangeUserPassword(user);
 			break;
 		case '0':
+			debug("正在调用清屏函数Clear();helper.Clear(); ，若要进行下一步调试。请按任意键");
 			Clear();
 			helper.Clear();
-			debug("正在，若要进行下一步调试。请按任意键");
+			debug("正在输出结束信息，调用helper.SetHeader（），helper.Add（），若要进行下一步调试。请按任意键");
 			helper.SetHeader("再见" + string(name), "按任意键返回主菜单");
 			helper.Add("谢 谢 使 用 !", ShowHelper::Center);
 			for (auto str : helper.Normalize())
@@ -216,6 +226,10 @@ void Show::FindBookByID(UserHelper & user)
 	{
 		cout << "输入图书编号:";
 		id = GetID();
+		debug("正在获得书本信息，调用清屏函数Clear()，id = *it;title = user.GetBookTitle(*it);请按任意键");
+		debug("author = user.GetBookAuthor(*it);press = user.GetBookPress(*it); 请按任意键");
+		debug("date = user.GetBookDate(*it);type = user.GetBookType(*it);totalCount = to_string(user.GetBookTotalCount(id));请按任意键");
+		debug("restCount = to_string(user.GetBookRestCount(id)); 请按任意键");
 		title = user.GetBookTitle(id);
 		author = user.GetBookAuthor(id);
 		press = user.GetBookPress(id);
@@ -223,12 +237,13 @@ void Show::FindBookByID(UserHelper & user)
 		type = user.GetBookType(id);
 		totalCount = to_string(user.GetBookTotalCount(id));
 		restCount = to_string(user.GetBookRestCount(id));
+		
 		//exist = user.GetBookExist(id);
 		ShowHelper helper("", "");
 		if (nullptr == title)
 		{
 			Clear();
-			debug("正在，若要进行下一步调试。请按任意键");
+			debug("正在进行错误信息输出，调用helper.Reset（），helper.Add（），清屏函数Clear(),若要进行下一步调试。请按任意键");
 			helper.Reset("查找书籍", "按(c)继续,其余键返回");
 			helper.Add("没有找到该编号的书籍!");
 			helper.Show();
@@ -241,7 +256,7 @@ void Show::FindBookByID(UserHelper & user)
 			}
 		}
 		Clear();
-		debug("正在，若要进行下一步调试。请按任意键");
+		debug("正在输出书本信息，调用函数，helper.Reset(),helper.Add(),清屏函数Clear(),若要进行下一步调试。请按任意键");
 		helper.Reset("查找书籍", "按(c)继续,其余键返回");
 		helper.Add("查找结果");
 		helper.Add("《" + string(title) + "》", ShowHelper::Center);
@@ -295,6 +310,7 @@ void Show::FindBookByTitle(UserHelper & user)
 		if (ids.size() == 0)
 		{
 			Clear();
+			debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset()，helper.Add(),helper.Show(),若要进行下一步调试，请按任意键");
 			helper.Reset("查找书籍", "按(c)继续,其余键返回");
 			helper.Add("没有找到标题含\"" + string(str) + "\"的书籍!");
 			helper.Show();
@@ -311,7 +327,12 @@ void Show::FindBookByTitle(UserHelper & user)
 		i = 1;
 		while (true)
 		{
+			
 			Clear();
+			debug("正在获得书本信息，调用清屏函数Clear()，id = *it;title = user.GetBookTitle(*it);请按任意键");
+			debug("author = user.GetBookAuthor(*it);press = user.GetBookPress(*it); 请按任意键");
+			debug("date = user.GetBookDate(*it);type = user.GetBookType(*it);totalCount = to_string(user.GetBookTotalCount(id));请按任意键");
+			debug("restCount = to_string(user.GetBookRestCount(id)); 请按任意键");
 			id = *it;
 			title = user.GetBookTitle(*it);
 			author = user.GetBookAuthor(*it);
@@ -321,6 +342,7 @@ void Show::FindBookByTitle(UserHelper & user)
 			//exist = user.GetBookExist(*it);
 			totalCount = to_string(user.GetBookTotalCount(id));
 			restCount = to_string(user.GetBookRestCount(id));
+			debug("正在输出书本信息，调用helper.Reset(),helper.Add(),helper.Show();，若要进行下一步调试，请按任意键");
 			helper.Reset("查询结果",
 				"第" + to_string(i) + "页,共" + size + "页。" +
 				"左右键翻页" +
@@ -384,10 +406,12 @@ void Show::FindBorrowedBooks(UserHelper & user)
 	unsigned int i;
 	while (true)
 	{
+		debug("正在判断是否有这本书，调用auto ids = user.GetBorrowedBooks();，若要进行下一步调试，请按任意键");
 		auto ids = user.GetBorrowedBooks();
 		if (0 == ids.size())
 		{
 			Clear();
+			debug("正在输出错误信息，调用清屏函数Clear()，helper.Reset(),helper.Add(),helper.Show()若要进行下一步调试，请按任意键");
 			helper.Reset("查找书籍", "按(c)继续,其余键返回");
 			helper.Add("没有有借出的书籍!");
 			helper.Show();
@@ -405,6 +429,10 @@ void Show::FindBorrowedBooks(UserHelper & user)
 		while (true)
 		{
 			Clear();
+			debug("正在获得书本信息，调用清屏函数Clear()，id = *it;title = user.GetBookTitle(*it);请按任意键");
+			debug("author = user.GetBookAuthor(*it);press = user.GetBookPress(*it); 请按任意键");
+			debug("date = user.GetBookDate(*it);type = user.GetBookType(*it);totalCount = to_string(user.GetBookTotalCount(id));请按任意键");
+			debug("restCount = to_string(user.GetBookRestCount(id)); 请按任意键");
 			id = *it;
 			title = user.GetBookTitle(*it);
 			author = user.GetBookAuthor(*it);
@@ -413,7 +441,8 @@ void Show::FindBorrowedBooks(UserHelper & user)
 			type = user.GetBookType(*it);
 			//exist = user.GetBookExist(*it);
 			totalCount = to_string(user.GetBookTotalCount(id));
-			restCount = to_string(user.GetBookRestCount(id));
+			restCount = to_string(user.GetBookRestCount(id)); 
+			debug("正在输出书本信息，调用helper.Reset()，helper.Add(),helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("查询结果",
 				"第" + to_string(i) + "页,共" + size + "页。" +
 				"左右键翻页" +
@@ -477,10 +506,12 @@ void Show::FindNotBorrowedBooks(UserHelper & user)
 	unsigned int i;
 	while (true)
 	{
+		debug("正在判断是否有这本书，调用auto ids = user.GetNotBorrowedBooks();，若要进行下一步调试，请按任意键");
 		auto ids = user.GetNotBorrowedBooks();
 		if (0 == ids.size())
 		{
 			Clear();
+			debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add,helper.Show()，若要进行下一步调试，请按任意键");
 			helper.Reset("查找书籍", "按(c)继续,其余键返回");
 			helper.Add("没有未借出的书籍!");
 			helper.Show();
@@ -498,6 +529,10 @@ void Show::FindNotBorrowedBooks(UserHelper & user)
 		while (true)
 		{
 			Clear();
+			debug("正在获得书本信息，调用清屏函数Clear()，id = *it;title = user.GetBookTitle(*it);请按任意键");
+			debug("author = user.GetBookAuthor(*it);press = user.GetBookPress(*it); 请按任意键");
+			debug("date = user.GetBookDate(*it);type = user.GetBookType(*it);totalCount = to_string(user.GetBookTotalCount(id));请按任意键");
+			debug("restCount = to_string(user.GetBookRestCount(id)); 请按任意键");
 			id = *it;
 			title = user.GetBookTitle(*it);
 			author = user.GetBookAuthor(*it);
@@ -507,6 +542,7 @@ void Show::FindNotBorrowedBooks(UserHelper & user)
 			//exist = user.GetBookExist(*it);
 			totalCount = to_string(user.GetBookTotalCount(id));
 			restCount = to_string(user.GetBookRestCount(id));
+			debug("正在输出书本信息，调用helper.Reset()，helper.Add(),helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("查询结果",
 				"第" + to_string(i) + "页,共" + size + "页。" +
 				"左右键翻页" +
@@ -570,10 +606,12 @@ void Show::FindAllBooks(UserHelper & user)
 	unsigned int i;
 	while (true)
 	{
+		
 		auto ids = user.GetAllBooks();
 		if (0 == ids.size())
 		{
 			Clear();
+			debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset()，helper.Add(),helper.Show()若要进行下一步调试，请按任意键");
 			helper.Reset("查找书籍", "按(c)继续,其余键返回");
 			helper.Add("没有书籍!");
 			helper.Show();
@@ -591,6 +629,10 @@ void Show::FindAllBooks(UserHelper & user)
 		while (true)
 		{
 			Clear();
+			debug("正在获得书本信息，调用清屏函数Clear()，id = *it;title = user.GetBookTitle(*it);请按任意键");
+			debug("author = user.GetBookAuthor(*it);press = user.GetBookPress(*it); 请按任意键");
+			debug("date = user.GetBookDate(*it);type = user.GetBookType(*it);totalCount = to_string(user.GetBookTotalCount(id));请按任意键");
+			debug("restCount = to_string(user.GetBookRestCount(id)); 请按任意键");
 			id = *it;
 			title = user.GetBookTitle(*it);
 			author = user.GetBookAuthor(*it);
@@ -600,6 +642,7 @@ void Show::FindAllBooks(UserHelper & user)
 			//exist = user.GetBookExist(*it);
 			totalCount = to_string(user.GetBookTotalCount(id));
 			restCount = to_string(user.GetBookRestCount(id));
+			debug("正在输出书本信息，调用helper.Reset()，helper.Add(),helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("查询结果",
 				"第" + to_string(i) + "页,共" + size + "页。" +
 				"左右键翻页" +
@@ -664,6 +707,10 @@ void Show::BorrowBook(UserHelper & user)
 	while (true)
 	{
 		cout << "输入图书编号:";
+		debug("正在获得书本信息，调用清屏函数Clear()，id = *it;title = user.GetBookTitle(*it);请按任意键");
+		debug("author = user.GetBookAuthor(*it);press = user.GetBookPress(*it); 请按任意键");
+		debug("date = user.GetBookDate(*it);type = user.GetBookType(*it);totalCount = to_string(user.GetBookTotalCount(id));请按任意键");
+		debug("restCount = to_string(user.GetBookRestCount(id)); 请按任意键");
 		id = GetID();
 		title = user.GetBookTitle(id);
 		author = user.GetBookAuthor(id);
@@ -676,6 +723,7 @@ void Show::BorrowBook(UserHelper & user)
 		if (nullptr == title)
 		{
 			Clear();
+			debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add，helper.Show()若要进行下一步调试，请按任意键");
 			helper.Reset("借阅书籍", "按(c)继续,其余键返回");
 			helper.Add("没有找到该编号的书籍!");
 			helper.Show();
@@ -691,6 +739,7 @@ void Show::BorrowBook(UserHelper & user)
 		if (!exist)
 		{
 			Clear();
+			debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add，helper.Show()若要进行下一步调试，请按任意键");
 			helper.Reset("借阅书籍", "按(c)继续,其余键返回");
 			helper.Add("该编号的书籍不在馆内!");
 			helper.Show();
@@ -706,6 +755,7 @@ void Show::BorrowBook(UserHelper & user)
 		while (true)
 		{
 			Clear();
+			debug("正在输出借阅界面及书本信息，调用清屏函数Clear(),helper.Reset(),helper.Add，helper.Show()若要进行下一步调试，请按任意键");
 			helper.Reset("确认借阅书籍", "(y)是------(n)否");
 			helper.Add("ID:" + to_string(id));
 			helper.Add();
@@ -721,6 +771,7 @@ void Show::BorrowBook(UserHelper & user)
 			{
 			case 'y':
 				Clear();
+				debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add，helper.Show()若要进行下一步调试，请按任意键");
 				helper.Reset("借阅书籍", "按(c)继续,其余键返回");
 				if (!(user.Borrow(id) && user.Save()))
 				{
@@ -745,6 +796,7 @@ void Show::BorrowBook(UserHelper & user)
 				break;
 			case 'n':
 				Clear();
+				debug("正在输出借阅信息，调用清屏函数Clear(),helper.Reset(),helper.Add，helper.Show()若要进行下一步调试，请按任意键");
 				helper.Reset("借阅书籍", "按(c)继续,其余键返回");
 				helper.Add("已取消操作", ShowHelper::Center);
 				helper.Show();
@@ -777,6 +829,7 @@ void Show::GetBorrowInfo(UserHelper & user)
 	if (0 == ids.size())
 	{
 		Clear();
+		debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add，helper.Show()若要进行下一步调试，请按任意键");
 		helper.Reset("查询借阅信息", "按任意键返回上一级菜单");
 		helper.Add("没有借阅信息!");
 		helper.Show();
@@ -797,7 +850,10 @@ void Show::GetBorrowInfo(UserHelper & user)
 	while (true)
 	{
 		Clear();
-		debug("正在，若要进行下一步调试。请按任意键");
+		debug("正在获得书本信息，调用清屏函数Clear()，id = *it;title = user.GetBookTitle(*it);请按任意键");
+		debug("author = user.GetBookAuthor(*it);press = user.GetBookPress(*it); 请按任意键");
+		debug("date = user.GetBookDate(*it);type = user.GetBookType(*it);totalCount = to_string(user.GetBookTotalCount(id));请按任意键");
+		debug("restCount = to_string(user.GetBookRestCount(id)); 请按任意键");
 		id = it->first;
 		title = user.GetBookTitle(id);
 		author = user.GetBookAuthor(id);
@@ -806,6 +862,7 @@ void Show::GetBorrowInfo(UserHelper & user)
 		type = user.GetBookType(id);
 		borrowDate = it->second.ToString();
 		returnDate = (it->second + 90).ToString();
+		debug("正在输出书本信息，调用helper.Reset(),helper.Add，helper.Show()若要进行下一步调试，请按任意键");
 		helper.Reset("借阅信息",
 			"第" + to_string(i) + "页,共" + size + "页。" +
 			"左右键翻页" +
@@ -859,6 +916,7 @@ void Show::ChangeUserPassword(UserHelper & user)
 			break;
 		}
 		Clear();
+		debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add，helper.Show()若要进行下一步调试，请按任意键");
 		helper.Reset("更改密码", "按(c)重试,其余键返回");
 		helper.Add("密码错误!");
 		helper.Show();
@@ -872,6 +930,7 @@ void Show::ChangeUserPassword(UserHelper & user)
 	}
 	while (true)
 	{
+		debug("正在输出提示，若要进行下一步调试，请按任意键");
 		cout << "输入新密码:";
 		cin >> newpw;
 		cout << "再次输入新密码:";
@@ -881,24 +940,28 @@ void Show::ChangeUserPassword(UserHelper & user)
 			break;
 		}
 		Clear();
+		debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add，helper.Show()若要进行下一步调试，请按任意键");
 		helper.Reset("更改密码", "按任意键继续");
 		helper.Add("两次输入的密码不匹配!");
 		helper.Show();
 		GetCh();
 	}
 	Clear();
+	debug("正在输出提示信息，若要进行下一步调试，请按任意键");
 	helper.Reset("更改密码", "");
 	helper.Add("正在保存...");
 	helper.Show();
 	if (!user.ChangePassword(oldpw, newpw))
 	{
 		Clear();
+		debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add，helper.Show()若要进行下一步调试，请按任意键");
 		helper.Reset("更改密码", "按任意键返回用户菜单");
 		helper.Add("保存失败!");
 		helper.Show();
 		GetCh();
 	}
 	Clear();
+	debug("正在输出信息，调用清屏函数Clear(),helper.Reset(),helper.Add，helper.Show()若要进行下一步调试，请按任意键");
 	helper.Reset("更改密码", "按任意键返回用户菜单");
 	helper.Add("保存成功!");
 	helper.Add();
@@ -915,6 +978,7 @@ void Show::AdminMenu()
 	ShowHelper helper("", "");
 	while (true)
 	{
+		debug("正在输出提示，若要进行下一步调试，请按任意键");
 		cout << "编号:";
 		id = GetID();
 		cout << "用户名:";
@@ -926,6 +990,7 @@ void Show::AdminMenu()
 			break;
 		}
 		Clear();
+		debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add，helper.Show()若要进行下一步调试，请按任意键");
 		helper.Reset("图书管理员登录", "按(q)返回主菜单,其余键重试!");
 		helper.Add("编号或用户名或密码错误!", ShowHelper::Center);
 		helper.Show();
@@ -938,6 +1003,7 @@ void Show::AdminMenu()
 		}
 	}
 	Clear();
+	debug("正在输出界面，调用清屏函数Clear(),helper.Reset(),helper.Add，helper.Show()若要进行下一步调试，请按任意键");
 	helper.Reset((string)name + ",欢迎使用图书管理系统", "按任意键继续");
 	helper.Add("登录成功", ShowHelper::Center);
 	helper.Show();
@@ -945,6 +1011,7 @@ void Show::AdminMenu()
 	while (true)
 	{
 		Clear();
+		debug("正在输出图书管理员界面，调用清屏函数Clear(),helper.Reset(),helper.Add，helper.Show()若要进行下一步调试，请按任意键");
 		helper.Reset("图书管理员:" + (string)name, "请选择数字键选择相应的服务");
 		helper.Add("(1)  新增书籍");
 		helper.Add("(2)  删除书籍");
@@ -965,6 +1032,7 @@ void Show::AdminMenu()
 			break;
 		case '2':
 			Clear();
+			debug("正在输出删除书籍界面，调用清屏函数Clear(),helper.Reset(),helper.Add，helper.Show()若要进行下一步调试，请按任意键");
 			helper.Reset("删除书籍", "选择数字键选择方式,其余键返回");
 			helper.Add("选择查找方式");
 			helper.Add();
@@ -989,6 +1057,7 @@ void Show::AdminMenu()
 			break;
 		case '3':
 			Clear();
+			debug("正在输出修改方式，调用清屏函数Clear(),helper.Reset(),helper.Add，helper.Show()若要进行下一步调试，请按任意键");
 			helper.Reset("修改书籍信息", "选择数字键选择方式,其余键返回");
 			helper.Add("选择修改方式");
 			helper.Add();
@@ -1009,6 +1078,7 @@ void Show::AdminMenu()
 			break;
 		case '4':
 			Clear();
+			debug("正在输出查询界面，调用清屏函数Clear(),helper.Reset(),helper.Add，helper.Show()若要进行下一步调试，请按任意键");
 			helper.Reset("查找书籍", "选择数字键选择方式,其余键返回");
 			helper.Add("选择查找方式:");
 			helper.Add();
@@ -1060,6 +1130,7 @@ void Show::AdminMenu()
 		case '0':
 			Clear();
 			helper.Clear();
+			debug("正在输出信息，调用清屏函数Clear(),helper.SetHeader(),helper.Add()，若要进行下一步调试，请按任意键");
 			helper.SetHeader("再见" + string(name), "按任意键返回主菜单");
 			helper.Add("谢 谢 使 用 !", ShowHelper::Center);
 			for (auto str : helper.Normalize())
@@ -1085,6 +1156,7 @@ void Show::AddBook(AdminHelper & admin)
 	int number;
 	while (true)
 	{
+		debug("正在输出提示，若要进行下一步调试，请按任意键");
 		cout << "输入编号:";
 		id = GetID();
 		cout << "输入标题:";
@@ -1101,10 +1173,12 @@ void Show::AddBook(AdminHelper & admin)
 		number = GetUInt();
 		admin.AddBook(id, title, author, press, date, type, number);
 		Clear();
+		debug("正在输出信息，调用清屏函数Clear(),helper.SetHeader(),helper.Add()，若要进行下一步调试，请按任意键");
 		ShowHelper helper("添加书籍", "");
 		helper.Add("正在保存修改...");
 		helper.Show();
 		Clear();
+		debug("正在输出添加书籍信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，若要进行下一步调试，请按任意键");
 		helper.Reset("添加书籍", "按(c)继续,其余键返回图书管理员菜单");
 		if (!admin.Save())
 		{
@@ -1143,6 +1217,7 @@ void Show::RemoveBookByID(AdminHelper & admin, ID id)
 		if (nullptr == admin.GetBookTitle(id))
 		{
 			Clear();
+			debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("删除书籍", "按任意键返回图书管理员菜单");
 			helper.Add("没有找到该书籍!");
 			helper.Show();
@@ -1156,6 +1231,7 @@ void Show::RemoveBookByID(AdminHelper & admin, ID id)
 	string date = admin.GetBookDate(id);
 	string type = admin.GetBookType(id);
 	Clear();
+	debug("正在输出删除书籍信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 	helper.Reset("删除书籍", "(y)是------(n)否");
 	helper.Add("编号:" + to_string(id));
 	helper.Add();
@@ -1177,12 +1253,14 @@ void Show::RemoveBookByID(AdminHelper & admin, ID id)
 			if (!(admin.RemoveBook(id) && admin.Save()))
 			{
 				Clear();
+				debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 				helper.Reset("删除书籍", "按任意键返回系统管理员菜单");
 				helper.Add("删除失败!");
 				helper.Show();
 				GetCh();
 			}
 			Clear();
+			debug("正在输出删除书籍信息及书本信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("删除书籍", "按任意键返回");
 			helper.Add("成功保存修改!");
 			helper.Add();
@@ -1198,6 +1276,7 @@ void Show::RemoveBookByID(AdminHelper & admin, ID id)
 			return;
 		case 'n':
 			Clear();
+			debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("删除书籍", "按任意键返回");
 			helper.Add("已取消操作!");
 			helper.Show();
@@ -1232,6 +1311,7 @@ void Show::RemoveBookByTitle(AdminHelper & admin)
 		if (ids.size() == 0)
 		{
 			Clear();
+			debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("删除书籍", "按(c)继续,其余键返回");
 			helper.Add("没有找到标题含\"" + string(str) + "\"的书籍!");
 			helper.Show();
@@ -1249,6 +1329,10 @@ void Show::RemoveBookByTitle(AdminHelper & admin)
 		while (true)
 		{
 			Clear();
+			debug("正在获得书本信息，调用清屏函数Clear()，id = *it;title = user.GetBookTitle(*it);请按任意键");
+			debug("author = user.GetBookAuthor(*it);press = user.GetBookPress(*it); 请按任意键");
+			debug("date = user.GetBookDate(*it);type = user.GetBookType(*it);totalCount = to_string(user.GetBookTotalCount(id));请按任意键");
+			debug("restCount = to_string(user.GetBookRestCount(id)); 请按任意键");
 			id = *it;
 			title = admin.GetBookTitle(*it);
 			author = admin.GetBookAuthor(*it);
@@ -1258,6 +1342,7 @@ void Show::RemoveBookByTitle(AdminHelper & admin)
 			//exist = admin.GetBookExist(*it);
 			totalCount = to_string(admin.GetBookTotalCount(id));
 			restCount = to_string(admin.GetBookRestCount(id));
+			debug("正在输出查询结果，调用helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("查询结果",
 				"第" + to_string(i) + "页,共" + size + "页。" +
 				"左右键翻页,(y)选择图书" +
@@ -1310,6 +1395,7 @@ void Show::RemoveBookByTitle(AdminHelper & admin)
 void Show::RemoveAllBooks(AdminHelper & admin)
 {
 	Clear();
+	debug("正在输出删除全部书籍及确认信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 	ShowHelper helper("删除全部书籍!!!", "按(y)删除,其余键返回");
 	helper.Add("警告", ShowHelper::Center);
 	helper.Add();
@@ -1320,6 +1406,7 @@ void Show::RemoveAllBooks(AdminHelper & admin)
 	{
 	case 'y':
 		Clear();
+		debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		helper.Reset("删除全部书籍", "按任意键键返回");
 		if (!(admin.RemoveAllBooks() && admin.Save()))
 		{
@@ -1334,6 +1421,7 @@ void Show::RemoveAllBooks(AdminHelper & admin)
 		return;
 	default:
 		Clear();
+		debug("正在输出取消信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		helper.Reset("删除全部书籍", "按任意键键返回");
 		helper.Add("已取消操作!", ShowHelper::Center);
 		helper.Show();
@@ -1358,6 +1446,7 @@ void Show::ModifyBookByID(AdminHelper & admin, ID id)
 		if (nullptr == admin.GetBookTitle(id))
 		{
 			Clear();
+			debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("修改书籍", "按任意键返回图书管理员菜单");
 			helper.Add("没有找到该书籍!");
 			helper.Show();
@@ -1367,12 +1456,17 @@ void Show::ModifyBookByID(AdminHelper & admin, ID id)
 	}
 	while (true)
 	{
+		debug("正在获得书本信息，调用id = *it;title = user.GetBookTitle(*it);请按任意键");
+		debug("author = user.GetBookAuthor(*it);press = user.GetBookPress(*it); 请按任意键");
+		debug("date = user.GetBookDate(*it);type = user.GetBookType(*it);totalCount = to_string(user.GetBookTotalCount(id));请按任意键");
+		debug("restCount = to_string(user.GetBookRestCount(id)); 请按任意键");
 		title = admin.GetBookTitle(id);
 		author = admin.GetBookAuthor(id);
 		press = admin.GetBookPress(id);
 		date = admin.GetBookDate(id);
 		type = admin.GetBookType(id);
 		Clear();
+		debug("正在输出修改书籍信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		helper.Reset("修改书籍", "请选择数字键选择修改的内容,按(q)返回");
 		helper.Add("编号:" + to_string(id));
 		helper.Add();
@@ -1391,12 +1485,14 @@ void Show::ModifyBookByID(AdminHelper & admin, ID id)
 			if (!admin.SetBookTitle(id, str) && admin.Save())
 			{
 				Clear();
+				debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 				helper.Reset("修改书籍", "按任意键继续");
 				helper.Add("修改失败！", ShowHelper::Center);
 				GetCh();
 				continue;
 			}
 			Clear();
+			debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("修改书籍", "按任意键继续");
 			helper.Add("修改成功！", ShowHelper::Center);
 			helper.Show();
@@ -1408,12 +1504,14 @@ void Show::ModifyBookByID(AdminHelper & admin, ID id)
 			if (!admin.SetBookAuthor(id, str) && admin.Save())
 			{
 				Clear();
+				debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 				helper.Reset("修改书籍", "按任意键继续");
 				helper.Add("修改作者失败！", ShowHelper::Center);
 				GetCh();
 				continue;
 			}
 			Clear();
+			debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("修改书籍", "按任意键继续");
 			helper.Add("修改作者成功！", ShowHelper::Center);
 			helper.Show();
@@ -1425,12 +1523,14 @@ void Show::ModifyBookByID(AdminHelper & admin, ID id)
 			if (!admin.SetBookPress(id, str) && admin.Save())
 			{
 				Clear();
+				debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 				helper.Reset("修改书籍", "按任意键继续");
 				helper.Add("修改出版社失败！", ShowHelper::Center);
 				GetCh();
 				continue;
 			}
 			Clear();
+			debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("修改书籍", "按任意键继续");
 			helper.Add("修改出版社成功！", ShowHelper::Center);
 			helper.Show();
@@ -1442,12 +1542,14 @@ void Show::ModifyBookByID(AdminHelper & admin, ID id)
 			if (!admin.SetBookDate(id, str) && admin.Save())
 			{
 				Clear();
+				debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 				helper.Reset("修改书籍", "按任意键继续");
 				helper.Add("修改出版社失败！", ShowHelper::Center);
 				GetCh();
 				continue;
 			}
 			Clear();
+			debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("修改书籍", "按任意键继续");
 			helper.Add("修改出版社成功！", ShowHelper::Center);
 			helper.Show();
@@ -1459,12 +1561,14 @@ void Show::ModifyBookByID(AdminHelper & admin, ID id)
 			if (!admin.SetBookType(id, str) && admin.Save())
 			{
 				Clear();
+				debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 				helper.Reset("修改书籍", "按任意键继续");
 				helper.Add("修改类型失败！", ShowHelper::Center);
 				GetCh();
 				continue;
 			}
 			Clear();
+			debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("修改书籍", "按任意键继续");
 			helper.Add("修改类型成功！", ShowHelper::Center);
 			helper.Show();
@@ -1501,6 +1605,7 @@ void Show::ModifyBookByTitle(AdminHelper & admin)
 		if (ids.size() == 0)
 		{
 			Clear();
+			debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("查找书籍", "按(c)继续,其余键返回");
 			helper.Add("没有找到标题含\"" + string(str) + "\"的书籍!");
 			helper.Show();
@@ -1518,6 +1623,10 @@ void Show::ModifyBookByTitle(AdminHelper & admin)
 		while (true)
 		{
 			Clear();
+			debug("正在获得书本信息，调用清屏函数Clear(),id = *it;title = user.GetBookTitle(*it);请按任意键");
+			debug("author = user.GetBookAuthor(*it);press = user.GetBookPress(*it); 请按任意键");
+			debug("date = user.GetBookDate(*it);type = user.GetBookType(*it);totalCount = to_string(user.GetBookTotalCount(id));请按任意键");
+			debug("restCount = to_string(user.GetBookRestCount(id)); 请按任意键");
 			id = *it;
 			title = admin.GetBookTitle(*it);
 			author = admin.GetBookAuthor(*it);
@@ -1527,6 +1636,7 @@ void Show::ModifyBookByTitle(AdminHelper & admin)
 			//exist = admin.GetBookExist(*it);
 			totalCount = to_string(admin.GetBookTotalCount(id));
 			restCount = to_string(admin.GetBookRestCount(id));
+			debug("正在输出查询结果，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("查询结果",
 				"第" + to_string(i) + "页,共" + size + "页。" +
 				"左右键翻页,(y)选择图书" +
@@ -1590,6 +1700,10 @@ void Show::FindBookByID(AdminHelper & admin)
 	while (true)
 	{
 		cout << "输入图书编号:";
+		debug("正在获得书本信息，调用id = *it;title = user.GetBookTitle(*it);请按任意键");
+		debug("author = user.GetBookAuthor(*it);press = user.GetBookPress(*it); 请按任意键");
+		debug("date = user.GetBookDate(*it);type = user.GetBookType(*it);totalCount = to_string(user.GetBookTotalCount(id));请按任意键");
+		debug("restCount = to_string(user.GetBookRestCount(id)); 请按任意键");
 		id = GetID();
 		title = admin.GetBookTitle(id);
 		author = admin.GetBookAuthor(id);
@@ -1603,7 +1717,7 @@ void Show::FindBookByID(AdminHelper & admin)
 		if (nullptr == title)
 		{
 			Clear();
-			debug("正在，若要进行下一步调试。请按任意键");
+			debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("查找书籍", "按(c)继续,其余键返回");
 			helper.Add("没有找到该编号的书籍!");
 			helper.Show();
@@ -1616,7 +1730,7 @@ void Show::FindBookByID(AdminHelper & admin)
 			}
 		}
 		Clear();
-		debug("正在，若要进行下一步调试。请按任意键");
+		debug("正在输出书籍信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		helper.Reset("查找书籍", "按(c)继续,其余键返回");
 		helper.Add("查找结果");
 		helper.Add("《" + string(title) + "》", ShowHelper::Center);
@@ -1670,6 +1784,7 @@ void Show::FindBookByTitle(AdminHelper & admin)
 		if (ids.size() == 0)
 		{
 			Clear();
+			debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("查找书籍", "按(c)继续,其余键返回");
 			helper.Add("没有找到标题含\"" + string(str) + "\"的书籍!");
 			helper.Show();
@@ -1687,6 +1802,10 @@ void Show::FindBookByTitle(AdminHelper & admin)
 		while (true)
 		{
 			Clear();
+			debug("正在获得书本信息，调用清屏函数Clear(),id = *it;title = user.GetBookTitle(*it);请按任意键");
+			debug("author = user.GetBookAuthor(*it);press = user.GetBookPress(*it); 请按任意键");
+			debug("date = user.GetBookDate(*it);type = user.GetBookType(*it);totalCount = to_string(user.GetBookTotalCount(id));请按任意键");
+			debug("restCount = to_string(user.GetBookRestCount(id)); 请按任意键");
 			id = *it;
 			title = admin.GetBookTitle(*it);
 			author = admin.GetBookAuthor(*it);
@@ -1696,6 +1815,7 @@ void Show::FindBookByTitle(AdminHelper & admin)
 			exist = admin.GetBookExist(*it);
 			totalCount = to_string(admin.GetBookTotalCount(id));
 			restCount = to_string(admin.GetBookRestCount(id));
+			debug("正在输出查询结果，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("查询结果",
 				"第" + to_string(i) + "页,共" + size + "页。" +
 				"左右键翻页" +
@@ -1763,6 +1883,7 @@ void Show::FindBorrowedBooks(AdminHelper & admin)
 		if (0 == ids.size())
 		{
 			Clear();
+			debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("查找书籍", "按(c)继续,其余键返回");
 			helper.Add("没有借出的书籍!");
 			helper.Show();
@@ -1780,6 +1901,10 @@ void Show::FindBorrowedBooks(AdminHelper & admin)
 		while (true)
 		{
 			Clear();
+			debug("正在获得书本信息，调用清屏函数Clear(),id = *it;title = user.GetBookTitle(*it);请按任意键");
+			debug("author = user.GetBookAuthor(*it);press = user.GetBookPress(*it); 请按任意键");
+			debug("date = user.GetBookDate(*it);type = user.GetBookType(*it);totalCount = to_string(user.GetBookTotalCount(id));请按任意键");
+			debug("restCount = to_string(user.GetBookRestCount(id)); 请按任意键");
 			id = *it;
 			title = admin.GetBookTitle(*it);
 			author = admin.GetBookAuthor(*it);
@@ -1789,6 +1914,7 @@ void Show::FindBorrowedBooks(AdminHelper & admin)
 			//exist = user.GetBookExist(*it);
 			totalCount = to_string(admin.GetBookTotalCount(id));
 			restCount = to_string(admin.GetBookRestCount(id));
+			debug("正在输出查询结果，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("查询结果",
 				"第" + to_string(i) + "页,共" + size + "页。" +
 				"左右键翻页" +
@@ -1856,6 +1982,7 @@ void Show::FindNotBorrowedBooks(AdminHelper & admin)
 		if (0 == ids.size())
 		{
 			Clear();
+			debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("查找书籍", "按(c)继续,其余键返回");
 			helper.Add("没有未借出的书籍!");
 			helper.Show();
@@ -1873,6 +2000,10 @@ void Show::FindNotBorrowedBooks(AdminHelper & admin)
 		while (true)
 		{
 			Clear();
+			debug("正在获得书本信息，调用清屏函数Clear(),id = *it;title = user.GetBookTitle(*it);请按任意键");
+			debug("author = user.GetBookAuthor(*it);press = user.GetBookPress(*it); 请按任意键");
+			debug("date = user.GetBookDate(*it);type = user.GetBookType(*it);totalCount = to_string(user.GetBookTotalCount(id));请按任意键");
+			debug("restCount = to_string(user.GetBookRestCount(id)); 请按任意键");
 			id = *it;
 			title = admin.GetBookTitle(*it);
 			author = admin.GetBookAuthor(*it);
@@ -1882,6 +2013,7 @@ void Show::FindNotBorrowedBooks(AdminHelper & admin)
 			//exist = user.GetBookExist(*it);
 			totalCount = to_string(admin.GetBookTotalCount(id));
 			restCount = to_string(admin.GetBookRestCount(id));
+			debug("正在输出查询结果，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("查询结果",
 				"第" + to_string(i) + "页,共" + size + "页。" +
 				"左右键翻页" +
@@ -1950,6 +2082,7 @@ void Show::FindAllBooks(AdminHelper & admin)
 		if (0 == ids.size())
 		{
 			Clear();
+			debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("查找书籍", "按(c)继续,其余键返回");
 			helper.Add("没有书籍!");
 			helper.Show();
@@ -1966,6 +2099,10 @@ void Show::FindAllBooks(AdminHelper & admin)
 		while (true)
 		{
 			Clear();
+			debug("正在获得书本信息，调用清屏函数Clear(),id = *it;title = user.GetBookTitle(*it);请按任意键");
+			debug("author = user.GetBookAuthor(*it);press = user.GetBookPress(*it); 请按任意键");
+			debug("date = user.GetBookDate(*it);type = user.GetBookType(*it);totalCount = to_string(user.GetBookTotalCount(id));请按任意键");
+			debug("restCount = to_string(user.GetBookRestCount(id)); 请按任意键");
 			id = *it;
 			title = admin.GetBookTitle(*it);
 			author = admin.GetBookAuthor(*it);
@@ -1975,6 +2112,7 @@ void Show::FindAllBooks(AdminHelper & admin)
 			//exist = user.GetBookExist(*it);
 			totalCount = to_string(admin.GetBookTotalCount(id));
 			restCount = to_string(admin.GetBookRestCount(id));
+			debug("正在输出查询结果，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("查询结果",
 				"第" + to_string(i) + "页,共" + size + "页。" +
 				"左右键翻页" +
@@ -2031,6 +2169,7 @@ void Show::AddUser(AdminHelper & admin)
 	int type;
 	while (true)
 	{
+		debug("正在输出提示，若要进行下一步调试，请按任意键");
 		cout << "输入用户编号:";
 		id = GetID();
 		cout << "输入用户名:";
@@ -2042,10 +2181,12 @@ void Show::AddUser(AdminHelper & admin)
 		cout << "输入类型(1)本科生(2)研究生(3)教师:";
 		type = GetUInt();
 		Clear();
+		debug("正在输出提示，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		ShowHelper helper("添加用户", "");
 		helper.Add("正在保存修改...");
 		helper.Show();
 		Clear();
+		debug("正在输出信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		helper.Reset("添加用户", "按(c)继续添加,其他键返回");
 		if (!(admin.AddUser(id, name, password, gender, type) && admin.Save()))
 		{
@@ -2081,6 +2222,7 @@ void Show::RemoveUser(AdminHelper & admin)
 	if (nullptr == name)
 	{
 		Clear();
+		debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		helper.Reset("删除用户", "按任意键返回图书管理员菜单");
 		helper.Add("没有找到该用户!");
 		helper.Show();
@@ -2088,6 +2230,7 @@ void Show::RemoveUser(AdminHelper & admin)
 		return;
 	}
 	Clear();
+	debug("正在输出用户信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 	helper.Reset("删除用户", "(y)是------(n)否");
 	helper.Add("用户名:" + string(name));
 	helper.Add();
@@ -2101,18 +2244,21 @@ void Show::RemoveUser(AdminHelper & admin)
 		switch (GetCh())
 		{
 		case 'y':Clear();
+			debug("正在输出删除用户信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("删除用户", "");
 			helper.Add("正在保存修改...");
 			helper.Show();
 			if (!(admin.RemoveUser(id) && admin.Save()))
 			{
 				Clear();
+				debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 				helper.Reset("删除用户", "按任意键返回图书管理员菜单");
 				helper.Add("删除失败!");
 				helper.Show();
 				GetCh();
 			}
 			Clear();
+			debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("删除用户", "按任意键返回图书管理员菜单");
 			helper.Add("成功保存修改!");
 			helper.Add();
@@ -2126,6 +2272,7 @@ void Show::RemoveUser(AdminHelper & admin)
 			return;
 		case 'n':
 			Clear();
+			debug("正在输出取消信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("删除用户", "按任意键返回图书管理员菜单");
 			helper.Add("已取消操作!");
 			helper.Show();
@@ -2147,6 +2294,7 @@ void Show::ReportLoss(AdminHelper & admin)
 	if (nullptr == name)
 	{
 		Clear();
+		debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		helper.Reset("挂失", "按任意键返回图书管理员菜单");
 		helper.Add("没有找到该用户!");
 		helper.Show();
@@ -2154,6 +2302,7 @@ void Show::ReportLoss(AdminHelper & admin)
 		return;
 	}
 	Clear();
+	debug("正在输出用户信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 	helper.Reset("挂失", "(y)是------(n)否");
 	helper.Add("用户名:" + string(name));
 	helper.Add();
@@ -2169,12 +2318,14 @@ void Show::ReportLoss(AdminHelper & admin)
 			if (!(admin.ReportLoss(id) && admin.Save()))
 			{
 				Clear();
+				debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 				helper.Reset("挂失", "按任意键返回图书管理员菜单");
 				helper.Add("挂失失败!");
 				helper.Show();
 				GetCh();
 			}
 			Clear();
+			debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("挂失", "按任意键返回图书管理员菜单");
 			helper.Add("挂失成功!");
 			helper.Add();
@@ -2187,6 +2338,7 @@ void Show::ReportLoss(AdminHelper & admin)
 			return;
 		case 'n':
 			Clear();
+			debug("正在输出取消信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("挂失", "按任意键返回图书管理员菜单");
 			helper.Add("已取消操作!");
 			helper.Show();
@@ -2208,6 +2360,7 @@ void Show::UndoReportLoss(AdminHelper & admin)
 	if (nullptr == name)
 	{
 		Clear();
+		debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		helper.Reset("解除挂失", "按任意键返回图书管理员菜单");
 		helper.Add("没有找到该用户!");
 		helper.Show();
@@ -2215,6 +2368,7 @@ void Show::UndoReportLoss(AdminHelper & admin)
 		return;
 	}
 	Clear();
+	debug("正在输出用户信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 	helper.Reset("解除挂失", "(y)是------(n)否");
 	helper.Add("用户名:" + string(name));
 	helper.Add();
@@ -2230,12 +2384,14 @@ void Show::UndoReportLoss(AdminHelper & admin)
 			if (!(admin.ReportLoss(id) && admin.Save()))
 			{
 				Clear();
+				debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 				helper.Reset("解除挂失", "按任意键返回图书管理员菜单");
 				helper.Add("解除挂失失败!");
 				helper.Show();
 				GetCh();
 			}
 			Clear();
+			debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("解除挂失", "按任意键返回图书管理员菜单");
 			helper.Add("解除挂失成功!");
 			helper.Add();
@@ -2248,6 +2404,7 @@ void Show::UndoReportLoss(AdminHelper & admin)
 			return;
 		case 'n':
 			Clear();
+			debug("正在输出取消信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("挂失", "按任意键返回图书管理员菜单");
 			helper.Add("已取消操作!");
 			helper.Show();
@@ -2267,12 +2424,14 @@ void Show::ReturnBook(AdminHelper & admin)
 	cout << "输入书籍编号:";
 	bookID=GetID();
 	Clear();
+	debug("正在输出提示，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 	ShowHelper helper("还书", "");
 	helper.Add("正在保存修改...");
 	helper.Show();
 	if (!(admin.Accept(uid, bookID) && admin.Save()))
 	{
 		Clear();
+		debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		helper.Reset("还书", "按任意键返回图书管理员菜单");
 		helper.Add("还书失败!");
 		helper.Show();
@@ -2280,6 +2439,7 @@ void Show::ReturnBook(AdminHelper & admin)
 		return;
 	}
 	Clear();
+	debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 	helper.Reset("添加管理员", "按任意键返回图书管理员菜单");
 	helper.Add("还书成功!");
 	helper.Show();
@@ -2301,6 +2461,7 @@ void Show::ChangeAdminPassword(AdminHelper & admin)
 			break;
 		}
 		Clear();
+		debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		helper.Reset("更改密码", "按(q)返回,其余键重试");
 		helper.Add("密码错误!");
 		helper.Show();
@@ -2323,24 +2484,28 @@ void Show::ChangeAdminPassword(AdminHelper & admin)
 			break;
 		}
 		Clear();
+		debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		helper.Reset("更改密码", "按任意键继续");
 		helper.Add("两次输入的密码不匹配!");
 		helper.Show();
 		GetCh();
 	}
 	Clear();
+	debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 	helper.Reset("更改密码", "");
 	helper.Add("正在保存...");
 	helper.Show();
 	if (!admin.ChangePassword(oldpw, newpw))
 	{
 		Clear();
+		debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		helper.Reset("更改密码", "按任意键返回图书管理员菜单");
 		helper.Add("保存失败!");
 		helper.Show();
 		GetCh();
 	}
 	Clear();
+	debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 	helper.Reset("更改密码", "按任意键返回图书管理员菜单");
 	helper.Add("保存成功!");
 	helper.Add();
@@ -2363,6 +2528,7 @@ void Show::RootMenu()
 			break;
 		}
 		Clear();
+		debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		helper.Reset("普通用户登录", "按(q)返回主菜单,其余键重试!");
 		helper.Add("密码错误!", ShowHelper::Center);
 		helper.Show();
@@ -2377,6 +2543,7 @@ void Show::RootMenu()
 	while (true)
 	{
 		Clear();
+		debug("正在输出图书管理系统界面，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		helper.Reset("欢迎使用图书管理系统", "请选择数字键选择相应的服务");
 		helper.Add("(1)  添加图书管理员");
 		helper.Add("(2)  删除图书管理员");
@@ -2401,6 +2568,7 @@ void Show::RootMenu()
 		case '0':
 			Clear();
 			helper.Clear();
+			debug("正在输出信息，调用清屏函数Clear(),helper.Reset(),helper.Add()若要进行下一步调试，请按任意键");
 			helper.SetHeader("再见,系统管理员", "按任意键退回主菜单");
 			helper.Add("谢 谢 使 用 !", ShowHelper::Center);
 			for (auto str : helper.Normalize())
@@ -2425,12 +2593,14 @@ void Show::AddAdmin(RootHelper&root)
 	cin >> password;
 	ID id = root.AddAdmin(name, password);
 	Clear();
+	debug("正在输出提示信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 	ShowHelper helper("添加管理员", "");
 	helper.Add("正在保存修改...");
 	helper.Show();
 	if (!root.Save())
 	{
 		Clear();
+		debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		helper.Reset("添加管理员", "按任意键返回系统管理员菜单");
 		helper.Add("保存失败!");
 		helper.Show();
@@ -2438,6 +2608,7 @@ void Show::AddAdmin(RootHelper&root)
 		return;
 	}
 	Clear();
+	debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 	helper.Reset("添加管理员", "按任意键返回系统管理员菜单");
 	helper.Add("成功保存修改!");
 	helper.Add();
@@ -2460,6 +2631,7 @@ void Show::RemoveAdmin(RootHelper & root)
 	if (nullptr == name)
 	{
 		Clear();
+		debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		helper.Reset("删除管理员", "按任意键返回系统管理员菜单");
 		helper.Add("没有找到该管理员!");
 		helper.Show();
@@ -2467,6 +2639,7 @@ void Show::RemoveAdmin(RootHelper & root)
 		return;
 	}
 	Clear();
+	debug("正在输出用户信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 	helper.Reset("删除管理员", "(y)是------(n)否");
 	helper.Add("ID:");
 	helper.Add(to_string(id));
@@ -2480,18 +2653,21 @@ void Show::RemoveAdmin(RootHelper & root)
 		switch (GetCh())
 		{
 		case 'y':Clear();
+			debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("删除管理员", "");
 			helper.Add("正在保存修改...");
 			helper.Show();
 			if (!(root.RemoveAdmin(id) && root.Save()))
 			{
 				Clear();
+				debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 				helper.Reset("删除管理员", "按任意键返回系统管理员菜单");
 				helper.Add("删除失败!");
 				helper.Show();
 				GetCh();
 			}
 			Clear();
+			debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("删除管理员", "按任意键返回系统管理员菜单");
 			helper.Add("成功保存修改!");
 			helper.Add();
@@ -2505,6 +2681,7 @@ void Show::RemoveAdmin(RootHelper & root)
 			return;
 		case 'n':
 			Clear();
+			debug("正在输出取消信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 			helper.Reset("删除管理员", "按任意键返回系统管理员菜单");
 			helper.Add("已取消操作!");
 			helper.Show();
@@ -2526,6 +2703,7 @@ void Show::FindAdmin(RootHelper & root)
 	if (nullptr == name)
 	{
 		Clear();
+		debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		helper.Reset("删除管理员", "按任意键返回系统管理员菜单");
 		helper.Add("没有找到该管理员!");
 		helper.Show();
@@ -2533,6 +2711,7 @@ void Show::FindAdmin(RootHelper & root)
 		return;
 	}
 	Clear();
+	debug("正在输出查找管理员界面信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 	helper.Reset("查找管理员", "按任意键返回系统管理员菜单");
 	helper.Add("查找结果");
 	helper.Add("ID:");
@@ -2561,18 +2740,21 @@ void Show::ChangeRootPassword(RootHelper & root)
 	cout << "输入新密码:";
 	cin >> newpw;
 	Clear();
+	debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 	ShowHelper helper("更改密码", "");
 	helper.Add("正在保存...");
 	helper.Show();
 	if (!(root.ChangePassword(oldpw, newpw) && root.Save()))
 	{
 		Clear();
+		debug("正在输出错误信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 		helper.Reset("更改密码", "按任意键返回系统管理员菜单");
 		helper.Add("保存失败!");
 		helper.Show();
 		GetCh();
 	}
 	Clear();
+	debug("正在输出成功信息，调用清屏函数Clear(),helper.Reset(),helper.Add()，helper.Show();若要进行下一步调试，请按任意键");
 	helper.Reset("更改密码", "按任意键返回系统管理员菜单");
 	helper.Add("保存成功!");
 	helper.Add();
